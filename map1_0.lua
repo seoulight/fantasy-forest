@@ -10,12 +10,12 @@ local scene = composer.newScene()
 function scene:create( event )
 	local sceneGroup = self.view
 	
-	local bg = display.newImageRect("image1/rabbitBurrow.png", 1280, 720)
+	local bg = display.newImageRect("image/image1/rabbitBurrow.png", 1280, 720)
 	bg.x, bg.y = display.contentWidth*0.5, display.contentHeight*0.5
 	sceneGroup:insert(bg)
 
 	-- 타이틀 등장 후 사라지게 --
-	local title = display.newImage("image1/map1_title.png")
+	local title = display.newImage("image/image1/map1_title.png")
 	title.x, title.y = display.contentWidth*0.5, display.contentHeight*0.35
 	sceneGroup:insert(title)
 

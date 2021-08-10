@@ -9,65 +9,102 @@ local scene = composer.newScene()
 
 function scene:create( event )
 	local sceneGroup = self.view
+	local centerX, centerY = display.contentWidth * 0.5, display.contentHeight * 0.5
 	
-	local bg = display.newImageRect("image1_1/bg_puzzle.png", 1280, 720)
-	bg.x, bg.y = display.contentWidth*0.5, display.contentHeight*0.5
+	local bg = display.newImageRect("image/image1_1/bg_puzzle.png", 1280, 720)
+	bg.x, bg.y = centerX, centerY
 	sceneGroup:insert(bg)
 	
+	-- 퍼즐판
+	local boardGroup = display.newGroup()
+	local rects = { }
+
+	local newX = centerX - 240
+	local newY = centerY - 240
+	for i = 1, 25 do
+		rects[i] = display.newRect(boardGroup, newX, newY, 120, 120)
+		rects[i]:setFillColor(0.5)
+		newX = newX + 120
+		if i % 5 == 0 then
+			newX = newX - 600
+			newY = newY + 120
+		end
+	end
+
+	sceneGroup:insert(boardGroup)
+
+	-- 퍼즐 조각
 	local piece = { }
 	local pieceGroup = display.newGroup()
-	local puzzleImg = {"image1_1/1.png", "image1_1/2.png", "image1_1/3.png", "image1_1/4.png", "image1_1/5.png", 
-						"image1_1/6.png", "image1_1/7.png", "image1_1/8.png", "image1_1/9.png", "image1_1/10.png", 
-						"image1_1/11.png", "image1_1/12.png", "image1_1/13.png", "image1_1/14.png", "image1_1/15.png", 
-						"image1_1/16.png", "image1_1/17.png", "image1_1/18.png", "image1_1/19.png", "image1_1/20.png", 
-						"image1_1/21.png", "image1_1/22.png", "image1_1/23.png", "image1_1/24.png", "image1_1/25.png", 
-	}
+	local puzzleImg = {"image/image1_1/1.png", "image/image1_1/2.png", "image/image1_1/3.png", "image/image1_1/4.png", "image/image1_1/5.png", 
+						"image/image1_1/6.png", "image/image1_1/7.png", "image/image1_1/8.png", "image/image1_1/9.png", "image/image1_1/10.png", 
+						"image/image1_1/11.png", "image/image1_1/12.png", "image/image1_1/13.png", "image/image1_1/14.png", "image/image1_1/15.png", 
+						"image/image1_1/16.png", "image/image1_1/17.png", "image/image1_1/18.png", "image/image1_1/19.png", "image/image1_1/20.png", 
+						"image/image1_1/21.png", "image/image1_1/22.png", "image/image1_1/23.png", "image/image1_1/24.png", "image/image1_1/25.png"
+					}
 
+	
 	for i = 1, 25 do
 		piece[i] = display.newImageRect(pieceGroup, puzzleImg[i], 240, 240)
 		piece[i].x, piece[i].y = bg.x + math.random(-300, 300), bg.y + math.random(-300, 300)
+		piece[i].name = i;
 	end
 
 	sceneGroup:insert(pieceGroup)
 
+	-- 다 맞추면 흐려지면서 완성본으로 전환
+	local function complete()
+		-- local options = {
+		-- 			    effect = "fade",
+		-- 			    time = 500
+		-- 			}
+    	-- composer.gotoScene("game1_ending", options)
+		local rose = display.newImageRect("image/image1_1/rose.png", 600, 600);
+		rose.x, rose.y = centerX, centerY
+		rose.alpha = 0
+		transition.fadeOut(pieceGroup, {time = 700})
+		transition.fadeIn(rose, {time = 800})
+ 	end
+
+ 	-- bg:addEventListener("tap", nextView) --임의로 설정. 다 맞추면 혹은 탭하면 넘어가게
+
+	-- 퍼즐 조각이 제대로된 위치인지 확인, 퍼즐이 완성되면 다음 장면으로 넘어가는 함수 포출
+	local cnt = 0
+	local function correct( target )
+		local num = target.name
+		if target.x <= rects[num].x + 10 and target.x >= rects[num].x - 10
+		and target.y <= rects[num].y + 10 and target.y >= rects[num].y - 10 then
+			target.x, target.y = rects[num].x, rects[num].y
+			pieceGroup:insert(1, target) -- 다른 퍼즐조각보다 아래 있도록 옮김
+			target:removeEventListener("touch", match)
+			cnt = cnt + 1
+			if cnt == 25 then
+				complete()
+			end
+		end
+	end
+
 	-- 퍼즐 맞추기 --
-	local function match( event )
-		if ( event.phase == "began" ) then
-			display.getCurrentStage():setFocus( event.target )
-			event.target.isFocus = true
+	function match( event )
+		local object = event.target;
+		if ( event.phase == "began") then
+			display.getCurrentStage():setFocus( object )
+			object.isFocus = true
 		elseif ( event.phase == "moved" ) then
-			if ( event.target.isFocus ) then
-				event.target.x = event.xStart + event.xDelta
-				event.target.y = event.yStart + event.yDelta
+			if ( object.isFocus ) then
+				object.x = event.xStart + event.xDelta
+				object.y = event.yStart + event.yDelta
 			end
 		elseif ( event.phase == "ended" or event.phase == "cancelled" ) then
-			if ( event.target.isFocus ) then
-				display.getCurrentStage():setFocus( nil )
-				event.target.isFocus = false
-			end
+			correct(object)
 			display.getCurrentStage():setFocus( nil )
-			event.target.isFocus = false
+			object.isFocus = false
 		end
 	end
 	
     for i = 1, 25 do
 		piece[i]:addEventListener("touch", match)
 	end
-
-	-- 조각끼리 맞았을 때 
-
-
-
-	-- 다 맞추면 흐려지면서 완성본으로 전환
-	--[[local function nextView( event )
-		local options = {
-					    effect = "fade",
-					    time = 900
-					}
-    	composer.gotoScene("game1_ending", options)
- 	 end
-
- 	 bg:addEventListener("tap", nextView)]] --임의로 설정. 다 맞추면 혹은 탭하면 넘어가게
 	
 end
 

@@ -10,7 +10,7 @@ local scene = composer.newScene()
 function scene:create( event )
 	local sceneGroup = self.view
 	
-	local bg = display.newImageRect("image1/rabbitBurrow.png", 1280, 720)
+	local bg = display.newImageRect("image/image1/rabbitBurrow.png", 1280, 720)
 	bg.x, bg.y = display.contentWidth*0.5, display.contentHeight*0.5
 	sceneGroup:insert(bg)
 
@@ -53,29 +53,29 @@ function scene:create( event )
 
 	-- 맵 블록 설치 --
 	-- 왼쪽 블록 --
-	local b1 = display.newImageRect("image1/1.png", 200, 200) 
+	local b1 = display.newImageRect("image/image1/1.png", 200, 200) 
 	b1.x, b1.y = display.contentWidth*0.07, display.contentHeight*0.7
 
-	local b2 = display.newImageRect("image1/2.png", 200, 200) 
+	local b2 = display.newImageRect("image/image1/2.png", 200, 200) 
 	b2.x, b2.y = display.contentWidth*0.2, display.contentHeight*0.7
 
-	local b3 = display.newImageRect("image1/4.png", 200, 200) 
+	local b3 = display.newImageRect("image/image1/4.png", 200, 200) 
 	b3.x, b3.y = display.contentWidth*0.2, display.contentHeight*0.9
 
-	local b4 = display.newImageRect("image1/6.png", 200, 200) 
+	local b4 = display.newImageRect("image/image1/6.png", 200, 200) 
 	b4.x, b4.y = display.contentWidth*0.07, display.contentHeight*0.9
 
 	-- 오른쪽 블록 --
-	local b5 = display.newImageRect("image1/3.png", 200, 200) 
+	local b5 = display.newImageRect("image/image1/3.png", 200, 200) 
 	b5.x, b5.y = display.contentWidth*0.79, display.contentHeight*0.7
 
-	local b6 = display.newImageRect("image1/1.png", 200, 200) 
+	local b6 = display.newImageRect("image/image1/1.png", 200, 200) 
 	b6.x, b6.y = display.contentWidth*0.92, display.contentHeight*0.7
 
-	local b7 = display.newImageRect("image1/6.png", 200, 200) 
+	local b7 = display.newImageRect("image/image1/6.png", 200, 200) 
 	b7.x, b7.y = display.contentWidth*0.92, display.contentHeight*0.9
 
-	local b8 = display.newImageRect("image1/5.png", 200, 200) 
+	local b8 = display.newImageRect("image/image1/5.png", 200, 200) 
 	b8.x, b8.y = display.contentWidth*0.79, display.contentHeight*0.9
 
 	sceneGroup:insert( b1 )

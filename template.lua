@@ -1,44 +1,41 @@
------------------------------------------------------------------------------------------
---
--- view1.lua
---
------------------------------------------------------------------------------------------
-
+-- 대화 템플릿
 local composer = require( "composer" )
 local scene = composer.newScene()
 
 function scene:create( event )
 	local sceneGroup = self.view
-	
-	local bg = display.newImageRect("image/main_bg.png", 1280, 720)
-	bg.x, bg.y = display.contentWidth*0.5, display.contentHeight*0.5
-	sceneGroup:insert(bg)
 
-	local btnNew = display.newImageRect("image/image1/main_1_1.png", 197, 72);
-	btnNew.x, btnNew.y = display.contentWidth * 0.5, display.contentHeight * 0.51
-	btnNew.name = "new game"
+	local neroDefault = display.newImageRect("image/char/nero_default.png", 400, 440)
+	neroDefault.x, neroDefault.y = display.contentWidth * 0.8, display.contentHeight * 0.33
+	sceneGroup:insert(neroDefault)
 
-	sceneGroup:insert(btnNew)
+	local text1 = display.newImageRect("image/char/text1.png", 1150, 340)
+	text1.x, text1.y = display.contentWidth * 0.5, display.contentHeight * 0.75
+	sceneGroup:insert(text1)
 
-	local function nextView( event )
-		transition.fadeOut(bg, {time = 500})
-		transition.fadeOut(btnNew, {time = 500})
-		local options = {
-					    effect = "fade",
-					    time = 800
-					}
-    	composer.gotoScene("view2", options)
- 	 end
- 	 bg:addEventListener("tab", nextView)
-	
-	local function onNewgameTab( event )
-		local object = event.target
-		print(object.name)
-		nextView()
+	local playerName = display.newText("네로", 282, 437, "fonts/SeoulNamsanB.ttf", 32)
+	sceneGroup:insert(playerName)
+
+	local text = { }
+	text[1] = display.newText("스크립트 테스트용", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
+	text[1]:setFillColor(0)
+	sceneGroup:insert(text[1])
+
+
+
+	-- 좌표 알아내기용 이벤트
+	local function tab( event )
+		if ( event.phase == "began" ) then
+			print("touched")
+		elseif ( event.phase == "moved" ) then
+			print(event.x .. ", " .. event.y)
+		elseif ( event.phase == "ended") then
+			print("ended")
+		end
 		return true
 	end
 
-	btnNew:addEventListener("tap", onNewgameTab)
+	text1:addEventListener("touch", tab)
 end
 
 function scene:show( event )

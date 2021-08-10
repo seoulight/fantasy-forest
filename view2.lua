@@ -15,11 +15,12 @@ function scene:create( event )
 	sceneGroup:insert(intro)
 	
 	local text = {}
-	text[1] = display.newText(" ", intro.x, intro.y, "서울남산체 B", 25)
-	text[2] = display.newText("줄거리", intro.x, intro.y, "서울남산체 B", 25)
-	text[3] = display.newText("나중에 더 추가", intro.x, intro.y, "서울남산체 B", 25)
-	text[4] = display.newText("폰트 확인o", intro.x, intro.y, "서울남산체 B", 25)
-	text[5] = display.newText("\t\t\t\t\t세상의 모든 이야기가 모이는 환상의 숲,\n그렇게 네로의 빛을 찾는 여행이 시작되었답니다.", intro.x, intro.y, "서울남산체 B", 25)
+
+	text[1] = display.newText(" ", intro.x, intro.y, "fonts/SeoulNamsanB.ttf", 25)
+	text[2] = display.newText("줄거리", intro.x, intro.y, "fonts/SeoulNamsanB.ttf", 25)
+	text[3] = display.newText("나중에 더 추가", intro.x, intro.y, "fonts/SeoulNamsanB.ttf", 25)
+	text[4] = display.newText("폰트 확인o", intro.x, intro.y, "fonts/SeoulNamsanB.ttf", 25)
+	text[5] = display.newText("\t\t\t\t\t세상의 모든 이야기가 모이는 환상의 숲,\n그렇게 네로의 빛을 찾는 여행이 시작되었답니다.", intro.x, intro.y, "fonts/SeoulNamsanB.ttf", 25)
 
 	for i = 2, 5 do
 		text[i].alpha = 0
@@ -29,16 +30,21 @@ function scene:create( event )
 	local j = 1
 	-- 탭 하면 다음 text --
 	local function nextText()
-		text[j].alpha = 0
-		j = j + 1
+		if j > 1 then
+			text[j - 1].alpha = 0
+		end
+
+		if j == 6 then
+			composer.gotoScene("map1_0", { effect = "fade", time = 900 })
+		end
 
 		if j < 6 then
 			text[j].alpha = 1
+			j = j + 1
 		end
 
-		--다음 장면으로 넘어가게
-		--if j == 6 then
-			--composesr.gotoScene(view3)
+		-- 다음 장면으로 넘어가게
+		
 	end
 
 	intro:addEventListener("tap", nextText)
