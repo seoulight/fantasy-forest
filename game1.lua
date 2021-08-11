@@ -46,7 +46,7 @@ function scene:create( event )
 	
 	for i = 1, 25 do
 		piece[i] = display.newImageRect(pieceGroup, puzzleImg[i], 240, 240)
-		piece[i].x, piece[i].y = bg.x + math.random(-300, 300), bg.y + math.random(-300, 300)
+		piece[i].x, piece[i].y = bg.x + math.random(-500, 500), bg.y + math.random(-300, 300)
 		piece[i].name = i;
 	end
 

@@ -7,81 +7,58 @@ local scene = composer.newScene()
 function scene:create( event )
 	local sceneGroup = self.view
 
-	-- local character_sheet = graphics.newImageSheet("image/char/character_sprites.png", { width = 300, height = 500, numFrames = 2})
-	-- local sequences_character = {
-	-- 	{
-	-- 		name = "walking",
-	-- 		start = 1,
-	-- 		count = 2,
-	-- 		time = 500,
-	-- 		loopCount = 0,
-	-- 		loopDirection = "forward"
-	-- 	}
-	-- }
-	-- local character = display.newSprite(character_sheet, sequences_character)
-	-- character.x, character.y = display.contentWidth * 0.2, display.contentHeight * 0.6
+	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites.png", { width = 300, height = 500, numFrames = 2})
+	local sequences_nero = {
+		{
+			name = "walking",
+			start = 1,
+			count = 2,
+			time = 500,
+			loopCount = 0,
+			loopDirection = "forward"
+		}
+	}
+	local nero = display.newSprite(nero_sheet, sequences_nero)
+	nero.x, nero.y = display.contentWidth * 0.2, display.contentHeight * 0.4
 	
-	-- local block = display.newImageRect("image/image1/1.png", 400, 400);
-	-- block.x, block.y = display.contentWidth * 0.2, display.contentHeight * 0.9
+	local block = display.newImageRect("image/image1/1.png", 400, 400);
+	block.x, block.y = display.contentWidth * 0.7, display.contentHeight * 0.4
 
-	-- 네로 줄이기
-	-- transition.scaleTo(character, {xScale = 0.4, yScale = 0.4, time = 0})
+	--네로 줄이기
+	transition.scaleTo(nero, {xScale = 0.4, yScale = 0.4, time = 0})
+
 
 	physics.start()
-	physics.setDrawMode( "hybrid" )
+	physics.addBody(nero, "kinematic", { friction = 0.2, bounce = 0.1})
+	physics.addBody(block, "static", { friction = 0.3, bounce = 0.1})
  
-	-- Create ground object
-	local cw, ch = display.actualContentWidth, display.actualContentHeight
-	local ground = display.newRect( display.contentCenterX, ch-64, cw, 64 )
-	ground:setFillColor( 0.4, 0.4, 0.8 )
-	ground.objType = "ground"
-	physics.addBody( ground, "static", { bounce=0.0, friction=0.3 } )
-	-- physics.addBody( character, "dynamic", { density = 1.0, bounce=0.0 },  { box={ halfWidth=30, halfHeight=10, x=0, y=60 }, isSensor=true })
-	-- character.isFixedRotation = true
-	-- character.sensoroverlaps = 0
-	-- physics.addBody( block, "static", { density= 1.0, friction=0.1, bounce=0.2 } )
-
-
-	-- Create character
-	local character = display.newRect( display.contentCenterX, ground.y-150, 80, 120 )
-	character:setFillColor( 1, 0.2, 0.4 )
-	
-	physics.addBody( character, "dynamic",
-		{ density=1.0, bounce=0.0 },  -- Main body element
-		{ box={ halfWidth=30, halfHeight=10, x=0, y=60 }, isSensor=true }  -- Foot sensor element
-	)
-	character.isFixedRotation = true
-	character.sensorOverlaps = 0
 
 	
 
-	-- local function move( event )
-	-- 	if (event.phase == "down" and event.keyName == "right") then
-	-- 		local vx, vy = character:getLinearVelocity()
-	-- 		character:play()
-	-- 		-- transition.to(character, {x = character.x + 1000, time = 7000})
-	-- 		character:setLinearVelocity(vx + 40, 0)
-
-	-- 	elseif (event.phase == "up") then
-	-- 		transition.cancel(character) -- 이동 정지
-	-- 		character:pause()
-	-- 		character:setFrame(1)
-	-- 	end
-	-- end
-
-	-- Runtime:addEventListener("key", move)
-	
-
-	local function touchAction( event )
- 
-		if ( event.phase == "began" and character.sensorOverlaps > 0 ) then
-			-- Jump procedure here
-			local vx, vy = character:getLinearVelocity()
-			character:setLinearVelocity( vx, 0 )
-			character:applyLinearImpulse( nil, -75, character.x, character.y )
+	local function move( event )
+		if (event.phase == "down" and event.keyName == "right") then
+			nero:play()
+			transition.to(nero, {x = nero.x + 1000, time = 7000})
+		elseif (event.phase == "up") then
+			transition.cancel(nero) -- 이동 정지
+			nero:pause()
+			nero:setFrame(1)
 		end
 	end
-	Runtime:addEventListener( "touch", touchAction )
+
+	Runtime:addEventListener("key", move)
+	
+
+	-- local function touchAction( event )
+ 
+	-- 	if ( event.phase == "began" and nero.sensorOverlaps > 0 ) then
+	-- 		-- Jump procedure here
+	-- 		local vx, vy = nero:getLinearVelocity()
+	-- 		nero:setLinearVelocity( vx, 0 )
+	-- 		nero:applyLinearImpulse( nil, -75, nero.x, nero.y )
+	-- 	end
+	-- end
+	-- Runtime:addEventListener( "touch", touchAction )
 
 	local function sensorCollide( self, event )
  
@@ -97,9 +74,9 @@ function scene:create( event )
 			end
 		end
 	end
-	-- Associate collision handler function with character
-	character.collision = sensorCollide
-	character:addEventListener( "collision" )
+	-- Associate collision handler function with nero
+	nero.collision = sensorCollide
+	nero:addEventListener( "collision" )
 end
 
 function scene:show( event )

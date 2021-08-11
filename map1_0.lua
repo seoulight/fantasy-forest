@@ -10,21 +10,72 @@ local scene = composer.newScene()
 function scene:create( event )
 	local sceneGroup = self.view
 	
-	local bg = display.newImageRect("image/image1/rabbitBurrow.png", 1280, 720)
+	local bg = display.newImageRect("image/image1/forest.png", 1280, 720)
 	bg.x, bg.y = display.contentWidth*0.5, display.contentHeight*0.5
 	sceneGroup:insert(bg)
+
+
+	-- 네로 캐릭터
+	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites3.png", { width = 300, height = 500, numFrames = 4})
+	local sequences_nero = {
+		{
+			name = "walkRight",
+			frames = { 1, 2 },
+			time = 300,
+			loopCount = 0,
+			loopDirection = "forward"
+		},
+		{
+			name = "walkLeft",
+			frames = { 3, 4 },
+			time = 300,
+			loopCount = 0,
+			loopDirection = "forward"
+		}
+	}
+	local nero = display.newSprite(nero_sheet, sequences_nero)
+	nero.x, nero.y = display.contentWidth * 0.2, display.contentHeight * 0.6
+	sceneGroup:insert(nero);
+	
+	-- local block = display.newImageRect("image/image1/1.png", 400, 400);
+	-- block.x, block.y = display.contentWidth * 0.2, display.contentHeight * 0.9
+
+	-- 네로 줄이기
+	transition.scaleTo(nero, {xScale = 0.4, yScale = 0.4, time = 0})
 
 	-- 타이틀 등장 후 사라지게 --
 	local title = display.newImage("image/image1/map1_title.png")
 	title.x, title.y = display.contentWidth*0.5, display.contentHeight*0.35
 	sceneGroup:insert(title)
+	transition.fadeOut(title, { delay = 500, time = 700 })
+	sceneGroup:remove(title)
 
-	local options = {
-		effect = "fade", 
-		time = 2500
-	}
-	composer.removeScene("map1_0")
-	composer.gotoScene("map1_1", options)
+	local block = display.newImage("image/image1/1.png")
+	block.x, block.y = 1500, 800
+	sceneGroup:insert(block)
+
+	
+
+	-- 방향키 입력시 움직이는 이벤트리스너
+	local function move( event )
+		if (event.phase == "down") then
+			if (event.keyName == "right") then
+				nero:setSequence("walkRight")
+				nero:play()
+				transition.to(nero, {x = nero.x + 1000, time = 7000})
+				
+			elseif (event.keyName == "left") then
+				nero:setSequence("walkLeft")
+				nero:play()
+				transition.to(nero, {x = nero.x - 1000, time = 7000})
+			end
+		elseif (event.phase == "up") then
+			transition.cancel(nero) -- 이동 정지
+			nero:pause()
+		end
+	end
+
+	Runtime:addEventListener("key", move)
 end
 
 function scene:show( event )
