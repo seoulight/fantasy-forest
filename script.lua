@@ -1,43 +1,51 @@
------------------------------------------------------------------------------------------
---
--- view2.lua
---
------------------------------------------------------------------------------------------
-
+-- 대화 템플릿
 local composer = require( "composer" )
 local scene = composer.newScene()
 
 function scene:create( event )
 	local sceneGroup = self.view
-	
-	-- Called when the scene's view does not exist.
-	-- 
-	-- INSERT code here to initialize the scene
-	-- e.g. add display objects to 'sceneGroup', add touch listeners, etc.
-	
-	-- create a white background to fill screen
-	local background = display.newRect( display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
-	background:setFillColor( 1 )	-- white
-	
-	-- create some text
-	local title = display.newText( "Second View", display.contentCenterX, 125, native.systemFont, 32 )
-	title:setFillColor( 0 )	-- black
+	local json = require( "json" )
 
-	local newTextParams = { text = "Loaded by the second tab's\n\"onPress\" listener\nspecified in the 'tabButtons' table", 
-							x = display.contentCenterX + 10, 
-							y = title.y + 215, 
-							width = 310, 
-							height = 310, 
-							font = native.systemFont, 
-							fontSize = 14, 
-							align = "center" }
-	local summary = display.newText( newTextParams )
-	summary:setFillColor( 0 ) -- black
+	local filename = system.pathForFile("script.json", system.ResourceDirectory)
+	local decoded, pos, msg = json.decodeFile( filename )
+
+	local script = {}
 	
-	-- all objects must be added to group (e.g. self.view)
-	sceneGroup:insert( background )
-	sceneGroup:insert( title )
-	sceneGroup:insert( summary )
+	-- for i = 1, #decoded do
+	-- end
+	-- print(tostring(pos)..":"..tostring(msg))
+
+	local neroDefault = display.newImageRect("image/char/nero_default.png", 400, 440)
+	neroDefault.x, neroDefault.y = display.contentWidth * 0.8, display.contentHeight * 0.33
+	sceneGroup:insert(neroDefault)
+
+	local text1 = display.newImageRect("image/char/text1.png", 1150, 340)
+	text1.x, text1.y = display.contentWidth * 0.5, display.contentHeight * 0.75
+	sceneGroup:insert(text1)
+
+	local playerName = display.newText("네로", 282, 437, "fonts/SeoulNamsanB.ttf", 32)
+	sceneGroup:insert(playerName)
+
+	local text = { }
+	text[1] = display.newText("스크립트 테스트용", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
+	text[1]:setFillColor(0)
+	sceneGroup:insert(text[1])
+
+
+
+	-- 좌표 알아내기용 이벤트
+	local function tab( event )
+		if ( event.phase == "began" ) then
+			print("touched")
+		elseif ( event.phase == "moved" ) then
+			print(event.x .. ", " .. event.y)
+		elseif ( event.phase == "ended") then
+			print("ended")
+		end
+		return true
+	end
+
+	text1:addEventListener("touch", tab)
 end
 
 function scene:show( event )
@@ -65,6 +73,7 @@ function scene:hide( event )
 		-- e.g. stop timers, stop animation, unload sounds, etc.)
 	elseif phase == "did" then
 		-- Called when the scene is now off screen
+		composer.removeScene("view1")
 	end
 end
 
