@@ -29,7 +29,7 @@ function scene:create( event )
 
 
 	physics.start()
-	physics.addBody(nero, "kinematic", { friction = 0.2, bounce = 0.1})
+	physics.addBody(nero, "static", { friction = 0.2, bounce = 0.1})
 	physics.addBody(block, "static", { friction = 0.3, bounce = 0.1})
  
 
