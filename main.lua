@@ -14,7 +14,7 @@ local composer = require "composer"
 
 -- event listeners for tab buttons:
 local function onFirstView( event )
-	composer.gotoScene( "maze" )
+	composer.gotoScene( "game3_puzzle" )
 end
 
 local function onSecondView( event )
