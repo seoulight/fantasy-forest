@@ -11,7 +11,7 @@ function scene:create( event )
 	local sceneGroup = self.view
 	local centerX, centerY = display.contentWidth * 0.5, display.contentHeight * 0.5
 	
-	local bg = display.newImageRect("image/image1_1/bg_puzzle.png", 1280, 720)
+	local bg = display.newImageRect("image/image2_1/bg_puzzle.png", 1280, 720)
 	bg.x, bg.y = centerX, centerY
 	sceneGroup:insert(bg)
 	
@@ -23,7 +23,8 @@ function scene:create( event )
 	local newY = centerY - 240
 	for i = 1, 25 do
 		rects[i] = display.newRect(boardGroup, newX, newY, 120, 120)
-		rects[i]:setFillColor(0.5)
+		rects[i]:setFillColor(0.7)
+		rects[i].alpha = 0.8
 		newX = newX + 120
 		if i % 5 == 0 then
 			newX = newX - 600
@@ -36,11 +37,11 @@ function scene:create( event )
 	-- 퍼즐 조각
 	local piece = { }
 	local pieceGroup = display.newGroup()
-	local puzzleImg = {"image/image1_1/1.png", "image/image1_1/2.png", "image/image1_1/3.png", "image/image1_1/4.png", "image/image1_1/5.png", 
-						"image/image1_1/6.png", "image/image1_1/7.png", "image/image1_1/8.png", "image/image1_1/9.png", "image/image1_1/10.png", 
-						"image/image1_1/11.png", "image/image1_1/12.png", "image/image1_1/13.png", "image/image1_1/14.png", "image/image1_1/15.png", 
-						"image/image1_1/16.png", "image/image1_1/17.png", "image/image1_1/18.png", "image/image1_1/19.png", "image/image1_1/20.png", 
-						"image/image1_1/21.png", "image/image1_1/22.png", "image/image1_1/23.png", "image/image1_1/24.png", "image/image1_1/25.png"
+	local puzzleImg = {"image/image2_1/1.png", "image/image2_1/2.png", "image/image2_1/3.png", "image/image2_1/4.png", "image/image2_1/5.png", 
+						"image/image2_1/6.png", "image/image2_1/7.png", "image/image2_1/8.png", "image/image2_1/9.png", "image/image2_1/10.png", 
+						"image/image2_1/11.png", "image/image2_1/12.png", "image/image2_1/13.png", "image/image2_1/14.png", "image/image2_1/15.png", 
+						"image/image2_1/16.png", "image/image2_1/17.png", "image/image2_1/18.png", "image/image2_1/19.png", "image/image2_1/20.png", 
+						"image/image2_1/21.png", "image/image2_1/22.png", "image/image2_1/23.png", "image/image2_1/24.png", "image/image2_1/25.png"
 					}
 
 	
@@ -59,7 +60,7 @@ function scene:create( event )
 		-- 			    time = 500
 		-- 			}
     	-- composer.gotoScene("game1_ending", options)
-		local rose = display.newImageRect("image/image1_1/rose.png", 600, 600);
+		local rose = display.newImageRect("image/image2_1/image.png", 600, 600);
 		rose.x, rose.y = centerX, centerY
 		rose.alpha = 0
 		transition.fadeOut(pieceGroup, {time = 700})
