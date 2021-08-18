@@ -4,7 +4,7 @@
 --
 -----------------------------------------------------------------------------------------
 
-local composer = require( "composer" )
+local composer = require( "composer" ) 
 local scene = composer.newScene()
 
 function scene:create( event )
@@ -16,7 +16,7 @@ function scene:create( event )
 	
 	local text = {}
 
-	text[1] = display.newText(" ", intro.x, intro.y, "fonts/SeoulNamsanB.ttf", 25)
+	text[1] = display.newText("", intro.x, intro.y, "fonts/SeoulNamsanB.ttf", 25)
 	text[2] = display.newText("줄거리", intro.x, intro.y, "fonts/SeoulNamsanB.ttf", 25)
 	text[3] = display.newText("나중에 더 추가", intro.x, intro.y, "fonts/SeoulNamsanB.ttf", 25)
 	text[4] = display.newText("폰트 확인o", intro.x, intro.y, "fonts/SeoulNamsanB.ttf", 25)
@@ -27,7 +27,7 @@ function scene:create( event )
 		text[i]:setFillColor(0)
 	end
 
-	local j = 1
+	local j = 2
 	-- 탭 하면 다음 text --
 	local function nextText()
 		if j > 1 then
@@ -42,9 +42,6 @@ function scene:create( event )
 			text[j].alpha = 1
 			j = j + 1
 		end
-
-		-- 다음 장면으로 넘어가게
-		
 	end
 
 	intro:addEventListener("tap", nextText)
@@ -76,6 +73,7 @@ function scene:hide( event )
 		-- e.g. stop timers, stop animation, unload sounds, etc.)
 	elseif phase == "did" then
 		-- Called when the scene is now off screen
+		composer.removeScene("view2")
 	end
 end
 
