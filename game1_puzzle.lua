@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------------------
 --
--- game1.lua
+-- game1.puzzle.lua
 --
 -----------------------------------------------------------------------------------------
 
@@ -54,19 +54,12 @@ function scene:create( event )
 
 	-- 다 맞추면 흐려지면서 완성본으로 전환
 	local function complete()
-		-- local options = {
-		-- 			    effect = "fade",
-		-- 			    time = 500
-		-- 			}
-    	-- composer.gotoScene("game1_ending", options)
 		local rose = display.newImageRect("image/image1_1/rose.png", 600, 600);
 		rose.x, rose.y = centerX, centerY
 		rose.alpha = 0
 		transition.fadeOut(pieceGroup, {time = 700})
 		transition.fadeIn(rose, {time = 800})
  	end
-
- 	-- bg:addEventListener("tap", nextView) --임의로 설정. 다 맞추면 혹은 탭하면 넘어가게
 
 	-- 퍼즐 조각이 제대로된 위치인지 확인, 퍼즐이 완성되면 다음 장면으로 넘어가는 함수 포출
 	local cnt = 0
