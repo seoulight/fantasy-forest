@@ -12,11 +12,7 @@ function scene:create( event )
 	local bg = display.newImageRect("image/image1/garden.png", 1280, 720)
 	bg.x, bg.y = display.contentWidth*0.5, display.contentHeight*0.5
 	sceneGroup:insert(bg)
-
-	local redBg = display.newImageRect("image/image1/garden2.png", 1280, 720)
-	redBg.x, redBg.y = display.contentWidth*0.5, display.contentHeight*0.5
-	redBg.alpha = 0
-
+	
 	local door = display.newImageRect("image/image1/door.png", 200, 200)
 	door.x, door.y = display.contentWidth*0.1, display.contentHeight*0.78
 	sceneGroup:insert(door)
@@ -50,7 +46,7 @@ function scene:create( event )
 	}
 
 	local nero = display.newSprite(nero_sheet, sequences_nero)
-	nero.x, nero.y = display.contentWidth * 0.22, display.contentHeight * 0.79
+	nero.x, nero.y = display.contentWidth * 0.35, display.contentHeight * 0.79
 
 	transition.scaleTo(nero, {xScale = 0.4, yScale = 0.4, time = 0})
 
@@ -129,20 +125,6 @@ function scene:create( event )
 	roseGroup.x = roseGroup.x + 135
 	roseGroup.y = roseGroup.y + 243
 
-	-- 색 있는 장미 --
-	local rose2 = { }
-	local roseGroup2 = display.newGroup()
-
-	for i = 1, 2 do
-		rose2[i] = display.newImageRect(roseGroup2, "image/image1_2/rose2.png", 200, 100)
-		rose2[i].x, rose2[i].y = bg.x + 195 * i, bg.y - 92 * i
-	end
-
-	roseGroup2.x = roseGroup2.x + 135
-	roseGroup2.y = roseGroup2.y + 243
-
-	roseGroup2.alpha = 0
-
 	sceneGroup:insert(door)
 	sceneGroup:insert(b1Group)
 	sceneGroup:insert(b3)
@@ -156,29 +138,8 @@ function scene:create( event )
 	sceneGroup:insert(roseGroup)
 	sceneGroup:insert(nero)
 
-	-- 아이템 제거 --
-	local function removeItems() 
-		door.alpha = 0
-		roseGroup.alpha = 0
-		b1Group.alpha = 0
-		b3.alpha = 0
-		b6Group.alpha = 0
-				
-		for i = 1, 2 do
-			b2[i].alpha = 0
-			b4[i].alpha = 0
-			b5[i].alpha = 0
-			b7[i].alpha = 0
-		end
-		black1.alpha = 0
-		red1.alpha = 0
-		nero.alpha = 0
-	end
-
 	-- 카드병정 대화 --
 	local function textScene() 
-		removeItems()
-
 		-- 대화창 --
 		local text1 = display.newImageRect("image/char/text1.png", 1150, 340)
 		text1.x, text1.y = display.contentWidth * 0.5, display.contentHeight * 0.75
@@ -257,11 +218,11 @@ function scene:create( event )
 			end
 
 			if j == 9 then
-				removeItems()
+				--removeItems()
 				black3.alpha = 0
 				red3.alpha = 0
 				composer.removeScene("map1_7")
-				composer.gotoScene("map1_8")
+				composer.gotoScene("map1_8", { effect = "fade", time = 900 })
 			end
 
 			if j < 9 then
@@ -272,6 +233,30 @@ function scene:create( event )
 
 		text1:addEventListener("tap", nextText)
 	end
+
+	--[[-- 방향키 입력시 움직이는 이벤트리스너 --
+	local function move( event )
+		if(nero.x > display.contentWidth * 0.36) then
+			textScene()
+		end
+		if (event.phase == "down") then
+			if (event.keyName == "right") then
+				nero:setSequence("walkRight")
+				nero:play()
+				transition.to(nero, {x = nero.x + 1000, time = 7000})
+				
+			elseif (event.keyName == "left") then
+				nero:setSequence("walkLeft")
+				nero:play()
+				transition.to(nero, {x = nero.x - 1000, time = 7000})
+			end
+		elseif (event.phase == "up") then
+			transition.cancel(nero) -- 이동 정지
+			nero:pause()
+		end
+	end
+	Runtime:addEventListener("key", move)]]
+
 
 	-- map1_5와 동일하게 키보드 쓰면 에러나서 클릭으로 대체 --
 	local k = 0

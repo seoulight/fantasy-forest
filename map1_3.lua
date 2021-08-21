@@ -31,6 +31,10 @@ function scene:create( event )
 	text1.x, text1.y = display.contentWidth * 0.5, display.contentHeight * 0.75
 	sceneGroup:insert(text1)
 
+	local text2 = display.newImageRect("image/char/text_nero.png", 1170, 315)
+	text2.x, text2.y = display.contentWidth * 0.501, display.contentHeight * 0.745
+	text2.alpha = 0
+
 	-- 대화창 이름 --
 	local catName = display.newText("체셔", 282, 437, "fonts/SeoulNamsanB.ttf", 32)
 	sceneGroup:insert(catName)
@@ -65,9 +69,13 @@ function scene:create( event )
 		if j == 2 or j == 4 or j == 8 or j == 10 then
 			catName.alpha = 0
 			neroName.alpha = 1
+			text1.alpha = 0
+			text2.alpha = 0.8
 		else
 			neroName.alpha = 0
 			catName.alpha = 1
+			text2.alpha = 0
+			text1.alpha = 1
 		end
 
 		-- 체셔 당황한 표정 --
@@ -94,7 +102,7 @@ function scene:create( event )
 		end
 	end
 
-	text1:addEventListener("tap", nextText)
+	bg:addEventListener("tap", nextText)
 end
 
 function scene:show( event )

@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------------------------
 --
--- map1_8.lua
--- (오솔길) -> 장미정원_빨강
+-- map1_9.lua
+-- 장미정원_색 채취
 -----------------------------------------------------------------------------------------
 
 local composer = require( "composer" )
@@ -9,14 +9,9 @@ local scene = composer.newScene()
 
 function scene:create( event )
 	local sceneGroup = self.view
-	local bg = display.newImageRect("image/image1/garden.png", 1280, 720)
+	local bg = display.newImageRect("image/image1/garden2.png", 1280, 720)
 	bg.x, bg.y = display.contentWidth*0.5, display.contentHeight*0.5
 	sceneGroup:insert(bg)
-
-	local redBg = display.newImageRect("image/image1/garden2.png", 1280, 720)
-	redBg.x, redBg.y = display.contentWidth*0.5, display.contentHeight*0.5
-	sceneGroup:insert(redBg)
-	redBg.alpha = 0
 
 	local door = display.newImageRect("image/image1/door.png", 200, 200)
 	door.x, door.y = display.contentWidth*0.1, display.contentHeight*0.78
@@ -29,18 +24,6 @@ function scene:create( event )
 	local red = display.newImageRect("image/char/red_default.png", 190, 220)
 	red.x, red.y = bg.x*0.93, bg.y*1.56
 
-	-- 색 없는 장미 --
-	local rose = { }
-	local roseGroup = display.newGroup()
-
-	for i = 1, 2 do
-		rose[i] = display.newImageRect(roseGroup, "image/image1_2/rose1.png", 200, 100)
-		rose[i].x, rose[i].y = bg.x + 195 * i, bg.y - 92 * i
-	end
-
-	roseGroup.x = roseGroup.x + 135
-	roseGroup.y = roseGroup.y + 243
-
 	-- 색 있는 장미 --
 	local rose2 = { }
 	local roseGroup2 = display.newGroup()
@@ -52,10 +35,6 @@ function scene:create( event )
 
 	roseGroup2.x = roseGroup2.x + 135
 	roseGroup2.y = roseGroup2.y + 243
-
-	roseGroup2.alpha = 0
-	transition.fadeIn(roseGroup2, {delay = 1900, time = 1300, alpha = 1})
-	transition.fadeIn(redBg, {delay = 2400, time = 2000, alpha = 1})
 
 	-- 네로 움직이는 모습 --
 	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites3.png", { width = 300, height = 500, numFrames = 4})
@@ -80,6 +59,75 @@ function scene:create( event )
 	nero.x, nero.y = display.contentWidth * 0.35, display.contentHeight * 0.79
 
 	transition.scaleTo(nero, {xScale = 0.4, yScale = 0.4, time = 0})
+
+	-- 팔레트, 브러쉬 --
+	local palette1 = display.newImageRect("image/color/palette.png", 700, 700)
+	palette1.x, palette1.y = display.contentWidth*0.27, display.contentHeight*0.52
+	
+	local palette2 = display.newImageRect("image/color/palette_red2.png", 700, 700)
+	palette2.x, palette2.y = display.contentWidth*0.27, display.contentHeight*0.52
+	palette2.alpha = 0
+
+	transition.fadeIn( palette2, { delay = 8000, effect = "fade", time = 1500 } )
+
+	local brush1 = display.newImageRect("image/color/brush.png", 450, 550)
+	brush1.x, brush1.y = display.contentWidth*0.65, display.contentHeight*0.78
+	brush1.rotation = 60
+
+	local brush2 = display.newImageRect("image/color/brush_red.png", 450, 550)
+	brush2.x, brush2.y = display.contentWidth*0.65, display.contentHeight*0.78
+	brush2.rotation = 60
+	brush2.alpha = 0
+
+	transition.fadeIn( brush2, { delay = 3000, effect = "fade", time = 1000 } )
+	transition.to( brush1, { delay = 4000, alpha = 0, time = 0 } )
+
+	local bx, by = display.contentWidth*0.33, display.contentHeight*0.78
+	transition.to( brush2, { delay = 5000, x = bx, y = by, time=2500, rotation=0 } )
+	
+	-- 대사 --
+	local function textScene() 
+		transition.fadeOut( palette1, { time = 800 } )
+		transition.fadeOut( palette2, { time = 800 } )
+		transition.fadeOut( brush2, { time = 800 } )
+
+		-- 네로 --
+		local nero2 = display.newImageRect("image/char/nero_default2.png", 400, 440)
+		nero2.x, nero2.y = display.contentWidth * 0.2, display.contentHeight * 0.255
+		sceneGroup:insert(nero2)
+		nero2.alpha = 0
+
+		-- 대화창 --
+		local text1 = display.newImageRect("image/char/text_nero.png", 1170, 315)
+		text1.x, text1.y = display.contentWidth * 0.501, display.contentHeight * 0.745
+		sceneGroup:insert(text1)
+		text1.alpha = 0
+
+		-- 대화창 이름 --
+		local name = display.newText("네로", 282, 437, "fonts/SeoulNamsanB.ttf", 32)
+		sceneGroup:insert(name)
+		name.alpha = 0
+
+		-- 대사 --
+		local text = { }
+		text[1] = display.newText("와!! 빨리 호수로 돌아가 빛을 돌려놓자!", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
+		text[1]:setFillColor(0)
+		sceneGroup:insert(text[1])
+		text[1].alpha = 0
+
+		transition.fadeIn( nero2, { time = 1000 } )
+		transition.to( text1, { effect = "fade", alpha = 0.8, time = 1000 } )
+		transition.fadeIn( name, { time = 1000 } )
+		transition.fadeIn( text[1], { time = 1000 } )
+
+		local function nextScene()
+			--composer.gotoScene("map0") --무지개 호수 맵으로 이동
+		end
+		bg:addEventListener("tap", nextScene)
+
+	end
+	palette2:addEventListener("tap", textScene)
+	
 
 	-- 1층 --
 	local b1 = { }
@@ -153,38 +201,12 @@ function scene:create( event )
 		sceneGroup:insert(b5[i])
 		sceneGroup:insert(b7[i])
 	end
-	sceneGroup:insert(roseGroup)
+	sceneGroup:insert(roseGroup2)
 	sceneGroup:insert(nero)
 	sceneGroup:insert(black)
 	sceneGroup:insert(red)
-
-	-- 아이템 제거 --
-	local function removeItems() 
-		door.alpha = 0
-		roseGroup.alpha = 0
-		roseGroup2.alpha = 0
-		b1Group.alpha = 0
-		b3.alpha = 0
-		b6Group.alpha = 0
-				
-		for i = 1, 2 do
-			b2[i].alpha = 0
-			b4[i].alpha = 0
-			b5[i].alpha = 0
-			b7[i].alpha = 0
-		end
-		black.alpha = 0
-		red.alpha = 0
-		nero.alpha = 0
-	end
-
-	-- 장미 아이템 클릭하면 퍼즐 게임 시작 --
-	local function gameStart()
-		removeItems()
-		composer.gotoScene("game1_puzzle", { effect = "fade", time = 900 })
-	end
-
-	roseGroup2:addEventListener("tap", gameStart)
+	sceneGroup:insert(palette1)
+	sceneGroup:insert(brush1)
 end
 
 function scene:show( event )
@@ -212,7 +234,7 @@ function scene:hide( event )
 		-- e.g. stop timers, stop animation, unload sounds, etc.)
 	elseif phase == "did" then
 		-- Called when the scene is now off screen
-		composer.removeScene("map1_8")
+		composer.removeScene("map1_9")
 	end
 end
 

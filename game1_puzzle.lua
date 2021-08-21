@@ -56,9 +56,11 @@ function scene:create( event )
 	local function complete()
 		local rose = display.newImageRect("image/image1_1/rose.png", 600, 600);
 		rose.x, rose.y = centerX, centerY
+		sceneGroup:insert(rose)
 		rose.alpha = 0
 		transition.fadeOut(pieceGroup, {time = 700})
 		transition.fadeIn(rose, {time = 800})
+		composer.gotoScene("game1_ending")
  	end
 
 	-- 퍼즐 조각이 제대로된 위치인지 확인, 퍼즐이 완성되면 다음 장면으로 넘어가는 함수 포출
