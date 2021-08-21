@@ -58,28 +58,25 @@ function scene:create( event )
 	transition.fadeIn(redBg, {delay = 2400, time = 2000, alpha = 1})
 
 	-- 네로 움직이는 모습 --
-	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites3.png", { width = 300, height = 500, numFrames = 4})
+	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 100, height = 166, numFrames = 4})
 	local sequences_nero = {
-		{
-			name = "walkRight",
-			frames = { 1, 2 },
-			time = 300,
-			loopCount = 0,
-			loopDirection = "forward"
-		},
-		{
-			name = "walkLeft",
-			frames = { 3, 4 },
-			time = 300,
-			loopCount = 0,
-			loopDirection = "forward"
+			{
+				name = "walkRight",
+				frames = { 1, 2 },
+				time = 300,
+				loopCount = 0,
+				loopDirection = "forward"
+			},
+			{
+				name = "walkLeft",
+				frames = { 3, 4 },
+				time = 300,
+				loopCount = 0,
+				loopDirection = "forward"
+			}
 		}
-	}
-
 	local nero = display.newSprite(nero_sheet, sequences_nero)
-	nero.x, nero.y = display.contentWidth * 0.35, display.contentHeight * 0.79
-
-	transition.scaleTo(nero, {xScale = 0.4, yScale = 0.4, time = 0})
+	nero.x, nero.y = display.contentWidth * 0.22, display.contentHeight * 0.81
 
 	-- 1층 --
 	local b1 = { }

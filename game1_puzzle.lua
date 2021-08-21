@@ -52,6 +52,9 @@ function scene:create( event )
 
 	sceneGroup:insert(pieceGroup)
 
+	local function nextScene()
+		composer.gotoScene("game1_ending", { effect = "fade", time = 700 })
+	end
 	-- 다 맞추면 흐려지면서 완성본으로 전환
 	local function complete()
 		local rose = display.newImageRect("image/image1_1/rose.png", 600, 600);
@@ -59,12 +62,12 @@ function scene:create( event )
 		sceneGroup:insert(rose)
 		rose.alpha = 0
 		transition.fadeOut(pieceGroup, {time = 700})
-		transition.fadeIn(rose, {time = 800})
-		composer.gotoScene("game1_ending")
+		transition.fadeIn(rose, {time = 900})
+		timer.performWithDelay( 3000 , nextScene)
  	end
 
 	-- 퍼즐 조각이 제대로된 위치인지 확인, 퍼즐이 완성되면 다음 장면으로 넘어가는 함수 포출
-	local cnt = 0
+	local cnt = 24
 	local function correct( target )
 		local num = target.name
 		if target.x <= rects[num].x + 10 and target.x >= rects[num].x - 10

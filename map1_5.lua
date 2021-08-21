@@ -27,7 +27,7 @@ function scene:create( event )
 	sceneGroup:insert(red1)
 
 	-- 네로 움직이는 모습 --
-	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites3.png", { width = 300, height = 500, numFrames = 4})
+	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 100, height = 166, numFrames = 4})
 	local sequences_nero = {
 		{
 			name = "walkRight",
@@ -44,11 +44,9 @@ function scene:create( event )
 			loopDirection = "forward"
 		}
 	}
-
 	local nero = display.newSprite(nero_sheet, sequences_nero)
-	nero.x, nero.y = display.contentWidth * 0.22, display.contentHeight * 0.79
+	nero.x, nero.y = display.contentWidth * 0.22, display.contentHeight * 0.81
 
-	transition.scaleTo(nero, {xScale = 0.4, yScale = 0.4, time = 0})
 	
 	-- 1층 --
 	local b1 = { }
@@ -139,36 +137,41 @@ function scene:create( event )
 	sceneGroup:insert(nero)
 
 	-- 카드병정 싸움 --
+	local text1 = display.newImageRect("image/char/text1.png", 1150, 340)
+	text1.x, text1.y = display.contentWidth * 0.5, display.contentHeight * 0.75
+	text1.alpha = 0
+	sceneGroup:insert(text1)
+	
+
+	local rName, bName, black2, red2, red3, nero2, text
+
 	local function textScene() 
 		-- 대화창 --
-		local text1 = display.newImageRect("image/char/text1.png", 1150, 340)
-		text1.x, text1.y = display.contentWidth * 0.5, display.contentHeight * 0.75
-		sceneGroup:insert(text1)
-
+		text1.alpha = 1
 		-- 대화창 이름 --
-		local rName = display.newText("하트 3", 282, 437, "fonts/SeoulNamsanB.ttf", 32)
+		rName = display.newText("하트 3", 282, 437, "fonts/SeoulNamsanB.ttf", 32)
 
-		local bName = display.newText("스페이드 5", 282, 437, "fonts/SeoulNamsanB.ttf", 32)
+		bName = display.newText("스페이드 5", 282, 437, "fonts/SeoulNamsanB.ttf", 32)
 		bName.alpha = 0
 
-		local black2 = display.newImageRect("image/char/black_01.png", 370, 360)
+		black2 = display.newImageRect("image/char/black_01.png", 370, 360)
 		black2.x, black2.y = bg.x*1.55, bg.y*0.77
 		sceneGroup:insert(black2)
 
-		local red2 = display.newImageRect("image/char/red_03.png", 360, 400)
+		red2 = display.newImageRect("image/char/red_03.png", 360, 400)
 		red2.x, red2.y = bg.x*0.5, bg.y*0.57
 		sceneGroup:insert(red2)
 
-		local red3 = display.newImageRect("image/char/red_01.png", 360, 400)
+		red3 = display.newImageRect("image/char/red_01.png", 360, 400)
 		red3.x, red3.y = bg.x*0.5, bg.y*0.57
 		red3.alpha = 0
 
-		local nero2 = display.newImageRect("image/char/nero_default2.png", 360, 400)
+		nero2 = display.newImageRect("image/char/nero_default2.png", 360, 400)
 		nero2.x, nero2.y = display.contentWidth * 0.23, display.contentHeight * 0.285
 		nero2.alpha = 0
 
 		-- 대사 --
-		local text = { }
+		text = { }
 		text[1] = display.newText("이 장미가 늘 붉은색일 때까지 나를 사랑한다고 했으면서!", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
 		text[2] = display.newText("이제는 나를 사랑하지 않는 건가요!?", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
 		text[3] = display.newText("오, 나의 심장, 3. 내 얘기를 들어주오. 나는 그저...", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
@@ -184,60 +187,64 @@ function scene:create( event )
 			text[i].alpha = 0
 			text[i]:setFillColor(0)
 		end
+	end	
 
-		-- 탭 하면 다음 text --
-		local j = 2
-		local function nextText()
-			-- 대사에 따라 이름 변경 --
-			text[1].alpha = 0
-			if j == 2 then
-				bName.alpha = 0
-				rName.alpha = 1
-			-- 하트3 우는 모습 --
-			elseif j == 4 then
-				bName.alpha = 0
-				rName.alpha = 1
-				red2.alpha = 0
-				red3.alpha = 1	
-			else
-				rName.alpha = 0
-				bName.alpha = 1
-			end
-			
-			if j == 5 then
-				red3.alpha = 0
-				red1.alpha = 0
-			elseif j == 6 then
-				nero2.alpha = 1
-			end
-
-			if j > 1 then
-				text[j - 1].alpha = 0
-			end
-
-			-- 오솔길로 돌아감 --
-			if j == 8 then
-				text[j].alpha = 1
-				nero2.alpha = 0
-				black2.alpha = 0
-				text1.alpha = 0
-				bName.alpha = 0
-				composer.removeScene("map1_5")
-				composer.gotoScene("map1_6", { effect = "fade", time = 900 })
-			end
-
-			if j < 8 then
-				text[j].alpha = 1
-				j = j + 1
-			end
+	-- 탭 하면 다음 text --
+	local j = 2
+	local function nextText()
+		-- 대사에 따라 이름 변경 --
+		if j == 2 then
+			bName.alpha = 0
+			rName.alpha = 1
+		-- 하트3 우는 모습 --
+		elseif j == 4 then
+			bName.alpha = 0
+			rName.alpha = 1
+			red2.alpha = 0
+			red3.alpha = 1	
+		else
+			rName.alpha = 0
+			bName.alpha = 1
+		end
+		
+		if j == 5 then
+			red3.alpha = 0
+			red1.alpha = 0
+		elseif j == 6 then
+			nero2.alpha = 1
 		end
 
-		text1:addEventListener("tap", nextText)
+		if j == 1 then
+			text[j].alpha = 0
+		end
+
+		if j > 1 then
+			text[j - 1].alpha = 0
+		end
+
+		-- 오솔길로 돌아감 --
+		if j == 8 then
+			text[j].alpha = 1
+			nero2.alpha = 0
+			black2.alpha = 0
+			text1.alpha = 0
+			bName.alpha = 0
+			composer.removeScene("map1_5")
+			composer.gotoScene("map1_6", { effect = "fade", time = 900 })
+		end
+
+		if j < 8 then
+			text[j].alpha = 1
+			j = j + 1
+		end
 	end
+
+	text1:addEventListener("tap", nextText)	
 
 	-- 방향키 입력시 움직이는 이벤트리스너 --
 	local function move( event )
 		if(nero.x >= display.contentWidth * 0.36) then
+			Runtime:removeEventListener("key", move)
 			textScene()
 		end
 		if (event.phase == "down") then
@@ -285,6 +292,7 @@ function scene:hide( event )
 	elseif phase == "did" then
 		-- Called when the scene is now off screen
 		composer.removeScene("map1_5")
+		Runtime:addEventListener("key", move)
 	end
 end
 

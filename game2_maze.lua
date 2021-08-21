@@ -108,8 +108,9 @@ function scene:create( event )
 			elseif (event.keyName == "down") then
 				nero:play()
 				transition.to(nero, {y = nero.y + 15, time = 20})
-				if (nero.y >= cy + 241) then
-					print("complete!")
+				if (nero.y > 715) then
+					Runtime:removeEventListener("key", move)
+					composer.gotoScene("map1_3", { effect = "fade", time = 500 })
 				end
 			end
 		elseif (event.phase == "up") then

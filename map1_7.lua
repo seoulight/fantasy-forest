@@ -9,6 +9,8 @@ local scene = composer.newScene()
 
 function scene:create( event )
 	local sceneGroup = self.view
+
+	print("1_7")
 	local bg = display.newImageRect("image/image1/garden.png", 1280, 720)
 	bg.x, bg.y = display.contentWidth*0.5, display.contentHeight*0.5
 	sceneGroup:insert(bg)
@@ -27,7 +29,7 @@ function scene:create( event )
 	sceneGroup:insert(red1)
 
 	-- 네로 움직이는 모습 --
-	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites3.png", { width = 300, height = 500, numFrames = 4})
+	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 100, height = 166, numFrames = 4})
 	local sequences_nero = {
 		{
 			name = "walkRight",
@@ -44,11 +46,8 @@ function scene:create( event )
 			loopDirection = "forward"
 		}
 	}
-
 	local nero = display.newSprite(nero_sheet, sequences_nero)
-	nero.x, nero.y = display.contentWidth * 0.35, display.contentHeight * 0.79
-
-	transition.scaleTo(nero, {xScale = 0.4, yScale = 0.4, time = 0})
+	nero.x, nero.y = display.contentWidth * 0.22, display.contentHeight * 0.81
 
 	-- 1층 --
 	local b1 = { }
@@ -138,38 +137,43 @@ function scene:create( event )
 	sceneGroup:insert(roseGroup)
 	sceneGroup:insert(nero)
 
+	local text1 = display.newImageRect("image/char/text1.png", 1150, 340)
+	text1.x, text1.y = display.contentWidth * 0.5, display.contentHeight * 0.75
+	text1.alpha = 0
+	sceneGroup:insert(text1)
+
+	local rName, bName, black2, black3, red2, red3, text
 	-- 카드병정 대화 --
-	local function textScene() 
+	local function textScene()
+		
 		-- 대화창 --
-		local text1 = display.newImageRect("image/char/text1.png", 1150, 340)
-		text1.x, text1.y = display.contentWidth * 0.5, display.contentHeight * 0.75
-		sceneGroup:insert(text1)
+		text1.alpha = 1
 
 		-- 대화창 이름 --
-		local rName = display.newText("하트 3", 282, 437, "fonts/SeoulNamsanB.ttf", 32)
+		rName = display.newText("하트 3", 282, 437, "fonts/SeoulNamsanB.ttf", 32)
 		rName.alpha = 0
 
-		local bName = display.newText("스페이드 5", 282, 437, "fonts/SeoulNamsanB.ttf", 32)
+		bName = display.newText("스페이드 5", 282, 437, "fonts/SeoulNamsanB.ttf", 32)
 		sceneGroup:insert(bName)
 
-		local black2 = display.newImageRect("image/char/black_01.png", 370, 360)
+		black2 = display.newImageRect("image/char/black_01.png", 370, 360)
 		black2.x, black2.y = bg.x*1.55, bg.y*0.77
 		sceneGroup:insert(black2)
 
-		local black3 = display.newImageRect("image/char/black_03.png", 420, 380)
+		black3 = display.newImageRect("image/char/black_03.png", 420, 380)
 		black3.x, black3.y = bg.x*1.5, bg.y*0.743
 		black3.alpha = 0
 
-		local red2 = display.newImageRect("image/char/red_03.png", 360, 400)
+		red2 = display.newImageRect("image/char/red_03.png", 360, 400)
 		red2.x, red2.y = bg.x*0.5, bg.y*0.57
 		sceneGroup:insert(red2)
 
-		local red3 = display.newImageRect("image/char/red_05.png", 360, 400)
+		red3 = display.newImageRect("image/char/red_05.png", 360, 400)
 		red3.x, red3.y = bg.x*0.5, bg.y*0.57
 		red3.alpha = 0
 
 		-- 대사 --
-		local text = { }
+		text = { }
 		text[1] = display.newText("3! 우는 것마저도 아름다운 나의 사랑. 그러나 사랑하는 그대가 슬퍼하는 건 원하지 않소.", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
 		text[2] = display.newText("거짓만을 말하는 당신의 입은 믿지 않겠어요.", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
 		text[3] = display.newText("그런데, 왜 그렇게 젖은 채로 온 거죠?", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
@@ -186,57 +190,13 @@ function scene:create( event )
 			text[i].alpha = 0
 			text[i]:setFillColor(0)
 		end
-
-		-- 탭 하면 다음 text --
-		local j = 2
-		local function nextText()
-			-- 대사에 따라 이름 변경 --
-			if j == 2 or j == 3 or j == 8 then
-				bName.alpha = 0
-				rName.alpha = 1
-			elseif j == 4 then
-				bName.alpha = 0
-				rName.alpha = 0
-			else
-				rName.alpha = 0
-				bName.alpha = 1
-			end
-
-			if j > 1 then
-				text[j - 1].alpha = 0
-			end
-
-			-- 호소하는 5의 모습 --
-			if j == 5 or j == 6 or j == 7 then
-				black2.alpha = 0
-				black3.alpha = 1
-			end
-
-			if j == 8 then
-				red2.alpha = 0
-				red3.alpha = 1
-			end
-
-			if j == 9 then
-				--removeItems()
-				black3.alpha = 0
-				red3.alpha = 0
-				composer.removeScene("map1_7")
-				composer.gotoScene("map1_8", { effect = "fade", time = 900 })
-			end
-
-			if j < 9 then
-				text[j].alpha = 1
-				j = j + 1
-			end
-		end
-
-		text1:addEventListener("tap", nextText)
+		
 	end
 
-	--[[-- 방향키 입력시 움직이는 이벤트리스너 --
+	---- 방향키 입력시 움직이는 이벤트리스너 --
 	local function move( event )
-		if(nero.x > display.contentWidth * 0.36) then
+		if(nero.x > red1.x) then
+			Runtime:removeEventListener("key", move)
 			textScene()
 		end
 		if (event.phase == "down") then
@@ -255,20 +215,77 @@ function scene:create( event )
 			nero:pause()
 		end
 	end
-	Runtime:addEventListener("key", move)]]
 
+	Runtime:addEventListener("key", move)
 
-	-- map1_5와 동일하게 키보드 쓰면 에러나서 클릭으로 대체 --
-	local k = 0
-	local function click()
-		k = k + 1
-		if k == 2 then
-			textScene()
+	-- 탭 하면 다음 text --
+	local j = 2
+	local function nextText()
+		-- 대사에 따라 이름 변경 --
+		if j == 2 or j == 3 or j == 8 then
+			bName.alpha = 0
+			rName.alpha = 1
+		elseif j == 4 then
+			bName.alpha = 0
+			rName.alpha = 0
+		else
+			rName.alpha = 0
+			bName.alpha = 1
+		end
+
+		if j == 1 then
+			text[j].alpha = 0
+		end
+
+		if j > 1 then
+			text[j - 1].alpha = 0
+		end
+
+		-- 호소하는 5의 모습 --
+		if j == 5 or j == 6 or j == 7 then
+			black2.alpha = 0
+			black3.alpha = 1
+		end
+
+		if j == 8 then
+			red2.alpha = 0
+			red3.alpha = 1
+		end
+
+		if j == 9 then
+			--removeItems()
+			black3.alpha = 0
+			red3.alpha = 0
+			text1.alpha = 0
+			text1:removeEventListener("tap", nextText)
+			
+			composer.removeScene("map1_7")
+			composer.gotoScene("map1_8", { effect = "fade", time = 900 })
+		end
+
+		if j < 9 then
+			text[j].alpha = 1
+			j = j + 1
 		end
 	end
 
-	bg:addEventListener("tap", click)
-	click()
+	text1:addEventListener("tap", nextText)
+
+	
+
+
+	-- -- map1_5와 동일하게 키보드 쓰면 에러나서 클릭으로 대체 --
+	-- local k = 0
+	-- local function click()
+	-- 	k = k + 1
+	-- 	if k == 2 then
+	-- 		textScene()
+	-- 	end
+	-- 	return true
+	-- end
+
+	
+	-- click()
 end
 
 function scene:show( event )

@@ -132,7 +132,7 @@ function scene:create( event )
 		doorGroup.y = doorGroup.y + 85
 
 		-- 네로 움직이는 모습 --
-		local nero_sheet = graphics.newImageSheet("image/char/nero_sprites3.png", { width = 300, height = 500, numFrames = 4})
+		local nero_sheet = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 100, height = 166, numFrames = 4})
 		local sequences_nero = {
 			{
 				name = "walkRight",
@@ -149,10 +149,8 @@ function scene:create( event )
 				loopDirection = "forward"
 			}
 		}
-
 		local nero = display.newSprite(nero_sheet, sequences_nero)
-		nero.x, nero.y = display.contentWidth * 0.12, display.contentHeight * 0.62
-		transition.scaleTo(nero, {xScale = 0.4, yScale = 0.4, time = 0})
+		nero.x, nero.y = display.contentWidth * 0.12, display.contentHeight * 0.65
 		
 		sceneGroup:insert(doorGroup)
 		sceneGroup:insert(b1Group)
@@ -224,6 +222,7 @@ function scene:hide( event )
 	elseif phase == "did" then
 		-- Called when the scene is now off screen
 		composer.removeScene("map1_4")
+		Runtime:removeEventListener("key", move)
 	end
 end
 

@@ -55,7 +55,7 @@ function scene:create( event )
 
 	text[1]:setFillColor(0)
 	text[1].alpha = 0
-	transition.fadeIn(text[1], {delay = 1400, time = 900, alpha = 1})
+	-- transition.fadeIn(text[1], {delay = 1400, time = 900, alpha = 1})
 
 	for i = 2, 7 do
 		text[i].alpha = 0
@@ -63,10 +63,9 @@ function scene:create( event )
 	end
 
 	-- 탭 하면 다음 text --
-	local j = 2
+	local j = 1
 	local function nextText()
 		-- 대사에 따라 이름 변경 --
-		text[1].alpha = 0
 		if j == 1 or j == 4 then
 			catName.alpha = 0
 			neroName.alpha = 1
@@ -84,9 +83,10 @@ function scene:create( event )
 		end
 
 		if j == 7 then
-			text[j].alpha = 1
+			text1.alpha = 0
 			catName.alpha = 0
 			--composer.removeScene("map1_6")
+			bg:removeEventListener("tap", nextText)
 			composer.gotoScene("map1_7", { effect = "fade", time = 900 })
 		end
 
