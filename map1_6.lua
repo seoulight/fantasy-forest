@@ -29,14 +29,19 @@ function scene:create( event )
 	-- 대화창 --
 	local text1 = display.newImageRect("image/char/text1.png", 1150, 340)
 	text1.x, text1.y = display.contentWidth * 0.5, display.contentHeight * 0.75
-	sceneGroup:insert(text1)
+	text1.alpha = 0
+
+	local text2 = display.newImageRect("image/char/text_nero.png", 1170, 315)
+	text2.x, text2.y = display.contentWidth * 0.501, display.contentHeight * 0.745
+	sceneGroup:insert(text2)
+	text2.alpha = 0.8
 
 	-- 대화창 이름 --
 	local catName = display.newText("체셔", 282, 437, "fonts/SeoulNamsanB.ttf", 32)
 	catName.alpha = 0
 
 	local neroName = display.newText("네로", 282, 437, "fonts/SeoulNamsanB.ttf", 32)
-	sceneGroup:insert(neroName)
+	--sceneGroup:insert(neroName)
 
 	-- 대사 --
 	local text = { }
@@ -49,6 +54,8 @@ function scene:create( event )
 	text[7] = display.newText("", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
 
 	text[1]:setFillColor(0)
+	text[1].alpha = 0
+	transition.fadeIn(text[1], {delay = 1400, time = 900, alpha = 1})
 
 	for i = 2, 7 do
 		text[i].alpha = 0
@@ -59,12 +66,17 @@ function scene:create( event )
 	local j = 2
 	local function nextText()
 		-- 대사에 따라 이름 변경 --
+		text[1].alpha = 0
 		if j == 1 or j == 4 then
 			catName.alpha = 0
 			neroName.alpha = 1
+			text1.alpha = 0
+			text2.alpha = 0.8
 		else
 			neroName.alpha = 0
 			catName.alpha = 1
+			text2.alpha = 0
+			text1.alpha = 1
 		end
 
 		if j > 1 then
@@ -84,7 +96,7 @@ function scene:create( event )
 		end
 	end
 
-	text1:addEventListener("tap", nextText)
+	bg:addEventListener("tap", nextText)
 end
 
 function scene:show( event )

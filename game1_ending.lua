@@ -9,18 +9,23 @@ local scene = composer.newScene()
 
 function scene:create( event )
 	local sceneGroup = self.view
-	
-	local bg = display.newImageRect("image1_1/bg_puzzle.png", 1280, 720)
-	bg.x, bg.y = display.contentWidth*0.5, display.contentHeight*0.5
+
+	local bg = display.newRect(display.contentWidth/2, display.contentHeight/2, display.contentWidth, display.contentHeight)
+	bg:setFillColor(0)
 	sceneGroup:insert(bg)
 	
-	local roseImg = display.newImageRect("image1_1/rose.png", 600, 600)
-	roseImg.x, roseImg.y = display.contentWidth*0.5, display.contentHeight*0.5
-	sceneGroup:insert(roseImg)
+	local ending = display.newText(" ", display.contentWidth/2, display.contentHeight/2, "fonts/SeoulNamsanB.ttf", 200)
+	ending.text = "성공!"
+	sceneGroup:insert(ending)
+	ending.alpha = 0
+	transition.fadeIn(ending, {time = 900, alpha = 1})
 
-	-- 다음 장면으로 이동 --
+	local function nextScene() 
 
-end
+		composer.gotoScene("map1_9", { effect = "fade", time = 900 })
+	end
+	bg:addEventListener("tap", nextScene)
+end 
 
 function scene:show( event )
 	local sceneGroup = self.view

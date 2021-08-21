@@ -48,8 +48,8 @@ function scene:create( event )
 	local nero = display.newSprite(nero_sheet, sequences_nero)
 	nero.x, nero.y = display.contentWidth * 0.22, display.contentHeight * 0.79
 
-	transition.to(nero, {xScale = 0.4, yScale = 0.4, time = 0})
-
+	transition.scaleTo(nero, {xScale = 0.4, yScale = 0.4, time = 0})
+	
 	-- 1층 --
 	local b1 = { }
 	local b1Group = display.newGroup()
@@ -138,28 +138,8 @@ function scene:create( event )
 	sceneGroup:insert(roseGroup)
 	sceneGroup:insert(nero)
 
-	-- 아이템 제거 --
-	local function removeItems() 
-		sceneGroup:remove(door)
-		sceneGroup:remove(roseGroup)
-		sceneGroup:remove(b1Group)
-		sceneGroup:remove(b3)
-		sceneGroup:remove(b6Group)
-		for i = 1, 2 do
-			sceneGroup:remove(b2[i])
-			sceneGroup:remove(b4[i])
-			sceneGroup:remove(b5[i])
-			sceneGroup:remove(b7[i])
-		end
-		sceneGroup:remove(black1)
-		sceneGroup:remove(red1)
-		sceneGroup:remove(nero)
-	end
-
 	-- 카드병정 싸움 --
 	local function textScene() 
-		removeItems()
-
 		-- 대화창 --
 		local text1 = display.newImageRect("image/char/text1.png", 1150, 340)
 		text1.x, text1.y = display.contentWidth * 0.5, display.contentHeight * 0.75
@@ -209,6 +189,7 @@ function scene:create( event )
 		local j = 2
 		local function nextText()
 			-- 대사에 따라 이름 변경 --
+			text[1].alpha = 0
 			if j == 2 then
 				bName.alpha = 0
 				rName.alpha = 1
@@ -225,6 +206,7 @@ function scene:create( event )
 			
 			if j == 5 then
 				red3.alpha = 0
+				red1.alpha = 0
 			elseif j == 6 then
 				nero2.alpha = 1
 			end
@@ -255,10 +237,10 @@ function scene:create( event )
 
 	-- 방향키 입력시 움직이는 이벤트리스너 --
 	local function move( event )
+		if(nero.x >= display.contentWidth * 0.36) then
+			textScene()
+		end
 		if (event.phase == "down") then
-			if(nero.x > display.contentWidth * 0.36) then
-				textScene()
-			end
 			if (event.keyName == "right") then
 				nero:setSequence("walkRight")
 				nero:play()
@@ -269,15 +251,12 @@ function scene:create( event )
 				nero:play()
 				transition.to(nero, {x = nero.x - 1000, time = 7000})
 			end
-		elseif (nero.isPlaying and event.phase == "up") then
+		elseif (event.phase == "up") then
 			transition.cancel(nero) -- 이동 정지
 			nero:pause()
 		end
 	end
 	Runtime:addEventListener("key", move)
-
-	
-
 end
 
 function scene:show( event )

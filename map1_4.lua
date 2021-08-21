@@ -14,8 +14,8 @@ function scene:create( event )
 	bg.x, bg.y = display.contentWidth*0.5, display.contentHeight*0.5
 	sceneGroup:insert(bg)
 
-	local cat = display.newImageRect("image/char/cat_02.png", 230, 300)
-	cat.x, cat.y = display.contentWidth * 0.7, display.contentHeight * 0.18
+	local cat = display.newImageRect("image/char/cat_default.png", 428, 300)
+	cat.x, cat.y = display.contentWidth * 0.7, display.contentHeight * 0.2
 	sceneGroup:insert(cat)
 
 	local neroDefault = display.newImageRect("image/char/nero_default2.png", 400, 440)
@@ -43,6 +43,11 @@ function scene:create( event )
 		sceneGroup:remove(cat)
 		sceneGroup:remove(neroDefault)
 		text[1].alpha = 0
+
+		-- 스탠딩 체셔 --
+		local cat2 = display.newImageRect("image/char/cat_02.png", 190, 230)
+		cat2.x, cat2.y = display.contentWidth * 0.875, display.contentHeight * 0.595
+		sceneGroup:insert(cat2)
 
 		-- 왼쪽 블록--
 		local b1 = { }
@@ -80,18 +85,40 @@ function scene:create( event )
 		local b6 = display.newImageRect("image/image1/7.png", 100, 100) 
 		b6.x, b6.y = display.contentWidth*0.92, display.contentHeight*0.805
 
-		-- 풀 --
-		local grass1 = display.newImageRect("image/image1/grass1.png", 110, 110)
-		grass1.x, grass1.y = display.contentWidth*0.85, display.contentHeight*0.66
+		-- 풀: 오른쪽 --
+		local grass1 = display.newImageRect("image/image1/grass4.png", 110, 110)
+		grass1.x, grass1.y = display.contentWidth*0.925, display.contentHeight*0.66
 		sceneGroup:insert(grass1)
 
 		local grass2 = display.newImageRect("image/image1/grass2.png", 110, 110)
-		grass2.x, grass2.y = display.contentWidth*0.87, display.contentHeight*0.66
+		grass2.x, grass2.y = display.contentWidth*0.94, display.contentHeight*0.66
 		sceneGroup:insert(grass2)
 
+		-- 풀: 왼쪽 --
 		local grass3 = display.newImageRect("image/image1/grass1.png", 110, 110)
-		grass3.x, grass3.y = display.contentWidth*0.94, display.contentHeight*0.66
+		grass3.x, grass3.y = display.contentWidth*0.07, display.contentHeight*0.66
+
+		local grass4 = display.newImageRect("image/image1/grass3.png", 110, 110)
+		grass4.x, grass4.y = display.contentWidth*0.05, display.contentHeight*0.66
+		sceneGroup:insert(grass4)
 		sceneGroup:insert(grass3)
+
+		local grass5 = display.newImageRect("image/image1/grass1.png", 110, 110)
+		grass5.x, grass5.y = display.contentWidth*0.327, display.contentHeight*0.66
+		sceneGroup:insert(grass5)
+
+		local grass6 = display.newImageRect("image/image1/grass2.png", 110, 110)
+		grass6.x, grass6.y = display.contentWidth*0.525, display.contentHeight*0.66
+		sceneGroup:insert(grass6)
+
+		local grass7 = display.newImageRect("image/image1/grass4.png", 110, 110)
+		grass7.x, grass7.y = display.contentWidth*0.55, display.contentHeight*0.66
+		sceneGroup:insert(grass7)
+
+		local grass8 = display.newImageRect("image/image1/grass1.png", 110, 110)
+		grass8.x, grass8.y = display.contentWidth*0.73, display.contentHeight*0.66
+		sceneGroup:insert(grass8)
+
 
 		-- 문 배치 --
 		local door = { }
@@ -124,10 +151,10 @@ function scene:create( event )
 		}
 
 		local nero = display.newSprite(nero_sheet, sequences_nero)
-		nero.x, nero.y = display.contentWidth * 0.1, display.contentHeight * 0.62
+		nero.x, nero.y = display.contentWidth * 0.12, display.contentHeight * 0.62
 		transition.scaleTo(nero, {xScale = 0.4, yScale = 0.4, time = 0})
 		
-		sceneGroup: insert(doorGroup)
+		sceneGroup:insert(doorGroup)
 		sceneGroup:insert(b1Group)
 		sceneGroup:insert(b3Group)
 		sceneGroup:insert(b2)
@@ -153,10 +180,8 @@ function scene:create( event )
 					-- 첫 번째 문, 세 번째 문 / 오답->재시도
 					if((nero.x > display.contentWidth * 0.18 and nero.x < display.contentWidth * 0.29) or (nero.x > display.contentWidth * 0.58 and nero.x < display.contentWidth * 0.69)) then
 						scene:create()
-					end
-
 					-- 두 번째 문 / 정답->장미정원으로 이동
-					if(nero.x > display.contentWidth * 0.4 and nero.x < display.contentWidth * 0.49) then
+					elseif(nero.x > display.contentWidth * 0.4 and nero.x < display.contentWidth * 0.49) then
 						composer.removeScene("map1_4")
 						composer.gotoScene("map1_5")		
 					end
