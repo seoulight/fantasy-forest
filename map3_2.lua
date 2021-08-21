@@ -11,6 +11,8 @@ function scene:create( event )
 	local sceneGroup = self.view
 	local cx, cy = display.contentWidth * 0.5, display.contentHeight * 0.5
 	
+
+	local ground_line = graphics.newOutline(2, "image/image2/2-1.png")
 	local layer_img = {"image/image2/2-5.png", "image/image2/2-4.png", "image/image2/2-3.png",
 	"image/image2/2-2.png", "image/image2/2-1.png"}
 	local layer = {}
@@ -20,7 +22,67 @@ function scene:create( event )
 		layer[i].x, layer[i].y = cx, cy
 		sceneGroup:insert(layer[i])
 	end
+-- 네로 캐릭터
+	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 100, height = 166, numFrames = 4})
+	local sequences_nero = {
+		{
+			name = "walkRight",
+			frames = { 1, 2 },
+			time = 300,
+			loopCount = 0,
+			loopDirection = "forward"
+		},
+		{
+			name = "walkLeft",
+			frames = { 3, 4 },
+			time = 300,
+			loopCount = 0,
+			loopDirection = "forward"
+		}
+	}
+	local nero = display.newSprite(nero_sheet, sequences_nero)
+	nero.x, nero.y = 10, display.contentHeight * 0.8
+	sceneGroup:insert(nero);
 
+	-- 좌표 알아내기용 이벤트
+	local function tab( event )
+		if ( event.phase == "began" ) then
+			print("touched")
+		elseif ( event.phase == "moved" ) then
+			print(event.x .. ", " .. event.y)
+		elseif ( event.phase == "ended") then
+			print("ended")
+		end
+		return true
+	end
+
+	Runtime:addEventListener("touch", tab)
+
+	-- 방향키 입력시 움직이는 이벤트리스너
+	local function move( event )
+		if (nero.x <= 0) then
+			composer.gotoScene("map3_1")
+		elseif (nero.x >= 1200) then
+			composer.gotoScene("map3_3")
+		end		
+		if (event.phase == "down") then
+			if (event.keyName == "right") then
+				nero:setSequence("walkRight")
+				nero:play()
+				transition.moveBy(nero, {x = 1280 - nero.x, time = (1280 - nero.x) * 7})
+				
+			elseif (event.keyName == "left") then
+				nero:setSequence("walkLeft")
+				nero:play()
+				transition.moveBy(nero, {x = -nero.x, time = nero.x * 7})
+			end
+		elseif (event.phase == "up") then
+			transition.cancel(nero) -- 이동 정지
+			nero:pause()
+		end
+	end
+
+	Runtime:addEventListener("key", move)
 end
 
 function scene:show( event )

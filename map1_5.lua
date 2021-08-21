@@ -48,7 +48,7 @@ function scene:create( event )
 	local nero = display.newSprite(nero_sheet, sequences_nero)
 	nero.x, nero.y = display.contentWidth * 0.22, display.contentHeight * 0.79
 
-	transition.scaleTo(nero, {xScale = 0.4, yScale = 0.4, time = 0})
+	transition.to(nero, {xScale = 0.4, yScale = 0.4, time = 0})
 
 	-- 1층 --
 	local b1 = { }
@@ -255,10 +255,10 @@ function scene:create( event )
 
 	-- 방향키 입력시 움직이는 이벤트리스너 --
 	local function move( event )
-		if(nero.x > display.contentWidth * 0.36) then
-			textScene()
-		end
 		if (event.phase == "down") then
+			if(nero.x > display.contentWidth * 0.36) then
+				textScene()
+			end
 			if (event.keyName == "right") then
 				nero:setSequence("walkRight")
 				nero:play()
@@ -269,7 +269,7 @@ function scene:create( event )
 				nero:play()
 				transition.to(nero, {x = nero.x - 1000, time = 7000})
 			end
-		elseif (event.phase == "up") then
+		elseif (nero.isPlaying and event.phase == "up") then
 			transition.cancel(nero) -- 이동 정지
 			nero:pause()
 		end
