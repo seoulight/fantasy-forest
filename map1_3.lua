@@ -93,6 +93,7 @@ function scene:create( event )
 
 		if j == 11 then
 			text[j].alpha = 1
+			bg:removeEventListener("tap", nextText)
 			composer.gotoScene("map1_4")
 		end
 

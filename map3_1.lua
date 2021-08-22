@@ -49,18 +49,18 @@ function scene:create( event )
 
 
 	-- 좌표 알아내기용 이벤트
-	local function tab( event )
-		if ( event.phase == "began" ) then
-			print("touched")
-		elseif ( event.phase == "moved" ) then
-			print(event.x .. ", " .. event.y)
-		elseif ( event.phase == "ended") then
-			print("ended")
-		end
-		return true
-	end
+	-- local function tab( event )
+	-- 	if ( event.phase == "began" ) then
+	-- 		print("touched")
+	-- 	elseif ( event.phase == "moved" ) then
+	-- 		print(event.x .. ", " .. event.y)
+	-- 	elseif ( event.phase == "ended") then
+	-- 		print("ended")
+	-- 	end
+	-- 	return true
+	-- end
 
-	Runtime:addEventListener("touch", tab)
+	-- Runtime:addEventListener("touch", tab)
 
 	local function nextScene()
 		-- transition.fadeOut(sceneGroup, {time = 300})
@@ -72,10 +72,7 @@ function scene:create( event )
 	end
 
 	-- 방향키 입력시 움직이는 이벤트리스너
-	local function move( event )
-		if (nero.y > 620) then
-			nextScene()
-		end
+	function move( event )
 		if (event.phase == "down") then
 			if (event.keyName == "right") then
 				nero:setSequence("walkRight")
@@ -98,12 +95,15 @@ function scene:create( event )
 		elseif (event.phase == "up") then
 			transition.cancel(nero) -- 이동 정지
 			nero:pause()
+			if (nero.y > 620) then
+				Runtime:removeEventListener("key", move)
+				nextScene()
+			end
 		end
 	end
-
+	
 	Runtime:addEventListener("key", move)
 
-	
 end
 
 function scene:show( event )
@@ -112,7 +112,6 @@ function scene:show( event )
 	
 	if phase == "will" then
 		-- Called when the scene is still off screen and is about to move on screen
-		
 	elseif phase == "did" then
 	end	
 end

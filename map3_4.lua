@@ -39,9 +39,6 @@ function scene:create( event )
 
 	-- 방향키 입력시 움직이는 이벤트리스너
 	local function move( event )
-		if (nero.x <= 0) then
-			composer.gotoScene("map3_3")
-		end		
 		if (event.phase == "down") then
 			if (event.keyName == "right") then
 				nero:setSequence("walkRight")
@@ -56,6 +53,10 @@ function scene:create( event )
 		elseif (event.phase == "up") then
 			transition.cancel(nero) -- 이동 정지
 			nero:pause()
+			if (nero.x <= 0) then
+				Runtime:removeEventListener("key", move)
+				composer.gotoScene("map3_3")
+			end		
 		end
 	end
 

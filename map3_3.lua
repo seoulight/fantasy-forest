@@ -43,10 +43,7 @@ function scene:create( event )
 	sceneGroup:insert(nero)
 
 	-- 방향키 입력시 움직이는 이벤트리스너
-	local function move( event )
-		if (nero.x <= 0) then
-			composer.gotoScene("map3_2")
-		end		
+	function move( event )	
 		if (event.phase == "down") then
 			if (event.keyName == "right") then
 				nero:setSequence("walkRight")
@@ -61,13 +58,17 @@ function scene:create( event )
 		elseif (event.phase == "up") then
 			transition.cancel(nero) -- 이동 정지
 			nero:pause()
+			if (nero.x <= 0) then
+				Runtime:removeEventListener("key", move)
+				composer.gotoScene("map3_2")
+			end	
 		end
 	end
 
 	Runtime:addEventListener("key", move)
-
+	
 	local function cave()
-		transition.fadeOut(sceneGroup, {time = 300})
+		-- transition.fadeOut(sceneGroup, {time = 300})
 		local options = {
 					    effect = "fade",
 					    time = 500
@@ -85,6 +86,7 @@ function scene:show( event )
 	if phase == "will" then
 		-- Called when the scene is still off screen and is about to move on screen
 	elseif phase == "did" then
+		
 		-- Called when the scene is now on screen
 		-- 
 		-- INSERT code here to make the scene come alive

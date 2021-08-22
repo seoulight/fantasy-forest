@@ -45,26 +45,21 @@ function scene:create( event )
 	sceneGroup:insert(nero);
 
 	-- 좌표 알아내기용 이벤트
-	local function tab( event )
-		if ( event.phase == "began" ) then
-			print("touched")
-		elseif ( event.phase == "moved" ) then
-			print(event.x .. ", " .. event.y)
-		elseif ( event.phase == "ended") then
-			print("ended")
-		end
-		return true
-	end
+	-- local function tab( event )
+	-- 	if ( event.phase == "began" ) then
+	-- 		print("touched")
+	-- 	elseif ( event.phase == "moved" ) then
+	-- 		print(event.x .. ", " .. event.y)
+	-- 	elseif ( event.phase == "ended") then
+	-- 		print("ended")
+	-- 	end
+	-- 	return true
+	-- end
 
-	Runtime:addEventListener("touch", tab)
+	-- Runtime:addEventListener("touch", tab)
 
 	-- 방향키 입력시 움직이는 이벤트리스너
-	local function move( event )
-		if (nero.x <= 0) then
-			composer.gotoScene("map3_1")
-		elseif (nero.x >= 1200) then
-			composer.gotoScene("map3_3")
-		end		
+	function move( event )
 		if (event.phase == "down") then
 			if (event.keyName == "right") then
 				nero:setSequence("walkRight")
@@ -79,10 +74,18 @@ function scene:create( event )
 		elseif (event.phase == "up") then
 			transition.cancel(nero) -- 이동 정지
 			nero:pause()
+			if (nero.x <= 0) then
+				Runtime:removeEventListener("key", move)
+				composer.gotoScene("map3_1")
+			elseif (nero.x >= 1200) then
+				Runtime:removeEventListener("key", move)
+				composer.gotoScene("map3_3")
+			end
 		end
 	end
 
 	Runtime:addEventListener("key", move)
+	
 end
 
 function scene:show( event )
@@ -92,6 +95,7 @@ function scene:show( event )
 	if phase == "will" then
 		-- Called when the scene is still off screen and is about to move on screen
 	elseif phase == "did" then
+		Runtime:addEventListener("key", move)
 		-- Called when the scene is now on screen
 		-- 
 		-- INSERT code here to make the scene come alive
