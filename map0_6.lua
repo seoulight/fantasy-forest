@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------------------------
 --
--- map0_4.lua
--- 무지개호수(빨강, 다음 맵으로 이동)
+-- map0_6.lua
+-- 무지개호수(빨+초, 다음 맵으로 이동)
 -----------------------------------------------------------------------------------------
 
 local composer = require( "composer" )
@@ -10,7 +10,7 @@ local scene = composer.newScene()
 function scene:create( event )
 	local sceneGroup = self.view
 
-	local bg = display.newImageRect("image/rainbow/bg2.png", 1280, 720)
+	local bg = display.newImageRect("image/rainbow/bg3.png", 1280, 720)
 	bg.x, bg.y = display.contentWidth*0.5, display.contentHeight*0.5
 	sceneGroup:insert(bg)
 
@@ -41,21 +41,21 @@ function scene:create( event )
 	local b1Group = display.newGroup()
 
 	for i = 1, 6 do
-		b1[i] = display.newImageRect(b1Group,"image/rainbow/2-1.png", 100, 100) 
+		b1[i] = display.newImageRect(b1Group,"image/rainbow/3-1.png", 100, 100) 
 		b1[i].x, b1[i].y = bg.x + 100 * i, bg.y
 	end
 
 	b1Group.x = b1Group.x - 690
 	b1Group.y = b1Group.y + 110
 
-	local b2 = display.newImageRect("image/rainbow/2-2.png", 100, 100) 
+	local b2 = display.newImageRect("image/rainbow/3-2.png", 100, 100) 
 	b2.x, b2.y = display.contentWidth*0.508, display.contentHeight*0.653
 
 	local b3 = { }
 	local b3Group = display.newGroup()
 
 	for i = 1, 6 do
-		b3[i] = display.newImageRect(b3Group,"image/rainbow/2-4.png", 100, 100) 
+		b3[i] = display.newImageRect(b3Group,"image/rainbow/3-4.png", 100, 100) 
 		b3[i].x, b3[i].y = bg.x + 100 * i, bg.y
 	end
 
@@ -66,7 +66,7 @@ function scene:create( event )
 	local b4Group = display.newGroup()
 
 	for i = 1, 2 do
-		b4[i] = display.newImageRect(b4Group, "image/rainbow/2-3.png", 100, 100) 
+		b4[i] = display.newImageRect(b4Group, "image/rainbow/3-3.png", 100, 100) 
 		b4[i].x, b4[i].y = bg.x, bg.y * i * 0.278
 	end
 
@@ -77,7 +77,7 @@ function scene:create( event )
 	local b5Group = display.newGroup()
 
 	for i = 1, 6 do
-		b5[i] = display.newImageRect(b5Group,"image/rainbow/2-4.png", 100, 100) 
+		b5[i] = display.newImageRect(b5Group,"image/rainbow/3-4.png", 100, 100) 
 		b5[i].x, b5[i].y = bg.x + 100 * i, bg.y
 	end
 
@@ -89,7 +89,7 @@ function scene:create( event )
 	local b6Group = display.newGroup()
 
 	for i = 1, 13  do
-		b6[i] = display.newImageRect(b6Group,"image/rainbow/2-5.png", 100, 100) 
+		b6[i] = display.newImageRect(b6Group,"image/rainbow/3-5.png", 100, 100) 
 		b6[i].x, b6[i].y = bg.x + 100 * i, bg.y
 	end
 
@@ -100,7 +100,7 @@ function scene:create( event )
 	local b7Group = display.newGroup()
 
 	for i = 1, 13  do
-		b7[i] = display.newImageRect(b7Group,"image/rainbow/2-6.png", 100, 100) 
+		b7[i] = display.newImageRect(b7Group,"image/rainbow/3-6.png", 100, 100) 
 		b7[i].x, b7[i].y = bg.x + 100 * i, bg.y
 	end
 
@@ -112,7 +112,7 @@ function scene:create( event )
 	local flowerGroup = display.newGroup()
 
 	for i = 1, 3 do
-		flower[i] = display.newImageRect(flowerGroup, "image/rainbow/flower2.png", 55, 75)
+		flower[i] = display.newImageRect(flowerGroup, "image/rainbow/flower3.png", 55, 75)
 		flower[i].x, flower[i].y = bg.x + 180 * i, bg.y
 	end
 
@@ -174,11 +174,12 @@ function scene:create( event )
 	name2.alpha = 0
 
 	local text = { }
-		text[1] = display.newText("이제 어디로 가야 하지?", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
-		text[2] = display.newText("초록빛을 찾으러 가면 돼.", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
-		text[3] = display.newText("그렇구나. 어느 쪽이야?", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
-		text[4] = display.newText("음... 그러니까... 서쪽이다! 왔던 방향으로 다시 돌아가면 돼.", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
-		text[5] = display.newText(" ", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
+		text[1] = display.newText("이제 파란빛만 남았어.", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
+		text[2] = display.newText("드디어 기나긴 여행도 끝이 나는구만.", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
+		text[3] = display.newText("마지막까지 힘내서 가자!", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
+		text[4] = display.newText("이번에는 어디로 가야 해?", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
+		text[5] = display.newText("음.. 파란빛은... 그러니까... 남쪽! 남쪽이다!", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
+		text[6] = display.newText(" ", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
 
 		text[1]:setFillColor(0)
 	text[1].alpha = 0
@@ -197,13 +198,13 @@ function scene:create( event )
 	-- 탭 하면 다음 text --
 	local j = 2
 	local function nextText()
-		if j == 1 or j == 3 then
+		if j == 1 or j == 3 or j == 4 then
 			name2.alpha = 0
 			name.alpha = 1
 			text2.alpha = 0
 			text1.alpha = 0.8
 		end
-		if j == 2 or j == 4 then
+		if j == 2 or j == 5 then
 			name.alpha = 0
 			name2.alpha = 1
 			text1.alpha = 0
@@ -214,7 +215,7 @@ function scene:create( event )
 			text[j - 1].alpha = 0
 		end
 
-		if j == 5 then
+		if j == 6 then
 			transition.fadeOut( nero2, { time = 1000 } )
 			transition.fadeOut( bird, { time = 1000 } )	
 			transition.to( text1, { effect = "fade", alpha = 0, time = 1000 } )
@@ -224,7 +225,7 @@ function scene:create( event )
 			transition.fadeOut( text, { time = 1000 } )	
 		end
 
-		if j < 5 then
+		if j < 6 then
 			text[j].alpha = 1
 			j = j + 1
 		end
@@ -237,9 +238,9 @@ function scene:create( event )
 	-- 방향키 입력시 움직이는 이벤트리스너
 	function move( event )
 		if (nero.x <= display.contentWidth*0.1) then
-			-- 피터팬 맵으로 이동 --
-			--Runtime:removeEventListener("key", move)
-			--composer.gotoScene("map2_1", { effect = "fade", time = 900 })
+			-- 인어공주 맵으로 이동 --
+			Runtime:removeEventListener("key", move)
+			composer.gotoScene("map3_1", { effect = "fade", time = 900 })
 		end
 		if (event.phase == "down") then
 			if (event.keyName == "right") then
@@ -286,7 +287,7 @@ function scene:hide( event )
 		-- e.g. stop timers, stop animation, unload sounds, etc.)
 	elseif phase == "did" then
 		-- Called when the scene is now off screen
-		composer.removeScene("map0_4")
+		composer.removeScene("map0_6")
 	end
 end
 
