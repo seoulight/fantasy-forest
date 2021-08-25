@@ -121,9 +121,9 @@ function scene:create( event )
 		transition.fadeIn( text[1], { time = 1000 } )
 
 		local function nextScene()
-			--composer.gotoScene("map0") --무지개 호수 맵으로 이동
+			composer.gotoScene("map0_3", { effect = "fade", time = 900 }) --무지개 호수 맵으로 이동
 		end
-		bg:addEventListener("tap", nextScene)
+		text1:addEventListener("tap", nextScene)
 
 	end
 	palette2:addEventListener("tap", textScene)

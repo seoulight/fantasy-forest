@@ -35,7 +35,7 @@ function scene:create( event )
 		end
 
 		if j == 6 then
-			composer.gotoScene("map1_0", { effect = "fade", time = 900 })
+			composer.gotoScene("map0_1", { effect = "fade", time = 900 })
 		end
 
 		if j < 6 then
