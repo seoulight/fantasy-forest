@@ -25,11 +25,6 @@ function scene:create( event )
 	bg2.alpha = 0.7
 	sceneGroup:insert(bg2)
 
-	-- local bg3 = display.newRect(cx, cy, 300, 720)
-	-- bg3:setFillColor(0.9)
-	-- bg3.alpha = 0.7
-	-- sceneGroup:insert(bg3)
-
 	local maze_line1 = graphics.newOutline(4, "image/maze2.png")
 	local maze_line2 = graphics.newOutline(4, "image/maze3.png")
 	local maze_line3 = graphics.newOutline(7, "image/maze4.png")
@@ -56,10 +51,7 @@ function scene:create( event )
 	sceneGroup:insert(maze4)
 
 	-- 네로 캐릭터
-
 	local nero_sheet1 = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 100, height = 166, numFrames = 4})
-
-
 	local nero_sheet2 = graphics.newImageSheet("image/char/nero_sprites_mini.png", { width = 21, height = 34, numFrames = 4})
 	local sequences_nero = {
 		{
@@ -77,69 +69,117 @@ function scene:create( event )
 			loopDirection = "forward"
 		}
 	}
-	local nero = display.newSprite(nero_sheet2, sequences_nero)
-	-- local nero_big = display.newSprite(nero_sheet1, sequences_nero)
-	-- nero_big.x, nero_big.y = cx, display.contentHeight * 0.15
-	nero.x, nero.y = cx, display.contentHeight * 0.15
-	sceneGroup:insert(nero);
 
-	-- local test = display.newRect(cx, display.contentHeight * 0.15, 25, 25)
-	-- test:setFillColor(0)
-	-- sceneGroup:insert(test)
+	local nero1 = display.newSprite(nero_sheet1, sequences_nero)
+	nero1.x, nero1.y = cx, display.contentHeight * 0.06
+	sceneGroup:insert(nero1);
 
-	-- 네로 줄이기
-	-- transition.scaleTo(nero_big, {xScale = 0.1, yScale = 0.08, time = 0})
-	physics.addBody(nero, "dynamic", {bounce=0.5, friction=0.1})
+	local nero2 = display.newSprite(nero_sheet2, sequences_nero)
+	nero2.alpha = 0
+	sceneGroup:insert(nero2);
+
+	local item = display.newImageRect("image/item/orange.png", 75, 75)
+	item.x, item.y = cx - 200, cy * 0.24
+	sceneGroup:insert(item)
+
+	-- 물리엔진에 네로 추가
+	-- physics.addBody(nero2, "dynamic", {bounce=0.5, friction=0.1})
 
 	-- 방향키 입력시 움직이는 이벤트리스너
-	local function move( event )
+
+	-- 작아진 후
+	local function move2( event )
 		if (event.phase == "down") then
 			if (event.keyName == "right") then
-				nero:setSequence("walkRight")
-				nero:play()
-				transition.to(nero, {x = nero.x + 15, time = 20})
+				nero2:setSequence("walkRight")
+				nero2:play()
+				transition.to(nero2, {x = nero2.x + 15, time = 20})
 			elseif (event.keyName == "left") then
-				nero:setSequence("walkLeft")
-				nero:play()
-				transition.to(nero, {x = nero.x - 15, time = 20})
+				nero2:setSequence("walkLeft")
+				nero2:play()
+				transition.to(nero2, {x = nero2.x - 15, time = 20})
 			elseif (event.keyName == "up") then
-				nero:play()
-				transition.to(nero, {y = nero.y - 15, time = 20})
+				nero2:play()
+				transition.to(nero2, {y = nero2.y - 15, time = 20})
 			elseif (event.keyName == "down") then
-				nero:play()
-				transition.to(nero, {y = nero.y + 15, time = 20})
-				if (nero.y > 715) then
-					Runtime:removeEventListener("key", move)
+				nero2:play()
+				transition.to(nero2, {y = nero2.y + 15, time = 20})
+				if (nero2.y > 715) then
+					Runtime:removeEventListener("key", move2)
 					composer.gotoScene("map1_3", { effect = "fade", time = 500 })
 				end
 			end
 		elseif (event.phase == "up") then
-			transition.cancel(nero) -- 이동 정지
-			nero:pause()
+			transition.cancel(nero2) -- 이동 정지
+			nero2:pause()
 		end
 	end
 
-	-- Runtime:addEventListener("key", move)
+	-- 클 때
+	local function move1( event )
+		if (event.phase == "down") then
+			if (event.keyName == "right") then
+				nero1:setSequence("walkRight")
+				nero1:play()
+				transition.moveBy(nero1, {x = 1280 - nero1.x, time = (1280 - nero1.x) * 7})
+			elseif (event.keyName == "left") then
+				nero1:setSequence("walkLeft")
+				nero1:play()
+				transition.moveBy(nero1, {x = -(nero1.x - item.x), time = (nero1.x - item.x) * 7})
+			end
+		elseif (event.phase == "up") then
+			transition.cancel(nero1) 
+			nero1:pause()
+			if (nero1.x <= item.x) then
+				local item_bg = display.newRect(cx, cy, 1280, 720)
+				item_bg:setFillColor(0.3)
+				item_bg.alpha = 0.98
+				sceneGroup:insert(item_bg)
+				
+				local item_name = display.newImageRect("image/item/orange_name.png", 848 * 0.7, 275 * 0.7)
+				item_name.x, item_name.y = cx, cy * 0.5
+				sceneGroup:insert(item_name)
+				
+				local item2 = display.newImageRect("image/item/orange.png", 300, 300)
+				item2.x, item2.y = cx, cy
+				sceneGroup:insert(item2)
 
-	-- local function move( event )
-	-- 	if (event.phase == "down") then
-	-- 		if (event.keyName == "right") then
-	-- 			transition.to(test, {x = test.x + 15, time = 10})				
-	-- 		elseif (event.keyName == "left") then
-	-- 			transition.to(test, {x = test.x - 15, time = 10})
-	-- 		elseif (event.keyName == "up") then
-	-- 			transition.to(test, {y = test.y - 15, time = 10})
-	-- 		elseif (event.keyName == "down") then
-	-- 			transition.to(test, {y = test.y + 15, time = 10})
-	-- 		end
-	-- 	elseif (event.phase == "up") then
-	-- 		transition.cancel(test) -- 이동 정지
-	-- 	end
-	-- end
+				local options = 
+				{
+					text = "누군가 마시다 만 흔적이 있다..\n몸을 가볍게 해준다 ▼",     
+					x = cx,
+					y = cy * 1.6,
+					width = 400,
+					font = "fonts/SeoulNamsanB.ttf",   
+					fontSize = 25,
+					align = "center"  -- Alignment parameter
+				}
+				local item_desc = display.newText(options)
+				item_desc:setFillColor(0.9)
+				sceneGroup:insert(item_desc)
 
-	Runtime:addEventListener("key", move)
+				local function itemTap( event )
+					sceneGroup:remove(item_bg)
+					sceneGroup:remove(item2)
+					sceneGroup:remove(item_name)
+					sceneGroup:remove(item_desc)
 
-	-- physics.addBody(nero, "dynamic", {bounce=0.5, friction=0.1})
+					nero2.x, nero2.y = nero1.x, 720 * 0.15
+					sceneGroup:remove(nero1)
+					sceneGroup:remove(item)
+					nero2.alpha = 1
+					Runtime:removeEventListener("key", move1)
+					Runtime:addEventListener("key", move2)
+					physics.addBody(nero2, "dynamic", {bounce=0.5, friction=0.1})
+				end
+
+				item_bg:addEventListener("tap", itemTap)				
+			end
+		end
+	end
+
+	Runtime:addEventListener("key", move1)
+
 	physics.addBody(maze1, "static", {outline=maze_line1, bounce=0.5, friction=0.1})
 	physics.addBody(maze2, "static", {outline=maze_line2, bountc=0.5, friction=0.1})
 	physics.addBody(maze3, "static", {outline=maze_line3, bountc=0.5, friction=0.1})
