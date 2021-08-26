@@ -16,7 +16,7 @@ function scene:create( event )
 
 
 	-- 네로 캐릭터
-	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites3.png", { width = 300, height = 500, numFrames = 4})
+	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 100, height = 166, numFrames = 4})
 	local sequences_nero = {
 		{
 			name = "walkRight",
@@ -34,44 +34,51 @@ function scene:create( event )
 		}
 	}
 	local nero = display.newSprite(nero_sheet, sequences_nero)
-	nero.x, nero.y = display.contentWidth * 0.2, display.contentHeight * 0.6
+	nero.x, nero.y = 20, display.contentHeight * 0.66
 	sceneGroup:insert(nero);
-	
-	-- local block = display.newImageRect("image/image1/1.png", 400, 400);
-	-- block.x, block.y = display.contentWidth * 0.2, display.contentHeight * 0.9
-
-	-- 네로 줄이기
-	transition.scaleTo(nero, {xScale = 0.4, yScale = 0.4, time = 0})
 
 	-- 타이틀 등장 후 사라지게 --
 	local title = display.newImage("image/image1/map1_title.png")
 	title.x, title.y = display.contentWidth*0.5, display.contentHeight*0.35
 	sceneGroup:insert(title)
-	transition.fadeOut(title, { delay = 500, time = 700 })
-	sceneGroup:remove(title)
+	transition.fadeOut(title, { delay = 700, time = 1000 })
 
-	local block = display.newImage("image/image1/1.png")
-	block.x, block.y = 1500, 800
-	sceneGroup:insert(block)
 
+	local block_img = {"image/image1/1.png", "image/image1/2.png", "image/image1/3.png", "image/image1/1.png"}
+	local block = {}
+
+	bx, by = 150, 700
+	for i = 1, 4 do
+		block[i] = display.newImageRect(block_img[i], 300, 300)
+		block[i].x, block[i].y = bx, by
+		bx = bx + 300
+		if (i == 2) then
+			bx = bx + 150
+		end
+		sceneGroup:insert(block[i])
+	end
 	
-
 	-- 방향키 입력시 움직이는 이벤트리스너
 	local function move( event )
 		if (event.phase == "down") then
 			if (event.keyName == "right") then
 				nero:setSequence("walkRight")
 				nero:play()
-				transition.to(nero, {x = nero.x + 1000, time = 7000})
-				
+				transition.moveBy(nero, {x = 600 - nero.x, time = (600 - nero.x) * 7})
 			elseif (event.keyName == "left") then
 				nero:setSequence("walkLeft")
 				nero:play()
-				transition.to(nero, {x = nero.x - 1000, time = 7000})
+				transition.moveBy(nero, {x = -nero.x, time = nero.x * 7})
 			end
 		elseif (event.phase == "up") then
 			transition.cancel(nero) -- 이동 정지
 			nero:pause()
+			if (nero.x == 600) then
+				transition.to(nero, {x = 650, y = nero.y + 20, time = 200})
+				transition.to(nero, {delay = 200, y = 760, time = 700})
+				Runtime:removeEventListener("key", move)
+				composer.gotoScene("game2_maze", { effect = "fade", time = 800 })
+			end
 		end
 	end
 
