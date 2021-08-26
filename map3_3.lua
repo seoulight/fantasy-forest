@@ -43,13 +43,12 @@ function scene:create( event )
 	sceneGroup:insert(nero)
 
 	-- 방향키 입력시 움직이는 이벤트리스너
-	function move( event )	
+	local function move3( event )	
 		if (event.phase == "down") then
 			if (event.keyName == "right") then
 				nero:setSequence("walkRight")
 				nero:play()
-				transition.moveBy(nero, {x = 1280 - nero.x, time = (1280 - nero.x) * 7})
-				
+				transition.moveBy(nero, {x = 1280 - nero.x, time = (1280 - nero.x) * 7})				
 			elseif (event.keyName == "left") then
 				nero:setSequence("walkLeft")
 				nero:play()
@@ -58,17 +57,16 @@ function scene:create( event )
 		elseif (event.phase == "up") then
 			transition.cancel(nero) -- 이동 정지
 			nero:pause()
-			if (nero.x <= 0) then
-				Runtime:removeEventListener("key", move)
-				composer.gotoScene("map3_2")
-			end	
+			-- if (nero.x < 0) then
+			-- 	Runtime:removeEventListener("key", move3)
+			-- 	composer.gotoScene("map3_2")
+			-- end	
 		end
 	end
 
-	Runtime:addEventListener("key", move)
+	Runtime:addEventListener("key", move3)
 	
 	local function cave()
-		-- transition.fadeOut(sceneGroup, {time = 300})
 		local options = {
 					    effect = "fade",
 					    time = 500
@@ -76,7 +74,7 @@ function scene:create( event )
 		composer.gotoScene( "map3_4" , options)
 	end
 
-	layer[2]:addEventListener("touch", cave)
+	layer[2]:addEventListener("tap", cave)
 end
 
 function scene:show( event )

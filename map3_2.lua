@@ -41,31 +41,16 @@ function scene:create( event )
 		}
 	}
 	local nero = display.newSprite(nero_sheet, sequences_nero)
-	nero.x, nero.y = 10, display.contentHeight * 0.8
+	nero.x, nero.y = 20, display.contentHeight * 0.8
 	sceneGroup:insert(nero);
 
-	-- 좌표 알아내기용 이벤트
-	-- local function tab( event )
-	-- 	if ( event.phase == "began" ) then
-	-- 		print("touched")
-	-- 	elseif ( event.phase == "moved" ) then
-	-- 		print(event.x .. ", " .. event.y)
-	-- 	elseif ( event.phase == "ended") then
-	-- 		print("ended")
-	-- 	end
-	-- 	return true
-	-- end
-
-	-- Runtime:addEventListener("touch", tab)
-
 	-- 방향키 입력시 움직이는 이벤트리스너
-	function move( event )
+	local function move2( event )
 		if (event.phase == "down") then
 			if (event.keyName == "right") then
 				nero:setSequence("walkRight")
 				nero:play()
 				transition.moveBy(nero, {x = 1280 - nero.x, time = (1280 - nero.x) * 7})
-				
 			elseif (event.keyName == "left") then
 				nero:setSequence("walkLeft")
 				nero:play()
@@ -77,15 +62,14 @@ function scene:create( event )
 			if (nero.x <= 0) then
 				Runtime:removeEventListener("key", move)
 				composer.gotoScene("map3_1")
-			elseif (nero.x >= 1200) then
-				Runtime:removeEventListener("key", move)
+			elseif (nero.x >= 1150) then
+				Runtime:removeEventListener("key", move2)
 				composer.gotoScene("map3_3")
 			end
 		end
 	end
 
-	Runtime:addEventListener("key", move)
-	
+	Runtime:addEventListener("key", move2)
 end
 
 function scene:show( event )
@@ -95,7 +79,6 @@ function scene:show( event )
 	if phase == "will" then
 		-- Called when the scene is still off screen and is about to move on screen
 	elseif phase == "did" then
-		Runtime:addEventListener("key", move)
 		-- Called when the scene is now on screen
 		-- 
 		-- INSERT code here to make the scene come alive
@@ -113,6 +96,7 @@ function scene:hide( event )
 		-- INSERT code here to pause the scene
 		-- e.g. stop timers, stop animation, unload sounds, etc.)
 	elseif phase == "did" then
+		composer.removeScene("map3_2")
 		-- Called when the scene is now off screen
 	end
 end

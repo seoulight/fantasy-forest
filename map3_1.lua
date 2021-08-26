@@ -50,15 +50,6 @@ function scene:create( event )
 	sceneGroup:insert(nero);
 	sceneGroup:insert(sail)
 
-	local function nextScene()
-		-- transition.fadeOut(sceneGroup, {time = 300})
-		local options = {
-					    effect = "fade",
-					    time = 500
-					}
-		composer.gotoScene( "map3_2" , options)
-	end
-
 	-- 대화창 --
 	local text1 = display.newImageRect("image/char/text3.png", 1140, 335)
 	text1.x, text1.y = display.contentWidth * 0.5, display.contentHeight * 0.74
@@ -184,10 +175,7 @@ function scene:create( event )
 	npc:addEventListener("tap", textScene)
 
 	-- 방향키 입력시 움직이는 이벤트리스너
-	local function move( event )
-		if (nero.y > 620) then
-			nextScene()
-		end
+	local function move1( event )
 		if (event.phase == "down") then
 			if (event.keyName == "right") then
 				nero:setSequence("walkRight")
@@ -210,6 +198,15 @@ function scene:create( event )
 		elseif (event.phase == "up") then
 			transition.cancel(nero) -- 이동 정지
 			nero:pause()
+			if (nero.y > 620) then
+				Runtime:removeEventListener("key", move1)
+				transition.fadeOut(sceneGroup, {time = 300})
+				local options = {
+								effect = "fade",
+								time = 500
+							}
+				composer.gotoScene( "map3_2" , options)
+			end
 			if (nero.x == 340) then
 				-- 네로 혼잣말 --
 				transition.to( text2, { alpha = 0.8, effect = "fade", time = 500 } )
@@ -244,7 +241,7 @@ function scene:create( event )
 		end
 	end
 
-	Runtime:addEventListener("key", move)
+	Runtime:addEventListener("key", move1)
 	
 end
 
@@ -269,6 +266,7 @@ function scene:hide( event )
 		-- INSERT code here to pause the scene
 		-- e.g. stop timers, stop animation, unload sounds, etc.)
 	elseif phase == "did" then
+		composer.removeScene("map3_1")
 		-- Called when the scene is now off screen
 	end
 end
