@@ -14,30 +14,113 @@ function scene:create( event )
 	bg.x, bg.y = display.contentWidth*0.5, display.contentHeight*0.5
 	sceneGroup:insert(bg)
 
+	local cat = display.newImageRect("image/char/cat_02.png", 190, 230)
+	cat.x, cat.y = display.contentWidth * 0.63, display.contentHeight * 0.61
+	
 	local cat1 = display.newImageRect("image/char/cat_default.png", 428, 300)
 	cat1.x, cat1.y = display.contentWidth * 0.7, display.contentHeight * 0.2
 	sceneGroup:insert(cat1)
-
+	cat1.alpha = 0
+	
 	local cat2 = display.newImageRect("image/char/cat_01.png", 428, 300)
 	cat2.x, cat2.y = display.contentWidth * 0.7, display.contentHeight * 0.2
+	sceneGroup:insert(cat2)
 	cat2.alpha = 0
 
-	local nero = display.newImageRect("image/char/nero_default2.png", 400, 440)
-	nero.x, nero.y = display.contentWidth * 0.2, display.contentHeight * 0.255
+	-- 네로 움직이는 모습 --
+	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 100, height = 166, numFrames = 4})
+	local sequences_nero = {
+		{
+			name = "walkRight",
+			frames = { 1, 2 },
+			time = 300,
+			loopCount = 0,
+			loopDirection = "forward"
+		},
+		{
+			name = "walkLeft",
+			frames = { 3, 4 },
+			time = 300,
+			loopCount = 0,
+			loopDirection = "forward"
+		}
+	}
+	local nero = display.newSprite(nero_sheet, sequences_nero)
+	nero.x, nero.y = display.contentWidth * 0.06, display.contentHeight * 0.65
+
+	local nero2 = display.newImageRect("image/char/nero_default2.png", 400, 440)
+	nero2.x, nero2.y = display.contentWidth * 0.2, display.contentHeight * 0.255
+	sceneGroup:insert(nero2)
+	nero2.alpha = 0
+
+	-- 블록--
+	local b1 = { }
+	local b1Group = display.newGroup()
+
+	for i = 1, 13 do
+		b1[i] = display.newImageRect(b1Group,"image/image1/1.png", 100, 100) 
+		b1[i].x, b1[i].y = bg.x + 100 * i, bg.y
+	end
+
+	b1Group.x = b1Group.x - 710
+	b1Group.y = b1Group.y + 220
+
+	local b2 = { }
+	local b2Group = display.newGroup()
+
+	for i = 1, 13 do
+		b2[i] = display.newImageRect(b2Group,"image/image1/6.png", 100, 100) 
+		b2[i].x, b2[i].y = bg.x + 100 * i, bg.y
+	end
+
+	b2Group.x = b2Group.x - 710
+	b2Group.y = b2Group.y + 310
+
+	-- 풀 --
+	local grass1 = display.newImageRect("image/image1/grass1.png", 110, 110)
+	grass1.x, grass1.y = display.contentWidth*0.12, display.contentHeight*0.66
+	sceneGroup:insert(grass1)
+
+	local grass2 = display.newImageRect("image/image1/grass2.png", 110, 110)
+	grass2.x, grass2.y = display.contentWidth*0.3, display.contentHeight*0.66
+	sceneGroup:insert(grass2)
+
+	local grass3 = display.newImageRect("image/image1/grass1.png", 110, 110)
+	grass3.x, grass3.y = display.contentWidth*0.327, display.contentHeight*0.66
+	sceneGroup:insert(grass3)
+
+	local grass4 = display.newImageRect("image/image1/grass4.png", 110, 110)
+	grass4.x, grass4.y = display.contentWidth*0.55, display.contentHeight*0.66
+	sceneGroup:insert(grass4)
+
+	local grass5 = display.newImageRect("image/image1/grass1.png", 110, 110)
+	grass5.x, grass5.y = display.contentWidth*0.73, display.contentHeight*0.66
+	sceneGroup:insert(grass5)
+
+	local grass6 = display.newImageRect("image/image1/grass2.png", 110, 110)
+	grass6.x, grass6.y = display.contentWidth*0.8, display.contentHeight*0.66
+	sceneGroup:insert(grass6)
+
+	sceneGroup:insert(b1Group)
+	sceneGroup:insert(b2Group)
+	sceneGroup:insert(cat)
 	sceneGroup:insert(nero)
 
 	-- 대화창 --
 	local text1 = display.newImageRect("image/char/text1.png", 1150, 340)
 	text1.x, text1.y = display.contentWidth * 0.5, display.contentHeight * 0.75
 	sceneGroup:insert(text1)
+	text1.alpha = 0
 
 	local text2 = display.newImageRect("image/char/text_nero.png", 1170, 315)
 	text2.x, text2.y = display.contentWidth * 0.501, display.contentHeight * 0.745
+	sceneGroup:insert(text2)
 	text2.alpha = 0
 
 	-- 대화창 이름 --
 	local catName = display.newText("체셔", 282, 437, "fonts/SeoulNamsanB.ttf", 32)
 	sceneGroup:insert(catName)
+	catName.alpha = 0
 
 	local neroName = display.newText("네로", 282, 437, "fonts/SeoulNamsanB.ttf", 32)
 	neroName.alpha = 0
@@ -56,10 +139,19 @@ function scene:create( event )
 	text[10] = display.newText("장미정원으로 가려면 어느 쪽으로 가야하니?", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
 	text[11] = display.newText(" ", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
 	text[1]:setFillColor(0)
+	text[1].alpha = 0
 
 	for i = 2, 11 do
 		text[i].alpha = 0
 		text[i]:setFillColor(0)
+	end
+
+	local function talk()
+		transition.fadeIn( nero2, { time = 900 } )
+		transition.fadeIn( cat1, {  time = 900 } )
+		transition.fadeIn( text1, {  time = 900 } )
+		transition.fadeIn( catName, { time = 900 } )
+		transition.fadeIn( text[1], { time = 900 } )	
 	end
 
 	-- 탭 하면 다음 text --
@@ -93,7 +185,7 @@ function scene:create( event )
 
 		if j == 11 then
 			text[j].alpha = 1
-			bg:removeEventListener("tap", nextText)
+			composer.removeScene("map1_3")
 			composer.gotoScene("map1_4")
 		end
 
@@ -103,7 +195,34 @@ function scene:create( event )
 		end
 	end
 
-	bg:addEventListener("tap", nextText)
+	text1:addEventListener("tap", nextText)
+	text2:addEventListener("tap", nextText)
+
+	local k = 0
+	-- 방향키 입력시 움직이는 이벤트리스너 --
+	local function move( event )
+		if (nero.x > 600 and k == 0) then
+			k = 1
+			talk()
+		end
+		if (event.phase == "down") then
+			if (event.keyName == "right") then
+				nero:setSequence("walkRight")
+				nero:play()
+				transition.to(nero, {x = nero.x + 1000, time = 7000})
+					
+			elseif (event.keyName == "left") then
+				nero:setSequence("walkLeft")
+				nero:play()
+				transition.to(nero, {x = nero.x - 1000, time = 7000})
+			end
+		elseif (event.phase == "up") then
+			transition.cancel(nero) -- 이동 정지
+			nero:pause()
+		end
+	end
+
+	Runtime:addEventListener("key", move)
 end
 
 function scene:show( event )

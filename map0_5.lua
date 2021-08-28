@@ -146,9 +146,11 @@ function scene:create( event )
 	sceneGroup:insert(waveGroup)
 	nero:toFront()
 
+	local j = 0
 	-- 팔레트, 브러쉬 --
 	-- 나중에 blue -> green으로 바꾸기 --
 	local function color()
+		j = 1
 		local palette1 = display.newImageRect("image/color/palette_blue1.png", 700, 700)
 		palette1.x, palette1.y = display.contentWidth*0.27, display.contentHeight*0.52
 
@@ -189,7 +191,7 @@ function scene:create( event )
 
 	-- 방향키 입력시 움직이는 이벤트리스너
 	function move( event )
-		if (nero.x > 500) then
+		if (nero.x > 500 and j == 0) then
 			color()
 		end
 		if (event.phase == "down") then

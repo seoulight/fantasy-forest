@@ -18,9 +18,34 @@ function scene:create( event )
 	cat.x, cat.y = display.contentWidth * 0.7, display.contentHeight * 0.2
 	sceneGroup:insert(cat)
 
+	local stdCat = display.newImageRect("image/char/cat_02.png", 190, 230)
+	stdCat.x, stdCat.y = display.contentWidth * 0.63, display.contentHeight * 0.61
+	sceneGroup:insert(stdCat)
+
 	local neroDefault = display.newImageRect("image/char/nero_default2.png", 400, 440)
 	neroDefault.x, neroDefault.y = display.contentWidth * 0.2, display.contentHeight * 0.255
 	sceneGroup:insert(neroDefault)
+
+	-- 네로 움직이는 모습 --
+	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 100, height = 166, numFrames = 4})
+	local sequences_nero = {
+		{
+			name = "walkRight",
+			frames = { 1, 2 },
+			time = 300,
+			loopCount = 0,
+			loopDirection = "forward"
+		},
+		{
+			name = "walkLeft",
+			frames = { 3, 4 },
+			time = 300,
+			loopCount = 0,
+			loopDirection = "forward"
+		}
+	}
+	local nero = display.newSprite(nero_sheet, sequences_nero)
+	nero.x, nero.y = display.contentWidth * 0.5, display.contentHeight * 0.65
 
 	-- 대화창 --
 	local text1 = display.newImageRect("image/char/text1.png", 1150, 340)
@@ -37,17 +62,78 @@ function scene:create( event )
 
 	text[1]:setFillColor(0)
 
+	-- 블록--
+	local bl1 = { }
+	local bl1Group = display.newGroup()
+
+	for i = 1, 13 do
+		bl1[i] = display.newImageRect(bl1Group,"image/image1/1.png", 100, 100) 
+		bl1[i].x, bl1[i].y = bg.x + 100 * i, bg.y
+	end
+
+	bl1Group.x = bl1Group.x - 710
+	bl1Group.y = bl1Group.y + 220
+
+	local bl2 = { }
+	local bl2Group = display.newGroup()
+
+	for i = 1, 13 do
+		bl2[i] = display.newImageRect(bl2Group,"image/image1/6.png", 100, 100) 
+		bl2[i].x, bl2[i].y = bg.x + 100 * i, bg.y
+	end
+
+	bl2Group.x = bl2Group.x - 710
+	bl2Group.y = bl2Group.y + 310
+
+	-- 풀 --
+	local g1 = display.newImageRect("image/image1/grass1.png", 110, 110)
+	g1.x, g1.y = display.contentWidth*0.12, display.contentHeight*0.66
+	sceneGroup:insert(g1)
+
+	local g2 = display.newImageRect("image/image1/grass2.png", 110, 110)
+	g2.x, g2.y = display.contentWidth*0.3, display.contentHeight*0.66
+	sceneGroup:insert(g2)
+
+	local g3 = display.newImageRect("image/image1/grass1.png", 110, 110)
+	g3.x, g3.y = display.contentWidth*0.327, display.contentHeight*0.66
+	sceneGroup:insert(g3)
+
+	local g4 = display.newImageRect("image/image1/grass4.png", 110, 110)
+	g4.x, g4.y = display.contentWidth*0.55, display.contentHeight*0.66
+	sceneGroup:insert(g4)
+
+	local g5 = display.newImageRect("image/image1/grass1.png", 110, 110)
+	g5.x, g5.y = display.contentWidth*0.73, display.contentHeight*0.66
+	sceneGroup:insert(g5)
+
+	local g6 = display.newImageRect("image/image1/grass2.png", 110, 110)
+	g6.x, g6.y = display.contentWidth*0.8, display.contentHeight*0.66
+	sceneGroup:insert(g6)
+
+	sceneGroup:insert(bl1Group)
+	sceneGroup:insert(bl2Group)
+	sceneGroup:insert(cat)
+	sceneGroup:insert(nero)
+	sceneGroup:insert(text1)
+	sceneGroup:insert(catName)
+
 	-- 탭 하면 대화창 사라짐 --
 	local function nextScene()
+		sceneGroup:remove(bl1Group)
+		sceneGroup:remove(bl2Group)
 		sceneGroup:remove(text1)
 		sceneGroup:remove(cat)
 		sceneGroup:remove(neroDefault)
+		sceneGroup:remove(stdCat)
+
 		text[1].alpha = 0
 
 		-- 스탠딩 체셔 --
 		local cat2 = display.newImageRect("image/char/cat_02.png", 190, 230)
 		cat2.x, cat2.y = display.contentWidth * 0.875, display.contentHeight * 0.595
 		sceneGroup:insert(cat2)
+
+		nero.x, nero.y = display.contentWidth * 0.12, display.contentHeight * 0.65
 
 		-- 왼쪽 블록--
 		local b1 = { }
@@ -131,27 +217,6 @@ function scene:create( event )
 		doorGroup.x = doorGroup.x - 580
 		doorGroup.y = doorGroup.y + 85
 
-		-- 네로 움직이는 모습 --
-		local nero_sheet = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 100, height = 166, numFrames = 4})
-		local sequences_nero = {
-			{
-				name = "walkRight",
-				frames = { 1, 2 },
-				time = 300,
-				loopCount = 0,
-				loopDirection = "forward"
-			},
-			{
-				name = "walkLeft",
-				frames = { 3, 4 },
-				time = 300,
-				loopCount = 0,
-				loopDirection = "forward"
-			}
-		}
-		local nero = display.newSprite(nero_sheet, sequences_nero)
-		nero.x, nero.y = display.contentWidth * 0.12, display.contentHeight * 0.65
-		
 		sceneGroup:insert(doorGroup)
 		sceneGroup:insert(b1Group)
 		sceneGroup:insert(b3Group)
@@ -177,11 +242,11 @@ function scene:create( event )
 				elseif (event.keyName == "enter") then
 					-- 첫 번째 문, 세 번째 문 / 오답->재시도
 					if((nero.x > display.contentWidth * 0.18 and nero.x < display.contentWidth * 0.29) or (nero.x > display.contentWidth * 0.58 and nero.x < display.contentWidth * 0.69)) then
-						scene:create()
+						scene:create() 
 					-- 두 번째 문 / 정답->장미정원으로 이동
 					elseif(nero.x > display.contentWidth * 0.4 and nero.x < display.contentWidth * 0.49) then
 						composer.removeScene("map1_4")
-						composer.gotoScene("map1_5")		
+						composer.gotoScene("map1_5", { effect = "fade", time = 900 })		
 					end
 				end
 			elseif (event.phase == "up") then
