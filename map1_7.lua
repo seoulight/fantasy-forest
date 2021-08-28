@@ -111,6 +111,19 @@ function scene:create( event )
 
 	b7[1].x, b7[1].y = display.contentWidth*0.95, display.contentHeight*0.85
 	b7[2].x, b7[2].y = display.contentWidth*1.02, display.contentHeight*0.85
+
+	-- 풀 --
+	local grass1 = display.newImageRect("image/image1/grass1.png", 110, 110)
+	grass1.x, grass1.y = display.contentWidth*0.19, display.contentHeight*0.84
+
+	local grass2 = display.newImageRect("image/image1/grass1.png", 110, 110)
+	grass2.x, grass2.y = display.contentWidth*0.32, display.contentHeight*0.84
+
+	local grass3 = display.newImageRect("image/image1/grass2.png", 110, 110)
+	grass3.x, grass3.y = display.contentWidth*0.35, display.contentHeight*0.84
+
+	local grass4 = display.newImageRect("image/image1/grass4.png", 110, 110)
+	grass4.x, grass4.y = display.contentWidth*0.54, display.contentHeight*0.84
 	
 	-- 색 없는 장미 --
 	local rose = { }
@@ -125,6 +138,10 @@ function scene:create( event )
 	roseGroup.y = roseGroup.y + 243
 
 	sceneGroup:insert(door)
+	sceneGroup:insert(grass1)
+	sceneGroup:insert(grass2)
+	sceneGroup:insert(grass3)
+	sceneGroup:insert(grass4)
 	sceneGroup:insert(b1Group)
 	sceneGroup:insert(b3)
 	sceneGroup:insert(b6Group)
@@ -195,7 +212,7 @@ function scene:create( event )
 
 	---- 방향키 입력시 움직이는 이벤트리스너 --
 	local function move( event )
-		if(nero.x > red1.x) then
+		if(nero.x >= display.contentWidth * 0.36) then
 			Runtime:removeEventListener("key", move)
 			textScene()
 		end
@@ -253,7 +270,7 @@ function scene:create( event )
 		end
 
 		if j == 9 then
-			--removeItems()
+			bName.alpha = 0
 			black3.alpha = 0
 			red3.alpha = 0
 			text1.alpha = 0
@@ -270,22 +287,6 @@ function scene:create( event )
 	end
 
 	text1:addEventListener("tap", nextText)
-
-	
-
-
-	-- -- map1_5와 동일하게 키보드 쓰면 에러나서 클릭으로 대체 --
-	-- local k = 0
-	-- local function click()
-	-- 	k = k + 1
-	-- 	if k == 2 then
-	-- 		textScene()
-	-- 	end
-	-- 	return true
-	-- end
-
-	
-	-- click()
 end
 
 function scene:show( event )

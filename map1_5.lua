@@ -46,7 +46,6 @@ function scene:create( event )
 	}
 	local nero = display.newSprite(nero_sheet, sequences_nero)
 	nero.x, nero.y = display.contentWidth * 0.22, display.contentHeight * 0.81
-
 	
 	-- 1층 --
 	local b1 = { }
@@ -111,6 +110,20 @@ function scene:create( event )
 	b7[1].x, b7[1].y = display.contentWidth*0.95, display.contentHeight*0.85
 	b7[2].x, b7[2].y = display.contentWidth*1.02, display.contentHeight*0.85
 
+	-- 풀 --
+	local grass1 = display.newImageRect("image/image1/grass1.png", 110, 110)
+	grass1.x, grass1.y = display.contentWidth*0.19, display.contentHeight*0.84
+
+	local grass2 = display.newImageRect("image/image1/grass1.png", 110, 110)
+	grass2.x, grass2.y = display.contentWidth*0.32, display.contentHeight*0.84
+
+	local grass3 = display.newImageRect("image/image1/grass2.png", 110, 110)
+	grass3.x, grass3.y = display.contentWidth*0.35, display.contentHeight*0.84
+
+	local grass4 = display.newImageRect("image/image1/grass4.png", 110, 110)
+	grass4.x, grass4.y = display.contentWidth*0.54, display.contentHeight*0.84
+
+
 	-- 색 없는 장미 --
 	local rose = { }
 	local roseGroup = display.newGroup()
@@ -124,6 +137,10 @@ function scene:create( event )
 	roseGroup.y = roseGroup.y + 243
 
 	sceneGroup:insert(door)
+	sceneGroup:insert(grass1)
+	sceneGroup:insert(grass2)
+	sceneGroup:insert(grass3)
+	sceneGroup:insert(grass4)
 	sceneGroup:insert(b1Group)
 	sceneGroup:insert(b3)
 	sceneGroup:insert(b6Group)
@@ -229,8 +246,8 @@ function scene:create( event )
 			black2.alpha = 0
 			text1.alpha = 0
 			bName.alpha = 0
-			composer.removeScene("map1_5")
-			composer.gotoScene("map1_6", { effect = "fade", time = 900 })
+			--composer.removeScene("map1_5")
+			--composer.gotoScene("map1_6", { effect = "fade", time = 900 })
 		end
 
 		if j < 8 then
@@ -241,10 +258,12 @@ function scene:create( event )
 
 	text1:addEventListener("tap", nextText)	
 
+	local k = 0
 	-- 방향키 입력시 움직이는 이벤트리스너 --
 	local function move( event )
-		if(nero.x >= display.contentWidth * 0.36) then
-			Runtime:removeEventListener("key", move)
+		if(nero.x >= display.contentWidth * 0.36 and k == 0) then
+			--Runtime:removeEventListener("key", move)
+			k = 1
 			textScene()
 		end
 		if (event.phase == "down") then
@@ -257,7 +276,14 @@ function scene:create( event )
 				nero:setSequence("walkLeft")
 				nero:play()
 				transition.to(nero, {x = nero.x - 1000, time = 7000})
-			end
+			--end
+			elseif (event.keyName == "enter" and k == 1) then
+					-- 문으로 가면 체셔 맵 나옴 --
+					if(nero.x >= display.contentWidth * 0.07 and nero.x <= display.contentWidth * 0.14) then
+						composer.removeScene("map1_5")
+						composer.gotoScene("map1_6", { effect = "fade", time = 900 })		
+					end
+				end
 		elseif (event.phase == "up") then
 			transition.cancel(nero) -- 이동 정지
 			nero:pause()
@@ -292,7 +318,7 @@ function scene:hide( event )
 	elseif phase == "did" then
 		-- Called when the scene is now off screen
 		composer.removeScene("map1_5")
-		Runtime:addEventListener("key", move)
+		--Runtime:addEventListener("key", move)
 	end
 end
 

@@ -29,6 +29,19 @@ function scene:create( event )
 	local red = display.newImageRect("image/char/red_default.png", 190, 220)
 	red.x, red.y = bg.x*0.93, bg.y*1.56
 
+	-- 풀 --
+	local grass1 = display.newImageRect("image/image1/grass1.png", 110, 110)
+	grass1.x, grass1.y = display.contentWidth*0.19, display.contentHeight*0.84
+
+	local grass2 = display.newImageRect("image/image1/grass1.png", 110, 110)
+	grass2.x, grass2.y = display.contentWidth*0.32, display.contentHeight*0.84
+
+	local grass3 = display.newImageRect("image/image1/grass2.png", 110, 110)
+	grass3.x, grass3.y = display.contentWidth*0.35, display.contentHeight*0.84
+
+	local grass4 = display.newImageRect("image/image1/grass4.png", 110, 110)
+	grass4.x, grass4.y = display.contentWidth*0.54, display.contentHeight*0.84
+	
 	-- 색 없는 장미 --
 	local rose = { }
 	local roseGroup = display.newGroup()
@@ -141,6 +154,10 @@ function scene:create( event )
 	b7[1].x, b7[1].y = display.contentWidth*0.95, display.contentHeight*0.85
 	b7[2].x, b7[2].y = display.contentWidth*1.02, display.contentHeight*0.85
 
+	sceneGroup:insert(grass1)
+	sceneGroup:insert(grass2)
+	sceneGroup:insert(grass3)
+	sceneGroup:insert(grass4)
 	sceneGroup:insert(b1Group)
 	sceneGroup:insert(b3)
 	sceneGroup:insert(b6Group)
