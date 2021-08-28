@@ -12,9 +12,47 @@ function scene:create( event )
 	local cx, cy = display.contentWidth * 0.5, display.contentHeight * 0.5
 	
 
-	local ground_line = graphics.newOutline(2, "image/image2/2-1.png")
-	local layer_img = {"image/image2/2-5.png", "image/image2/2-4.png", "image/image2/2-3.png",
-	"image/image2/2-2.png", "image/image2/2-1.png"}
+	-- 아이템 이미지 파일 목록
+	local item_img = {"image/item/깨진램프.png", "image/item/낡은유리병편지.png", "image/item/녹슨회중시계.png", "image/item/빛바랜거울.png",
+	"image/item/얼룩진동전.png", "image/item/작은티아라.png", "image/item/푸른진주목걸이.png"}
+	-- 아이템 이름 이미지 파일 목록
+	local title_img = {"image/item/깨진램프_타이틀.png", "image/item/낡은유리병편지_타이틀.png", "image/item/녹슨회중시계_타이틀.png",
+	"image/item/빛바랜거울_타이틀.png", "image/item/얼룩진동전_타이틀.png", "image/item/작은티아라_타이틀.png", "image/item/푸른진주목걸이_타이틀.png"}
+
+	item = {}
+	item_pos = {{659, 655}, {1176, 563}, {515, 534}, {316, 185}, {95, 225}, {288, 501}, {1004, 562}}
+	title = {}
+	-- 아이템 설명 텍스트
+	item_text = {"설명1", "설명2", "설명3", "설명4", "설명5", "설명6", "설명7"}
+	text_obj = {}
+	for i = 1, 7 do
+		item[i] = display.newImageRect(item_img[i], 100, 100)
+		item[i].name = i
+		item[i].x, item[i].y = item_pos[i][1], item_pos[i][2]
+		sceneGroup:insert(item[i])
+
+		title[i] = display.newImageRect(title_img[i], 848 * 0.8, 275 * 0.8)
+		title[i].x, title[i].y = cx, cy * 0.5
+		title[i].alpha = 0
+		sceneGroup:insert(title[i])
+
+		text_obj[i] = display.newText(
+		{
+			text = item_text[i],
+			x = cx,
+			y = cy * 1.6,
+			width = 400,
+			font = "fonts/SeoulNamsanB.ttf",
+			fontSize = 25,
+			align = "center"  -- Alignment parameter
+		} )
+		text_obj[i]:setFillColor(0.9)
+		text_obj[i].alpha = 0
+		sceneGroup:insert(text_obj[i])
+	end
+
+	local layer_img = {"image/image2/2-5.png", "image/image2/2-4.png", "image/image2/2-3.png", "image/image2/2-2.png",
+	"image/image2/2-1.png"}
 	local layer = {}
 
 	for i = 1, 5 do
@@ -22,59 +60,83 @@ function scene:create( event )
 		layer[i].x, layer[i].y = cx, cy
 		sceneGroup:insert(layer[i])
 	end
+	
+	sceneGroup:insert(1, layer[2])
+	sceneGroup:insert(1, layer[1])
+	transition.to(item[6], {time = 0, rotation = -45})
+	transition.to(item[1], {time = 0, rotation = -30})
 
-	local test = display.newImageRect("image/item/깨진램프.png", 200, 200)
-	test.x, test.y = cx, cy
-	sceneGroup:insert(test)
+	local find_num = 7
 
--- 네로 캐릭터
-	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 100, height = 166, numFrames = 4})
-	local sequences_nero = {
-		{
-			name = "walkRight",
-			frames = { 1, 2 },
-			time = 300,
-			loopCount = 0,
-			loopDirection = "forward"
-		},
-		{
-			name = "walkLeft",
-			frames = { 3, 4 },
-			time = 300,
-			loopCount = 0,
-			loopDirection = "forward"
-		}
-	}
-	local nero = display.newSprite(nero_sheet, sequences_nero)
-	nero.x, nero.y = 20, display.contentHeight * 0.8
-	sceneGroup:insert(nero);
+	local text_num = display.newText(
+	{	text = "찾아야 할 물건 : "..tostring(find_num),
+		x = 1150,
+		y = 50,
+		font = "fonts/SeoulNamsanB.ttf",
+		fontSize = 25 })
+	text_num:setFillColor(0)
+	sceneGroup:insert(text_num)
 
-	-- 방향키 입력시 움직이는 이벤트리스너
-	local function move2( event )
-		if (event.phase == "down") then
-			if (event.keyName == "right") then
-				nero:setSequence("walkRight")
-				nero:play()
-				transition.moveBy(nero, {x = 1280 - nero.x, time = (1280 - nero.x) * 7})
-			elseif (event.keyName == "left") then
-				nero:setSequence("walkLeft")
-				nero:play()
-				transition.moveBy(nero, {x = -nero.x, time = nero.x * 7})
-			end
-		elseif (event.phase == "up") then
-			transition.cancel(nero) -- 이동 정지
-			nero:pause()
-			if (nero.x <= 0) then
-				Runtime:removeEventListener("key", move)
-				composer.gotoScene("map3_1")
-			elseif (nero.x >= 1150) then
-				Runtime:removeEventListener("key", move2)
-				composer.gotoScene("map3_3")
-			end
-		end
+	local item_bg = display.newRect(cx, cy, 1280, 720)
+	item_bg:setFillColor(0.3)
+	item_bg.alpha = 0
+	sceneGroup:insert(item_bg)
+	
+	local function textChange()
+		find_num = find_num - 1
+		text_num.text = "찾아야 할 물건 : "..tostring(find_num)
 	end
 
-	Runtime:addEventListener("key", move2)
+	local function pick( event )
+		local obj = event.target
+		local idx = obj.name
+		
+		print(idx)
+		
+		sceneGroup:remove( item[idx] )
+		item_bg.alpha = 0.9
+		
+		title[idx].alpha = 1
+		title[idx]:toFront()
+		
+		item[idx] = display.newImageRect(item_img[idx], 300, 300)
+		item[idx].x, item[idx].y = cx, cy
+		sceneGroup:insert(item[idx])
+		
+		text_obj[idx].alpha = 1
+		text_obj[idx]:toFront()
+		
+		-- 아이템 설명 화면에서 탭 누르면 화면 사라짐
+		local function hide_item( event )
+			item_bg:removeEventListener("tap", hide_item)
+			item_bg.alpha = 0
+			title[idx].alpha = 0
+			item[idx].alpha = 0
+			text_obj[idx].alpha = 0
+			textChange()
+		end
+
+		item_bg:addEventListener("tap", hide_item)
+	end
+
+	for i = 1, 7 do
+		item[i]:addEventListener("tap", pick)
+	end
+
+	-- 좌표 알아내기용 이벤트
+	-- local function tab( event )
+	-- 	if ( event.phase == "began" ) then
+	-- 		print("touched")
+	-- 	elseif ( event.phase == "moved" ) then
+	-- 		print(event.x .. ", " .. event.y)
+	-- 	elseif ( event.phase == "ended") then
+	-- 		print("ended")
+	-- 	end
+	-- 	return true
+	-- end
+
+	-- layer[5]:addEventListener("touch", tab)
+
 end
 
 function scene:show( event )
