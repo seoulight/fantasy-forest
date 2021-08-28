@@ -22,6 +22,11 @@ function scene:create( event )
 		layer[i].x, layer[i].y = cx, cy
 		sceneGroup:insert(layer[i])
 	end
+
+	local test = display.newImageRect("image/item/깨진램프.png", 200, 200)
+	test.x, test.y = cx, cy
+	sceneGroup:insert(test)
+
 -- 네로 캐릭터
 	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 100, height = 166, numFrames = 4})
 	local sequences_nero = {
