@@ -67,7 +67,7 @@ function scene:create( event )
  	end
 
 	-- 퍼즐 조각이 제대로된 위치인지 확인, 퍼즐이 완성되면 다음 장면으로 넘어가는 함수 포출
-	local cnt = 24
+	local cnt = 0
 	local function correct( target )
 		local num = target.name
 		if target.x <= rects[num].x + 10 and target.x >= rects[num].x - 10

@@ -31,8 +31,8 @@ function scene:create( event )
 		item[i].x, item[i].y = item_pos[i][1], item_pos[i][2]
 		sceneGroup:insert(item[i])
 
-		title[i] = display.newImageRect(title_img[i], 848 * 0.8, 275 * 0.8)
-		title[i].x, title[i].y = cx, cy * 0.5
+		title[i] = display.newImageRect(title_img[i], 848 * 0.7, 275 * 0.7)
+		title[i].x, title[i].y = 640, 180
 		title[i].alpha = 0
 		sceneGroup:insert(title[i])
 
@@ -40,7 +40,7 @@ function scene:create( event )
 		{
 			text = item_text[i],
 			x = cx,
-			y = cy * 1.6,
+			y = 600,
 			width = 400,
 			font = "fonts/SeoulNamsanB.ttf",
 			fontSize = 25,
@@ -102,14 +102,14 @@ function scene:create( event )
 		sceneGroup:remove( item[idx] )
 
 		item[idx] = display.newImageRect(item_img[idx], 300, 300)
-		item[idx].x, item[idx].y = cx, cy
+		item[idx].x, item[idx].y = cx, 390
 		item[idx].alpha = 0
 		sceneGroup:insert(item[idx])
 
 		transition.to(item_bg, {effect = "fade", alpha = 0.8, time = 800})
-		transition.to(title[idx], {delay = 500, effect = "fade", alpha = 1, time = 1000})
-		transition.fadeIn(item[idx], {delay = 500, time = 1000})
-		transition.to(text_obj[idx], {delay = 500, effect = "fade", alpha = 1, time = 1000})
+		transition.to(title[idx], {delay = 800, effect = "fade", alpha = 1, time = 1000})
+		transition.fadeIn(item[idx], {delay = 800, time = 1000})
+		transition.to(text_obj[idx], {delay = 1800, effect = "fade", alpha = 1, time = 1000})
 		
 		
 		-- 아이템 설명 화면에서 탭 누르면 화면 사라짐
@@ -125,26 +125,12 @@ function scene:create( event )
 		local function tap_event()
 			item_bg:addEventListener("tap", hide_item)
 		end
-		timer.performWithDelay(1500, tap_event)
+		timer.performWithDelay(2800, tap_event)
 	end
 
 	for i = 1, 7 do
 		item[i]:addEventListener("tap", pick)
 	end
-
-	-- 좌표 알아내기용 이벤트
-	local function tab( event )
-		if ( event.phase == "began" ) then
-			print("touched")
-		elseif ( event.phase == "moved" ) then
-			print(event.x .. ", " .. event.y)
-		elseif ( event.phase == "ended") then
-			print("ended")
-		end
-		return true
-	end
-
-	layer[5]:addEventListener("touch", tab)
 
 end
 
