@@ -20,7 +20,7 @@ function scene:create( event )
 	"image/item/빛바랜거울_타이틀.png", "image/item/얼룩진동전_타이틀.png", "image/item/작은티아라_타이틀.png", "image/item/푸른진주목걸이_타이틀.png"}
 
 	item = {}
-	item_pos = {{659, 655}, {1176, 563}, {515, 534}, {316, 185}, {95, 225}, {288, 501}, {1004, 562}}
+	item_pos = {{659, 655}, {213, 387}, {515, 534}, {539, 394}, {95, 225}, {1255, 230}, {1004, 562}}
 	title = {}
 	-- 아이템 설명 텍스트
 	item_text = {"설명1", "설명2", "설명3", "설명4", "설명5", "설명6", "설명7"}
@@ -61,10 +61,16 @@ function scene:create( event )
 		sceneGroup:insert(layer[i])
 	end
 	
+	
 	sceneGroup:insert(1, layer[2])
+	for i = 2, 6, 2 do
+		item[i].alpha = 0.4
+		sceneGroup:insert(1, item[i])
+	end
 	sceneGroup:insert(1, layer[1])
 	transition.to(item[6], {time = 0, rotation = -45})
 	transition.to(item[1], {time = 0, rotation = -30})
+	
 
 	local find_num = 7
 
@@ -78,7 +84,7 @@ function scene:create( event )
 	sceneGroup:insert(text_num)
 
 	local item_bg = display.newRect(cx, cy, 1280, 720)
-	item_bg:setFillColor(0.3)
+	item_bg:setFillColor(0)
 	item_bg.alpha = 0
 	sceneGroup:insert(item_bg)
 	
@@ -90,21 +96,21 @@ function scene:create( event )
 	local function pick( event )
 		local obj = event.target
 		local idx = obj.name
-		
-		print(idx)
-		
-		sceneGroup:remove( item[idx] )
-		item_bg.alpha = 0.9
-		
-		title[idx].alpha = 1
+				
 		title[idx]:toFront()
-		
+		text_obj[idx]:toFront()
+		sceneGroup:remove( item[idx] )
+
 		item[idx] = display.newImageRect(item_img[idx], 300, 300)
 		item[idx].x, item[idx].y = cx, cy
+		item[idx].alpha = 0
 		sceneGroup:insert(item[idx])
+
+		transition.to(item_bg, {effect = "fade", alpha = 0.8, time = 800})
+		transition.to(title[idx], {delay = 500, effect = "fade", alpha = 1, time = 1000})
+		transition.fadeIn(item[idx], {delay = 500, time = 1000})
+		transition.to(text_obj[idx], {delay = 500, effect = "fade", alpha = 1, time = 1000})
 		
-		text_obj[idx].alpha = 1
-		text_obj[idx]:toFront()
 		
 		-- 아이템 설명 화면에서 탭 누르면 화면 사라짐
 		local function hide_item( event )
@@ -116,7 +122,10 @@ function scene:create( event )
 			textChange()
 		end
 
-		item_bg:addEventListener("tap", hide_item)
+		local function tap_event()
+			item_bg:addEventListener("tap", hide_item)
+		end
+		timer.performWithDelay(1500, tap_event)
 	end
 
 	for i = 1, 7 do
@@ -124,18 +133,18 @@ function scene:create( event )
 	end
 
 	-- 좌표 알아내기용 이벤트
-	-- local function tab( event )
-	-- 	if ( event.phase == "began" ) then
-	-- 		print("touched")
-	-- 	elseif ( event.phase == "moved" ) then
-	-- 		print(event.x .. ", " .. event.y)
-	-- 	elseif ( event.phase == "ended") then
-	-- 		print("ended")
-	-- 	end
-	-- 	return true
-	-- end
+	local function tab( event )
+		if ( event.phase == "began" ) then
+			print("touched")
+		elseif ( event.phase == "moved" ) then
+			print(event.x .. ", " .. event.y)
+		elseif ( event.phase == "ended") then
+			print("ended")
+		end
+		return true
+	end
 
-	-- layer[5]:addEventListener("touch", tab)
+	layer[5]:addEventListener("touch", tab)
 
 end
 
