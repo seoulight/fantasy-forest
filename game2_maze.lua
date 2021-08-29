@@ -132,16 +132,18 @@ function scene:create( event )
 			nero1:pause()
 			if (nero1.x <= item.x) then
 				local item_bg = display.newRect(cx, cy, 1280, 720)
-				item_bg:setFillColor(0.3)
-				item_bg.alpha = 0.98
+				item_bg:setFillColor(0)
+				item_bg.alpha = 0
 				sceneGroup:insert(item_bg)
 				
 				local item_name = display.newImageRect("image/item/orange_name.png", 848 * 0.7, 275 * 0.7)
 				item_name.x, item_name.y = cx, cy * 0.5
+				item_name.alpha = 0
 				sceneGroup:insert(item_name)
 				
 				local item2 = display.newImageRect("image/item/orange.png", 300, 300)
 				item2.x, item2.y = cx, cy
+				item2.alpha = 0
 				sceneGroup:insert(item2)
 
 				local options = 
@@ -156,7 +158,14 @@ function scene:create( event )
 				}
 				local item_desc = display.newText(options)
 				item_desc:setFillColor(0.9)
+				item_desc.alpha = 0
 				sceneGroup:insert(item_desc)
+
+				transition.to(item_bg, {effect = "fade", alpha = 0.8, time = 800})
+				transition.to(item_name, {delay = 500, effect = "fade", alpha = 1, time = 1000})
+				transition.fadeIn(item2, {delay = 500, time = 1000})
+				transition.fadeIn(item_desc, {delay = 500, time = 1000})
+
 
 				local function itemTap( event )
 					sceneGroup:remove(item_bg)
@@ -173,7 +182,11 @@ function scene:create( event )
 					physics.addBody(nero2, "dynamic", {bounce=0.5, friction=0.1})
 				end
 
-				item_bg:addEventListener("tap", itemTap)				
+				local function tap_event()
+					item_bg:addEventListener("tap", itemTap)
+				end
+
+				timer.performWithDelay(1500, tap_event)
 			end
 		end
 	end
