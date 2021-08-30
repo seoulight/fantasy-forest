@@ -46,7 +46,15 @@ function scene:create( event )
 	
 	for i = 1, 25 do
 		piece[i] = display.newImageRect(pieceGroup, puzzleImg[i], 240, 240)
-		piece[i].x, piece[i].y = bg.x + math.random(-500, 500), bg.y + math.random(-300, 300)
+		if i % 5 == 0 then
+			piece[i].x, piece[i].y = math.random(200, 1100), math.random(20, 100)
+		elseif i % 6 == 0 then
+			piece[i].x, piece[i].y = math.random(200, 1100), math.random(600, 700)
+		elseif i % 2 == 0 then
+			piece[i].x, piece[i].y = math.random(20, 350), bg.y + math.random(-200, 200)
+		else
+			piece[i].x, piece[i].y = math.random(900, 1250), bg.y + math.random(-300, 300)
+		end
 		piece[i].name = i;
 	end
 
@@ -86,6 +94,7 @@ function scene:create( event )
 	function match( event )
 		local object = event.target;
 		if ( event.phase == "began") then
+			object:toFront()
 			display.getCurrentStage():setFocus( object )
 			object.isFocus = true
 		elseif ( event.phase == "moved" ) then
@@ -100,7 +109,7 @@ function scene:create( event )
 		end
 	end
 	
-    for i = 1, 25 do
+    for i = 25, 1, -1 do
 		piece[i]:addEventListener("touch", match)
 	end
 	
