@@ -76,7 +76,10 @@ function scene:create( event )
 	nero2.alpha = 0
 	sceneGroup:insert(nero2)
 
-	
+	local bubble = display.newImageRect("image/image2/bubble.png", 350, 400)
+	bubble.x, bubble.y = display.contentWidth * 0.5, display.contentHeight * 0.35
+	sceneGroup:insert(bubble)
+	bubble.alpha = 0
 
 	-- 인어와 대화 --
 	local mName, npc2, text
@@ -103,7 +106,11 @@ function scene:create( event )
 			nName.alpha = 0
 			mName.alpha = 1
 			-- 물거품 부는 모습 추가 --
+			transition.fadeIn(bubble, {time = 600})
+		end
 
+		if j == 7 then
+			transition.fadeOut(bubble, {time = 600})
 		end
 
 		-- 대화 끝 --
@@ -126,54 +133,56 @@ function scene:create( event )
 	end
 
 	local function textScene() 
-		-- 대화창 --
-		transition.to( npc, { alpha = 0.8, effect = "fade", time = 900 } )
-		transition.to( nero, { alpha = 0.8, effect = "fade", time = 900 } )
-		text2.alpha = 0
-		transition.to( text1, { alpha = 0.8, effect = "fade", time = 900 } )
+		if npc.x == 550 then
+			-- 대화창 --
+			transition.to( npc, { alpha = 0.8, effect = "fade", time = 900 } )
+			transition.to( nero, { alpha = 0.8, effect = "fade", time = 900 } )
+			text2.alpha = 0
+			transition.to( text1, { alpha = 0.8, effect = "fade", time = 900 } )
 
-		-- 대화창 이름 --
-		mName = display.newText("언니인어", 282, 437, "fonts/SeoulNamsanB.ttf", 32)
-		sceneGroup:insert(mName)
-		mName.alpha = 0
-		transition.fadeIn( mName, { effect = "fade", time = 900 } )
+			-- 대화창 이름 --
+			mName = display.newText("언니인어", 282, 437, "fonts/SeoulNamsanB.ttf", 32)
+			sceneGroup:insert(mName)
+			mName.alpha = 0
+			transition.fadeIn( mName, { effect = "fade", time = 900 } )
 
-		npc2 = display.newImageRect("image/image2/mermaid_1.png", 450, 680)
-		npc2.x, npc2.y = display.contentWidth * 0.75, display.contentHeight * 0.53
-		sceneGroup:insert(npc2)
-		npc2.alpha = 0
-		transition.fadeIn( npc2, { effect = "fade", time = 900 } )
+			npc2 = display.newImageRect("image/image2/mermaid_1.png", 450, 680)
+			npc2.x, npc2.y = display.contentWidth * 0.75, display.contentHeight * 0.53
+			sceneGroup:insert(npc2)
+			npc2.alpha = 0
+			transition.fadeIn( npc2, { effect = "fade", time = 900 } )
 
-		text1:toFront()
-		mName:toFront()
+			text1:toFront()
+			mName:toFront()
 
-		transition.fadeIn( nero2, { effect = "fade", time = 900 } )
+			transition.fadeIn( nero2, { effect = "fade", time = 900 } )
 
-		
+			
 
-		-- 대사: 네로가 따라하는 부분 추가해야함 --
-		text = { }
-		text[1] = display.newText("너, 푸른빛인지 뭔지를 찾으려면 바다로 들어와야 한다고?", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
-		text[2] = display.newText("내가 도와줄 테니까, 너도 내 동생 찾는 것 좀 도와주지 않을래?", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
-		text[3] = display.newText("물속에서도 숨 쉴 수 있게 해주는 마법을 걸어줄게. 내가 하라는 대로 따라 해.", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
-		text[4] = display.newText("순수한 물, 반짝이는 파랑, 그 아래 모든 생명의 숨.", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
-		text[5] = display.newText("순수한 물, 반짝이는 파랑, 그 아래 모든 생명의 숨.", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
-		text[6] = display.newText("(물거품 추가)", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
-		text[7] = display.newText("마법을 걸었으니 이제 물속에서도 숨을 쉴 수 있을 거야.", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
-		text[8] = display.newText(" ", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
+			-- 대사: 네로가 따라하는 부분 추가해야함 --
+			text = { }
+			text[1] = display.newText("너, 푸른빛인지 뭔지를 찾으려면 바다로 들어와야 한다고?", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
+			text[2] = display.newText("내가 도와줄 테니까, 너도 내 동생 찾는 것 좀 도와주지 않을래?", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
+			text[3] = display.newText("물속에서도 숨 쉴 수 있게 해주는 마법을 걸어줄게. 내가 하라는 대로 따라 해.", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
+			text[4] = display.newText("순수한 물, 반짝이는 파랑, 그 아래 모든 생명의 숨.", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
+			text[5] = display.newText("순수한 물, 반짝이는 파랑, 그 아래 모든 생명의 숨.", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
+			text[6] = display.newText(" ", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
+			text[7] = display.newText("마법을 걸었으니 이제 물속에서도 숨을 쉴 수 있을 거야.", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
+			text[8] = display.newText(" ", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
 
-		text[1]:setFillColor(0)
+			text[1]:setFillColor(0)
 
-		for i = 2, 7 do
-			text[i].alpha = 0
-			text[i]:setFillColor(0)
+			for i = 2, 7 do
+				text[i].alpha = 0
+				text[i]:setFillColor(0)
+			end
+			bg:addEventListener("tap", nextText)
+			npc:removeEventListener("tap", textScene)
 		end
-		bg:addEventListener("tap", nextText)
-		npc:removeEventListener("tap", textScene)
 	end	
 
 	npc:addEventListener("tap", textScene)
-
+	
 	-- 방향키 입력시 움직이는 이벤트리스너
 	local function move1( event )
 		if (event.phase == "down") then
@@ -224,7 +233,7 @@ function scene:create( event )
 				nName:toFront()
 
 				local function removeItems()
-					-- 틀릭하면 대화창 사라짐 --
+					-- 클릭하면 대화창 사라짐 --
 					transition.fadeOut( nero2, { effect = "fade", time = 500 } )
 					transition.fadeOut( text2, { effect = "fade", time = 500 } )
 					transition.fadeOut( nName, { effect = "fade", time = 500 } )

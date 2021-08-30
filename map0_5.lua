@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------------------------
 --
 -- map0_5.lua
--- 무지개호수(빨강->빨+초) // '파레트, 붓'은 파랑으로 해둠. 초록 그려주시면 바꾸기!!!!(150번째 줄)
+-- 무지개호수(빨강->빨+초) 
 -----------------------------------------------------------------------------------------
 
 local composer = require( "composer" )
@@ -148,13 +148,12 @@ function scene:create( event )
 
 	local j = 0
 	-- 팔레트, 브러쉬 --
-	-- 나중에 blue -> green으로 바꾸기 --
 	local function color()
 		j = 1
-		local palette1 = display.newImageRect("image/color/palette_blue1.png", 700, 700)
+		local palette1 = display.newImageRect("image/color/palette_green1.png", 700, 700)
 		palette1.x, palette1.y = display.contentWidth*0.27, display.contentHeight*0.52
 
-		local palette2 = display.newImageRect("image/color/palette_blue2.png", 700, 700)
+		local palette2 = display.newImageRect("image/color/palette_green2.png", 700, 700)
 		palette2.x, palette2.y = display.contentWidth*0.27, display.contentHeight*0.52
 		sceneGroup:insert(palette2)
 		palette2.alpha = 0
@@ -166,7 +165,7 @@ function scene:create( event )
 		sceneGroup:insert(brush1)
 		brush1.alpha = 0
 
-		local brush2 = display.newImageRect("image/color/brush_blue.png", 450, 550)
+		local brush2 = display.newImageRect("image/color/brush_green.png", 450, 550)
 		brush2.x, brush2.y = display.contentWidth*0.45, display.contentHeight*0.86
 		sceneGroup:insert(brush2)
 		brush2.alpha = 0
