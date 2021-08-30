@@ -159,30 +159,10 @@ function scene:create( event )
 	text.alpha = 0
 
 	-- 네로 혼잣말 --
-	local j = 0
-
-	local function talk()
-		j = 1
-		transition.to( text1, { alpha = 0.8, effect = "fade", time = 900 } )
-		transition.fadeIn( nero2, { effect = "fade", time = 900 } )
-		transition.fadeIn( neroName, { effect = "fade", time = 900 } )
-		transition.fadeIn( text, { effect = "fade", time = 900 } )
-
-		local function remove()
-			transition.fadeOut( text1, { effect = "fade", time = 900 } )
-			transition.fadeOut( nero2, { effect = "fade", time = 900 } )
-			transition.fadeOut( neroName, { effect = "fade", time = 900 } )
-			transition.fadeOut( text, { effect = "fade", time = 900 } )
-		end
-
-		text1:addEventListener("tap", remove)
-	end
+	local flag = 0
 
 	-- 방향키 입력시 움직이는 이벤트리스너
-	function move( event )
-		if (nero.x >= display.contentWidth*0.3 and j ~= 1) then
-			talk()
-		end
+	local function move( event )
 		if (nero.x > display.contentWidth*0.9) then
 			Runtime:removeEventListener("key", move)
 			composer.gotoScene("map0_2", { effect = "fade", time = 900 })
@@ -191,8 +171,11 @@ function scene:create( event )
 			if (event.keyName == "right") then
 				nero:setSequence("walkRight")
 				nero:play()
-				transition.to(nero, {x = nero.x + 1000, time = 7000})
-				
+				if (nero.x < 700) then
+					transition.moveBy(nero, { x = 700 - nero.x, time = (700 - nero.x) * 7 })
+				else
+					transition.moveBy(nero, { x = 1280 - nero.x, time = (1280 - nero.x) * 7 })
+				end
 			elseif (event.keyName == "left") then
 				nero:setSequence("walkLeft")
 				nero:play()
@@ -201,6 +184,24 @@ function scene:create( event )
 		elseif (event.phase == "up") then
 			transition.cancel(nero) -- 이동 정지
 			nero:pause()
+			if (nero.x == 700 and flag ~= 1) then
+				flag = 1
+				Runtime:removeEventListener("key", move)
+				transition.to( text1, { alpha = 0.8, effect = "fade", time = 900 } )
+				transition.fadeIn( nero2, { effect = "fade", time = 900 } )
+				transition.fadeIn( neroName, { effect = "fade", time = 900 } )
+				transition.fadeIn( text, { effect = "fade", time = 900 } )
+
+				local function remove()
+					transition.fadeOut( text1, { effect = "fade", time = 900 } )
+					transition.fadeOut( nero2, { effect = "fade", time = 900 } )
+					transition.fadeOut( neroName, { effect = "fade", time = 900 } )
+					transition.fadeOut( text, { effect = "fade", time = 900 } )
+					Runtime:addEventListener("key", move)
+				end
+
+				text1:addEventListener("tap", remove)
+			end
 		end
 	end
 
