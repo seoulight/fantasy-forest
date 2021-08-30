@@ -238,8 +238,8 @@ function scene:create( event )
 	function move( event )
 		if (nero.x <= display.contentWidth*0.1) then
 			-- 피터팬 맵으로 이동 --
-			--Runtime:removeEventListener("key", move)
-			--composer.gotoScene("map2_1", { effect = "fade", time = 900 })
+			Runtime:removeEventListener("key", move)
+			composer.gotoScene("map3_1", { effect = "fade", time = 900 })
 		end
 		if (event.phase == "down") then
 			if (event.keyName == "right") then

@@ -145,16 +145,20 @@ function scene:create( event )
 
 	-- 방향키 입력시 움직이는 이벤트리스너
 	function move( event )
+		if (nero.x <= 0) then
+			Runtime:removeEventListener("key", move)
+			composer.gotoScene("map1_0", { effect = "fade", time = 900 })
+		end
 		if (event.phase == "down") then
 			if (event.keyName == "right") then
 				nero:setSequence("walkRight")
 				nero:play()
-				transition.to(nero, {x = nero.x + 1000, time = 7000})
+				transition.moveBy(nero, {x = 680 - nero.x, time = (680 - nero.x) * 7})
 				
 			elseif (event.keyName == "left") then
 				nero:setSequence("walkLeft")
 				nero:play()
-				transition.to(nero, {x = nero.x - 1000, time = 7000})
+				transition.moveBy(nero, {x = -nero.x, time = nero.x * 7})
 			end
 		elseif (event.phase == "up") then
 			transition.cancel(nero) -- 이동 정지
