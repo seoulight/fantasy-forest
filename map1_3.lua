@@ -198,18 +198,18 @@ function scene:create( event )
 	text1:addEventListener("tap", nextText)
 	text2:addEventListener("tap", nextText)
 
-	local k = 0
+	local flag = 0
 	-- 방향키 입력시 움직이는 이벤트리스너 --
 	local function move( event )
-		if (nero.x > 600 and k == 0) then
-			k = 1
-			talk()
-		end
 		if (event.phase == "down") then
 			if (event.keyName == "right") then
 				nero:setSequence("walkRight")
 				nero:play()
-				transition.to(nero, {x = nero.x + 1000, time = 7000})
+				if (nero.x < 640) then
+					transition.moveBy(nero, { x = 640 - nero.x, time = (640 - nero.x) * 7 })
+				else
+					transition.moveBy(nero, { x = 1280 - nero.x, time = (1280 - nero.x) * 7 })
+				end
 					
 			elseif (event.keyName == "left") then
 				nero:setSequence("walkLeft")
@@ -219,6 +219,11 @@ function scene:create( event )
 		elseif (event.phase == "up") then
 			transition.cancel(nero) -- 이동 정지
 			nero:pause()
+			if (nero.x == 640 and flag ~= 1) then
+				flag = 1
+				Runtime:removeEventListener("key", move)
+				talk()
+			end
 		end
 	end
 
