@@ -38,10 +38,13 @@ function scene:create( event )
 	sceneGroup:insert(nero);
 
 	-- 타이틀 등장 후 사라지게 --
-	local title = display.newImage("image/image1/map1_title.png")
+	local title = display.newImageRect("image/image1/map1_title.png", 677 * 0.7, 265 * 0.7)
 	title.x, title.y = display.contentWidth*0.5, display.contentHeight*0.35
+	title.alpha = 0
 	sceneGroup:insert(title)
-	transition.fadeOut(title, { delay = 700, time = 1000 })
+	transition.to(title, { effect = "fade", alpha = 1, time = 1000 })
+	transition.to(title, { delay = 2500, effect = "fade", alpha = 0, time = 1000})
+	
 
 
 	local block_img = {"image/image1/1.png", "image/image1/2.png", "image/image1/3.png", "image/image1/1.png"}
