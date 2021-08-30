@@ -119,12 +119,12 @@ function scene:create( event )
 
 	-- 탭 하면 대화창 사라짐 --
 	local function nextScene()
-		sceneGroup:remove(bl1Group)
-		sceneGroup:remove(bl2Group)
-		sceneGroup:remove(text1)
-		sceneGroup:remove(cat)
-		sceneGroup:remove(neroDefault)
-		sceneGroup:remove(stdCat)
+		bl1Group.alpha = 0
+		bl2Group.alpha = 0
+		text1.alpha = 0
+		cat.alpha = 0
+		neroDefault.alpha = 0
+		stdCat.alpha = 0
 
 		text[1].alpha = 0
 
@@ -241,10 +241,12 @@ function scene:create( event )
 
 				elseif (event.keyName == "enter") then
 					-- 첫 번째 문, 세 번째 문 / 오답->재시도
-					if((nero.x > display.contentWidth * 0.18 and nero.x < display.contentWidth * 0.29) or (nero.x > display.contentWidth * 0.58 and nero.x < display.contentWidth * 0.69)) then
+					if((nero.x >= display.contentWidth * 0.2 and nero.x <= display.contentWidth * 0.29) or (nero.x >= display.contentWidth * 0.6 and nero.x <= display.contentWidth * 0.69)) then
+						Runtime:removeEventListener("key", move)
 						scene:create() 
 					-- 두 번째 문 / 정답->장미정원으로 이동
-					elseif(nero.x > display.contentWidth * 0.4 and nero.x < display.contentWidth * 0.49) then
+					elseif(nero.x >= display.contentWidth * 0.41 and nero.x <= display.contentWidth * 0.49) then
+						Runtime:removeEventListener("key", move)
 						composer.removeScene("map1_4")
 						composer.gotoScene("map1_5", { effect = "fade", time = 900 })		
 					end
@@ -287,7 +289,6 @@ function scene:hide( event )
 	elseif phase == "did" then
 		-- Called when the scene is now off screen
 		composer.removeScene("map1_4")
-		Runtime:removeEventListener("key", move)
 	end
 end
 

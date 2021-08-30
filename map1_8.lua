@@ -89,7 +89,7 @@ function scene:create( event )
 			}
 		}
 	local nero = display.newSprite(nero_sheet, sequences_nero)
-	nero.x, nero.y = display.contentWidth * 0.22, display.contentHeight * 0.81
+	nero.x, nero.y = display.contentWidth * 0.35, display.contentHeight * 0.81
 
 	-- 1층 --
 	local b1 = { }

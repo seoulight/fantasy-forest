@@ -162,20 +162,18 @@ function scene:create( event )
 	local rName, bName, black2, black3, red2, red3, text
 	-- 카드병정 대화 --
 	local function textScene()
-		
-		-- 대화창 --
-		text1.alpha = 1
-
 		-- 대화창 이름 --
 		rName = display.newText("하트 3", 282, 437, "fonts/SeoulNamsanB.ttf", 32)
 		rName.alpha = 0
 
 		bName = display.newText("스페이드 5", 282, 437, "fonts/SeoulNamsanB.ttf", 32)
 		sceneGroup:insert(bName)
+		bName.alpha = 0
 
 		black2 = display.newImageRect("image/char/black_01.png", 370, 360)
 		black2.x, black2.y = bg.x*1.55, bg.y*0.77
 		sceneGroup:insert(black2)
+		black2.alpha = 0
 
 		black3 = display.newImageRect("image/char/black_03.png", 420, 380)
 		black3.x, black3.y = bg.x*1.5, bg.y*0.743
@@ -184,6 +182,7 @@ function scene:create( event )
 		red2 = display.newImageRect("image/char/red_03.png", 360, 400)
 		red2.x, red2.y = bg.x*0.5, bg.y*0.57
 		sceneGroup:insert(red2)
+		red2.alpha = 0
 
 		red3 = display.newImageRect("image/char/red_05.png", 360, 400)
 		red3.x, red3.y = bg.x*0.5, bg.y*0.57
@@ -202,25 +201,32 @@ function scene:create( event )
 		text[9] = display.newText(" ", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
 
 		text[1]:setFillColor(0)
+		text[1].alpha = 0
 
 		for i = 2, 9 do
 			text[i].alpha = 0
 			text[i]:setFillColor(0)
 		end
-		
+
+		transition.fadeIn( black2, { time = 900 } )
+		transition.fadeIn( red2, {  time = 900 } )
+		transition.fadeIn( text1, {  time = 900 } )
+		transition.fadeIn( bName, { time = 900 } )
+		transition.fadeIn( text[1], { time = 900 } )
 	end
 
+	local flag = 0
 	---- 방향키 입력시 움직이는 이벤트리스너 --
 	local function move( event )
-		if(nero.x >= display.contentWidth * 0.36) then
-			Runtime:removeEventListener("key", move)
-			textScene()
-		end
 		if (event.phase == "down") then
 			if (event.keyName == "right") then
 				nero:setSequence("walkRight")
 				nero:play()
-				transition.to(nero, {x = nero.x + 1000, time = 7000})
+				if (nero.x < 490) then
+					transition.moveBy(nero, { x = 490 - nero.x, time = (490 - nero.x) * 7 })
+				else
+					transition.moveBy(nero, { x = 1280 - nero.x, time = (1280 - nero.x) * 7 })
+				end
 				
 			elseif (event.keyName == "left") then
 				nero:setSequence("walkLeft")
@@ -230,6 +236,11 @@ function scene:create( event )
 		elseif (event.phase == "up") then
 			transition.cancel(nero) -- 이동 정지
 			nero:pause()
+			if (nero.x == 490 and flag ~= 1) then
+				flag = 1
+				Runtime:removeEventListener("key", move)
+				textScene()
+			end
 		end
 	end
 
@@ -270,10 +281,11 @@ function scene:create( event )
 		end
 
 		if j == 9 then
-			bName.alpha = 0
-			black3.alpha = 0
-			red3.alpha = 0
-			text1.alpha = 0
+			transition.fadeOut( bName, {  time = 900 } )
+			transition.fadeOut( black3, {  time = 900 } )
+			transition.fadeOut( red3, {  time = 900 } )
+			transition.fadeOut( text1, {  time = 900 } )
+
 			text1:removeEventListener("tap", nextText)
 			
 			composer.removeScene("map1_7")

@@ -163,10 +163,9 @@ function scene:create( event )
 	local rName, bName, black2, red2, red3, nero2, text
 
 	local function textScene() 
-		-- 대화창 --
-		text1.alpha = 1
 		-- 대화창 이름 --
 		rName = display.newText("하트 3", 282, 437, "fonts/SeoulNamsanB.ttf", 32)
+		rName.alpha = 0
 
 		bName = display.newText("스페이드 5", 282, 437, "fonts/SeoulNamsanB.ttf", 32)
 		bName.alpha = 0
@@ -174,10 +173,12 @@ function scene:create( event )
 		black2 = display.newImageRect("image/char/black_01.png", 370, 360)
 		black2.x, black2.y = bg.x*1.55, bg.y*0.77
 		sceneGroup:insert(black2)
+		black2.alpha = 0
 
 		red2 = display.newImageRect("image/char/red_03.png", 360, 400)
 		red2.x, red2.y = bg.x*0.5, bg.y*0.57
 		sceneGroup:insert(red2)
+		red2.alpha = 0
 
 		red3 = display.newImageRect("image/char/red_01.png", 360, 400)
 		red3.x, red3.y = bg.x*0.5, bg.y*0.57
@@ -199,11 +200,18 @@ function scene:create( event )
 		text[8] = display.newText(" ", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
 
 		text[1]:setFillColor(0)
+		text[1].alpha = 0
 
 		for i = 2, 8 do
 			text[i].alpha = 0
 			text[i]:setFillColor(0)
 		end
+
+		transition.fadeIn( black2, { time = 900 } )
+		transition.fadeIn( red2, {  time = 900 } )
+		transition.fadeIn( text1, {  time = 900 } )
+		transition.fadeIn( rName, { time = 900 } )
+		transition.fadeIn( text[1], { time = 900 } )
 	end	
 
 	-- 탭 하면 다음 text --
@@ -225,10 +233,10 @@ function scene:create( event )
 		end
 		
 		if j == 5 then
-			red3.alpha = 0
-			red1.alpha = 0
+			transition.fadeOut( red1, { time = 600 } )
+			transition.fadeOut( red3, { time = 600 } )
 		elseif j == 6 then
-			nero2.alpha = 1
+			transition.fadeIn( nero2, { time = 600 } )
 		end
 
 		if j == 1 then
@@ -239,15 +247,14 @@ function scene:create( event )
 			text[j - 1].alpha = 0
 		end
 
-		-- 오솔길로 돌아감 --
+		-- 대화 끝 --
 		if j == 8 then
 			text[j].alpha = 1
-			nero2.alpha = 0
-			black2.alpha = 0
-			text1.alpha = 0
-			bName.alpha = 0
-			--composer.removeScene("map1_5")
-			--composer.gotoScene("map1_6", { effect = "fade", time = 900 })
+			transition.fadeOut( nero2, { time = 900 } )
+			transition.fadeOut( black2, { time = 900 } )
+			transition.fadeOut( text1, { time = 900 } )
+			transition.fadeOut( bName, { time = 900 } )
+			text1:removeEventListener("tap", nextText)
 		end
 
 		if j < 8 then
@@ -258,35 +265,39 @@ function scene:create( event )
 
 	text1:addEventListener("tap", nextText)	
 
-	local k = 0
+	local flag = 0
 	-- 방향키 입력시 움직이는 이벤트리스너 --
 	local function move( event )
-		if(nero.x >= display.contentWidth * 0.36 and k == 0) then
-			--Runtime:removeEventListener("key", move)
-			k = 1
-			textScene()
-		end
 		if (event.phase == "down") then
 			if (event.keyName == "right") then
 				nero:setSequence("walkRight")
 				nero:play()
-				transition.to(nero, {x = nero.x + 1000, time = 7000})
+				if (nero.x < 490) then
+					transition.moveBy(nero, { x = 490 - nero.x, time = (490 - nero.x) * 7 })
+				else
+					transition.moveBy(nero, { x = 1280 - nero.x, time = (1280 - nero.x) * 7 })
+				end
 				
 			elseif (event.keyName == "left") then
 				nero:setSequence("walkLeft")
 				nero:play()
 				transition.to(nero, {x = nero.x - 1000, time = 7000})
-			--end
-			elseif (event.keyName == "enter" and k == 1) then
-					-- 문으로 가면 체셔 맵 나옴 --
-					if(nero.x >= display.contentWidth * 0.07 and nero.x <= display.contentWidth * 0.14) then
-						composer.removeScene("map1_5")
-						composer.gotoScene("map1_6", { effect = "fade", time = 900 })		
-					end
+
+			elseif (event.keyName == "enter" and flag == 1) then
+				-- 문으로 가면 체셔 맵 나옴 --
+				if(nero.x >= display.contentWidth * 0.07 and nero.x <= display.contentWidth * 0.14) then
+					Runtime:removeEventListener("key", move)
+					composer.removeScene("map1_5")
+					composer.gotoScene("map1_6", { effect = "fade", time = 900 })
 				end
+			end
 		elseif (event.phase == "up") then
 			transition.cancel(nero) -- 이동 정지
 			nero:pause()
+			if (nero.x == 490 and flag ~= 1) then
+				flag = 1
+				textScene()
+			end
 		end
 	end
 	Runtime:addEventListener("key", move)
@@ -318,7 +329,6 @@ function scene:hide( event )
 	elseif phase == "did" then
 		-- Called when the scene is now off screen
 		composer.removeScene("map1_5")
-		--Runtime:addEventListener("key", move)
 	end
 end
 
