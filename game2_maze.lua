@@ -82,9 +82,6 @@ function scene:create( event )
 	item.x, item.y = cx - 200, cy * 0.24
 	sceneGroup:insert(item)
 
-	-- 물리엔진에 네로 추가
-	-- physics.addBody(nero2, "dynamic", {bounce=0.5, friction=0.1})
-
 	-- 방향키 입력시 움직이는 이벤트리스너
 
 	-- 작아진 후
@@ -106,6 +103,7 @@ function scene:create( event )
 				transition.to(nero2, {y = nero2.y + 15, time = 20})
 				if (nero2.y > 715) then
 					Runtime:removeEventListener("key", move2)
+					physics.stop()
 					composer.gotoScene("map1_3", { effect = "fade", time = 500 })
 				end
 			end
@@ -162,9 +160,9 @@ function scene:create( event )
 				sceneGroup:insert(item_desc)
 
 				transition.to(item_bg, {effect = "fade", alpha = 0.8, time = 800})
-				transition.to(item_name, {delay = 500, effect = "fade", alpha = 1, time = 1000})
-				transition.fadeIn(item2, {delay = 500, time = 1000})
-				transition.fadeIn(item_desc, {delay = 500, time = 1000})
+				transition.to(item_name, {delay = 800, effect = "fade", alpha = 1, time = 1000})
+				transition.fadeIn(item2, {delay = 800, time = 1000})
+				transition.fadeIn(item_desc, {delay = 1800, time = 1000})
 
 
 				local function itemTap( event )
@@ -179,14 +177,35 @@ function scene:create( event )
 					nero2.alpha = 1
 					Runtime:removeEventListener("key", move1)
 					Runtime:addEventListener("key", move2)
-					physics.addBody(nero2, "dynamic", {bounce=0.5, friction=0.1})
+					physics.addBody(nero2, "dynamic", {bounce = 0.2, friction = 0.1})
+
+					local wall1 = display.newRect(340, 60, 120, 120)
+					wall1.alpha = 0
+					sceneGroup:insert(wall1)
+
+					local wall2 = display.newRect(940, 60, 120, 120)
+					wall2.alpha = 0
+					sceneGroup:insert(wall2)
+
+					local wall3 = display.newRect(340, 660, 120, 120)
+					wall3.alpha = 0
+					sceneGroup:insert(wall3)
+
+					local wall4 = display.newRect(940, 660, 120, 120)
+					wall4.alpha = 0
+					sceneGroup:insert(wall4)
+
+					physics.addBody(wall1, "static", {bounce = 0.5, friction = 0.1})
+					physics.addBody(wall2, "static", {bounce = 0.5, friction = 0.1})
+					physics.addBody(wall3, "static", {bounce = 0.5, friction = 0.1})
+					physics.addBody(wall4, "static", {bounce = 0.5, friction = 0.1})
 				end
 
 				local function tap_event()
 					item_bg:addEventListener("tap", itemTap)
 				end
 
-				timer.performWithDelay(1500, tap_event)
+				timer.performWithDelay(2800, tap_event)
 			end
 		end
 	end
