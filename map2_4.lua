@@ -167,13 +167,11 @@ function scene:create( event )
 			text1:removeEventListener("tap", nextText)
 			text2:removeEventListener("tap", nextText)
 			
-			local options =
-			{
-			    isModal = true,
-			    effect = "fade",
-			    time = 700,
-			}
-			composer.showOverlay("map2_5", options)
+			local function listener( event )
+				composer.gotoScene("map2_5")
+			end
+
+			timer.performWithDelay( 1000, listener, 1)
 		end
 
 		if j < 3 then
@@ -192,7 +190,7 @@ function scene:create( event )
 			if (event.keyName == "right") then
 				nero:setSequence("walkRight")
 				nero:play()
-				if (nero.x < 500 and flag == 0) then
+				if (nero.x < 500) then
 					transition.moveBy(nero, { x = 500 - nero.x, time = (500 - nero.x) * 7 })
 				else
 					transition.moveBy(nero, { x = 1280 - nero.x, time = (1280 - nero.x) * 7 })
