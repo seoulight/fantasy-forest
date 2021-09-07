@@ -234,7 +234,7 @@ function scene:create( event )
 			if (event.keyName == "right") then
 				nero:setSequence("walkRight")
 				nero:play()
-				transition.moveBy(nero, {x = 680 - nero.x, time = (680 - nero.x) * 7})
+				transition.moveBy(nero, {x = 600 - nero.x, time = (600 - nero.x) * 7})
 				
 			elseif (event.keyName == "left") then
 				nero:setSequence("walkLeft")

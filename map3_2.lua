@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------------------------
 --
 -- map3_2.lua
---
+-- 
 -----------------------------------------------------------------------------------------
 
 local composer = require( "composer" )
@@ -10,46 +10,6 @@ local scene = composer.newScene()
 function scene:create( event )
 	local sceneGroup = self.view
 	local cx, cy = display.contentWidth * 0.5, display.contentHeight * 0.5
-	
-
-	-- 아이템 이미지 파일 목록
-	local item_img = {"image/item/깨진램프.png", "image/item/낡은유리병편지.png", "image/item/녹슨회중시계.png", "image/item/빛바랜거울.png",
-	"image/item/얼룩진동전.png", "image/item/작은티아라.png", "image/item/푸른진주목걸이.png"}
-	-- 아이템 이름 이미지 파일 목록
-	local title_img = {"image/item/깨진램프_타이틀.png", "image/item/낡은유리병편지_타이틀.png", "image/item/녹슨회중시계_타이틀.png",
-	"image/item/빛바랜거울_타이틀.png", "image/item/얼룩진동전_타이틀.png", "image/item/작은티아라_타이틀.png", "image/item/푸른진주목걸이_타이틀.png"}
-
-	item = {}
-	item_pos = {{659, 655}, {213, 387}, {515, 534}, {539, 394}, {95, 225}, {1255, 230}, {1004, 562}}
-	title = {}
-	-- 아이템 설명 텍스트
-	item_text = {"설명1", "설명2", "설명3", "설명4", "설명5", "설명6", "설명7"}
-	text_obj = {}
-	for i = 1, 7 do
-		item[i] = display.newImageRect(item_img[i], 100, 100)
-		item[i].name = i
-		item[i].x, item[i].y = item_pos[i][1], item_pos[i][2]
-		sceneGroup:insert(item[i])
-
-		title[i] = display.newImageRect(title_img[i], 848 * 0.7, 275 * 0.7)
-		title[i].x, title[i].y = 640, 180
-		title[i].alpha = 0
-		sceneGroup:insert(title[i])
-
-		text_obj[i] = display.newText(
-		{
-			text = item_text[i],
-			x = cx,
-			y = 600,
-			width = 400,
-			font = "fonts/SeoulNamsanB.ttf",
-			fontSize = 25,
-			align = "center"  -- Alignment parameter
-		} )
-		text_obj[i]:setFillColor(0.9)
-		text_obj[i].alpha = 0
-		sceneGroup:insert(text_obj[i])
-	end
 
 	local layer_img = {"image/image2/2-5.png", "image/image2/2-4.png", "image/image2/2-3.png", "image/image2/2-2.png",
 	"image/image2/2-1.png"}
@@ -61,77 +21,195 @@ function scene:create( event )
 		sceneGroup:insert(layer[i])
 	end
 	
-	
 	sceneGroup:insert(1, layer[2])
-	for i = 2, 6, 2 do
-		item[i].alpha = 0.4
-		sceneGroup:insert(1, item[i])
-	end
 	sceneGroup:insert(1, layer[1])
-	transition.to(item[6], {time = 0, rotation = -45})
-	transition.to(item[1], {time = 0, rotation = -30})
-	
 
-	local find_num = 7
+	-- 네로 캐릭터
+	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 100, height = 166, numFrames = 4})
+	local sequences_nero = {
+		{
+			name = "walkRight",
+			frames = { 1, 2 },
+			time = 300,
+			loopCount = 0,
+			loopDirection = "forward"
+		},
+		{
+			name = "walkLeft",
+			frames = { 3, 4 },
+			time = 300,
+			loopCount = 0,
+			loopDirection = "forward"
+		}
+	}
+	local nero = display.newSprite(nero_sheet, sequences_nero)
+	nero.x, nero.y = 80, display.contentHeight * 0.8
+	sceneGroup:insert(nero)
 
-	local text_num = display.newText(
-	{	text = "찾아야 할 물건 : "..tostring(find_num),
-		x = 1150,
-		y = 50,
-		font = "fonts/SeoulNamsanB.ttf",
-		fontSize = 25 })
-	text_num:setFillColor(0)
-	sceneGroup:insert(text_num)
+	local m1 = display.newImageRect("image/image2/m1_smile.png", 223 * 0.9, 342 * 0.9)
+	m1.x, m1.y = display.contentWidth * 0.58, display.contentHeight * 0.7
+	sceneGroup:insert(m1)
 
-	local item_bg = display.newRect(cx, cy, 1280, 720)
-	item_bg:setFillColor(0)
-	item_bg.alpha = 0
-	sceneGroup:insert(item_bg)
-	
-	local function textChange()
-		find_num = find_num - 1
-		text_num.text = "찾아야 할 물건 : "..tostring(find_num)
+	-- 캐릭터 대화버전 --
+	local nero2 = display.newImageRect("image/char/nero_default2.png", 360, 400)
+	nero2.x, nero2.y = display.contentWidth * 0.18, display.contentHeight * 0.32
+	sceneGroup:insert(nero2)
+	nero2.alpha = 0
+
+	local bird = display.newImageRect("image/char/bird_default.png", 556*0.25, 630*0.25)
+	bird.x, bird.y = display.contentWidth * 0.285, display.contentHeight * 0.51
+	sceneGroup:insert(bird)
+	bird.alpha = 0
+
+	local m2 = display.newImageRect("image/image2/m1_smile.png", 450, 680)
+	m2.x, m2.y = display.contentWidth * 0.75, display.contentHeight * 0.53
+	sceneGroup:insert(m2)
+	m2.alpha = 0
+
+	-- 대화창 --
+	local text1 = display.newImageRect("image/char/text3.png", 1135, 330)
+	text1.x, text1.y = display.contentWidth * 0.5, display.contentHeight * 0.735
+	sceneGroup:insert(text1)
+	text1.alpha = 0
+
+	local text2 = display.newImageRect("image/char/text_nero.png", 1145, 332)
+	text2.x, text2.y = display.contentWidth * 0.5, display.contentHeight * 0.745
+	sceneGroup:insert(text2)
+	text2.alpha = 0
+
+	local text3 = display.newImageRect("image/char/text1.png", 1125, 360)
+	text3.x, text3.y = display.contentWidth * 0.5, display.contentHeight * 0.75
+	sceneGroup:insert(text3)
+	text3.alpha = 0
+
+	-- 대화창 이름 --
+	local name = display.newText("언니인어", 282, 430, "fonts/SeoulNamsanB.ttf", 32)
+	sceneGroup:insert(name)
+	name.alpha = 0
+
+	local bName = display.newText("앵무", 282, 430, "fonts/SeoulNamsanB.ttf", 32)
+	sceneGroup:insert(bName)
+	bName.alpha = 0
+
+	local neroName = display.newText("네로", 282, 430, "fonts/SeoulNamsanB.ttf", 32)
+	sceneGroup:insert(neroName)
+	neroName.alpha = 0
+
+	-- 대사 --
+	local text = { }
+	text[1] = display.newText("이 망망대해에서 어린 인어를 어떻게 찾지? ", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
+	text[2] = display.newText("무작정 찾지 말고 단서를 찾아 추리해보자.", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
+	text[3] = display.newText("좋아. 막내 인어에 대해 아는 게 있어?", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
+	text[4] = display.newText("어린데도 헤엄치는 것이 유독 빨라서 멀리까지 갔을지도 몰라.", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
+	text[5] = display.newText("이곳저곳 돌아다니며 이상한 것을 주워오거나 눈독 들이는 때가 잦아.", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
+	text[6] = display.newText("물건 흘리기는 또 잘 흘리고 다닌단 말이야.", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
+	text[7] = display.newText("집 안에 온갖 괴상한 물건들의 끝에는 늘 막내가 있었어.", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
+	text[8] = display.newText("실은 어젯밤에 막내를 심하게 혼냈는데 아침에 일어나보니 막내가 없어졌어.", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
+	text[9] = display.newText("나에게 화가 나서 가출을 한 걸까?", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
+	text[10] = display.newText("음, 우선 주변에 막내가 관심을 가질만한 물건이 떨어져 있는지 살펴보고 자취를 쫓아가자.", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
+	text[11] = display.newText("", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
+
+	text[1]:setFillColor(0)
+	sceneGroup:insert(text[1])
+	text[1].alpha = 0
+
+	for i = 2, 11 do
+		text[i].alpha = 0
+		text[i]:setFillColor(0)
 	end
 
-	local function pick( event )
-		local obj = event.target
-		local idx = obj.name
-				
-		title[idx]:toFront()
-		text_obj[idx]:toFront()
-		sceneGroup:remove( item[idx] )
+	local function talk()
+		transition.fadeIn( text[1], { time = 900 } )
+		transition.to( text2, { alpha = 0.8, time = 900 } )
+		transition.fadeIn( neroName, { time = 900 } )
+		transition.fadeIn( nero2, { time = 900 } )
+		transition.fadeIn( bird, { time = 900 } )
+		transition.fadeIn( m2, { time = 900 } )
+	end
 
-		item[idx] = display.newImageRect(item_img[idx], 300, 300)
-		item[idx].x, item[idx].y = cx, 390
-		item[idx].alpha = 0
-		sceneGroup:insert(item[idx])
-
-		transition.to(item_bg, {effect = "fade", alpha = 0.8, time = 800})
-		transition.to(title[idx], {delay = 800, effect = "fade", alpha = 1, time = 1000})
-		transition.fadeIn(item[idx], {delay = 800, time = 1000})
-		transition.to(text_obj[idx], {delay = 1800, effect = "fade", alpha = 1, time = 1000})
-		
-		
-		-- 아이템 설명 화면에서 탭 누르면 화면 사라짐
-		local function hide_item( event )
-			item_bg:removeEventListener("tap", hide_item)
-			item_bg.alpha = 0
-			title[idx].alpha = 0
-			item[idx].alpha = 0
-			text_obj[idx].alpha = 0
-			textChange()
+	-- 탭 하면 다음 text --
+	local j = 2
+	local function nextText()
+		-- 앵무 대사 --
+		if j == 2 or j == 10 then
+			name.alpha = 0
+			neroName.alpha = 0
+			bName.alpha = 1
+			text1.alpha = 0
+			text2.alpha = 0
+			text3.alpha = 1
+		-- 네로 대사 --
+		elseif j == 3 then
+			bName.alpha = 0
+			neroName.alpha = 1
+			text2.alpha = 0.8
+			text3.alpha = 0
+		-- 인어 대사 --
+		else
+			bName.alpha = 0
+			neroName.alpha = 0
+			name.alpha = 1
+			text1.alpha = 0.8
+			text2.alpha = 0
+			text3.alpha = 0
 		end
 
-		local function tap_event()
-			item_bg:addEventListener("tap", hide_item)
+
+		if j > 1 then
+			text[j - 1].alpha = 0
 		end
-		timer.performWithDelay(2800, tap_event)
+
+		if j == 11 then
+			bName.alpha = 0
+			neroName.alpha = 0
+			name.alpha = 0
+			text1.alpha = 0
+			text2.alpha = 0
+			text3.alpha = 0
+			text1:removeEventListener("tap", nextText)
+			text2:removeEventListener("tap", nextText)
+			text3:removeEventListener("tap", nextText)
+			composer.gotoScene("game4_findItems", { effect = "fade", time = 900 })
+		end
+
+		if j < 11 then
+			text[j].alpha = 1
+			j = j + 1
+		end
 	end
 
-	for i = 1, 7 do
-		item[i]:addEventListener("tap", pick)
+	text1:addEventListener("tap", nextText)
+	text2:addEventListener("tap", nextText)
+	text3:addEventListener("tap", nextText)
+
+
+	-- 방향키 입력시 움직이는 이벤트리스너
+	local function move2( event )	
+		if (event.phase == "down") then
+			if (event.keyName == "right") then
+				nero:setSequence("walkRight")
+				nero:play()
+				if (nero.x < 500) then
+					transition.moveBy(nero, { x = 500 - nero.x, time = (500 - nero.x) * 7 })
+				else
+					transition.moveBy(nero, { x = 1280 - nero.x, time = (1280 - nero.x) * 7 })
+				end			
+			elseif (event.keyName == "left") then
+				nero:setSequence("walkLeft")
+				nero:play()
+				transition.moveBy(nero, {x = -nero.x, time = nero.x * 7})
+			end
+		elseif (event.phase == "up") then
+			transition.cancel(nero) -- 이동 정지
+			nero:pause()
+			if (nero.x == 500) then
+				Runtime:removeEventListener("key", move2)
+				talk()
+			end	
+		end
 	end
 
+	Runtime:addEventListener("key", move2)
 end
 
 function scene:show( event )

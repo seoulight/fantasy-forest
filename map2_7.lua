@@ -145,7 +145,7 @@ function scene:create( event )
 
 	-- 대사 --
 	local text = { }
-	text[1] = display.newText("(속닥거리며 웃는다.)", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
+	text[1] = display.newText("(속닥거리며 웃는다)", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
 	text[2] = display.newText("자, 받아.", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
 	text[3] = display.newText("", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
 	text[4] = display.newText("이 도토리를 피터 팬에게 가져가.", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
@@ -257,7 +257,7 @@ function scene:create( event )
 
 		if j == 10 then
 			-- 피터의 은신처로 이동 --
-			composer.gotoScene("map2_5", { effect = "fade", time = 900 })
+			composer.gotoScene("map2_8", { effect = "fade", time = 900 })
 		end
 
 		if j < 10 then

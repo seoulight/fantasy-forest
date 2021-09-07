@@ -16,7 +16,7 @@ function scene:create( event )
 	bg.x, bg.y = cx, cy
 	sceneGroup:insert(bg)
 
-	local npc = display.newImageRect("image/image2/mermaid_1.png", 223 * 0.9, 342 * 0.9)
+	local npc = display.newImageRect("image/image2/m1_smile.png", 223 * 0.9, 342 * 0.9)
 	npc.x, npc.y = 860, 450
 	sceneGroup:insert(npc)
 
@@ -26,6 +26,14 @@ function scene:create( event )
 	local bird = display.newImageRect("image/char/bird_default.png", 73, 82)
 	bird.x, bird.y = display.contentWidth * 0.22, display.contentHeight * 0.65
 	sceneGroup:insert(bird)
+
+	-- 타이틀 등장 후 사라지게 --
+	local title = display.newImageRect("image/image2/map3_title.png", 591 * 0.7, 291 * 0.7)
+	title.x, title.y = display.contentWidth*0.5, display.contentHeight*0.35
+	title.alpha = 0
+
+	transition.to(title, { effect = "fade", alpha = 1, time = 1000 })
+	transition.to(title, { delay = 2500, effect = "fade", alpha = 0, time = 1000})
 
 	-- 네로 캐릭터
 	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 100, height = 166, numFrames = 4})
@@ -47,7 +55,7 @@ function scene:create( event )
 	}
 	local nero = display.newSprite(nero_sheet, sequences_nero)
 	nero.x, nero.y = 150, display.contentHeight * 0.6
-	sceneGroup:insert(nero);
+	sceneGroup:insert(nero)
 	sceneGroup:insert(sail)
 
 	-- 대화창 --
@@ -146,7 +154,7 @@ function scene:create( event )
 			mName.alpha = 0
 			transition.fadeIn( mName, { effect = "fade", time = 900 } )
 
-			npc2 = display.newImageRect("image/image2/mermaid_1.png", 450, 680)
+			npc2 = display.newImageRect("image/image2/m1_smile.png", 450, 680)
 			npc2.x, npc2.y = display.contentWidth * 0.75, display.contentHeight * 0.53
 			sceneGroup:insert(npc2)
 			npc2.alpha = 0

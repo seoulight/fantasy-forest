@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------------------------
 --
--- view2.lua
---
+-- map3_4.lua
+-- 동굴 앞
 -----------------------------------------------------------------------------------------
 
 local composer = require( "composer" )
@@ -11,9 +11,18 @@ function scene:create( event )
 	local sceneGroup = self.view
 	local cx, cy = display.contentWidth * 0.5, display.contentHeight * 0.5
 	
-	local bg = display.newImageRect("image/image2/4-1.png", 1280, 720)
-	bg.x, bg.y = cx, cy
-	sceneGroup:insert(bg)
+	local layer_img = {"image/image2/3-3.png", "image/image2/3-2.png", "image/image2/3-1.png"}
+	local layer = {}
+
+	for i = 1, 3 do
+		layer[i] = display.newImageRect(layer_img[i], 1280, 720)
+		layer[i].x, layer[i].y = cx, cy
+		sceneGroup:insert(layer[i])
+	end
+
+	local m1 = display.newImageRect("image/image2/m1_smile.png", 223 * 0.9, 342 * 0.9)
+	m1.x, m1.y = display.contentWidth * 0.87, display.contentHeight * 0.73
+	sceneGroup:insert(m1)
 
 	-- 네로 캐릭터
 	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 100, height = 166, numFrames = 4})
@@ -34,17 +43,20 @@ function scene:create( event )
 		}
 	}
 	local nero = display.newSprite(nero_sheet, sequences_nero)
-	nero.x, nero.y = 10, display.contentHeight * 0.8
-	sceneGroup:insert(nero);
+	nero.x, nero.y = 80, display.contentHeight * 0.8
+	sceneGroup:insert(nero)
 
 	-- 방향키 입력시 움직이는 이벤트리스너
-	local function move( event )
+	local function move3( event )	
 		if (event.phase == "down") then
 			if (event.keyName == "right") then
 				nero:setSequence("walkRight")
 				nero:play()
-				transition.moveBy(nero, {x = 1280 - nero.x, time = (1280 - nero.x) * 7})
-				
+				if (nero.x < 900) then
+					transition.moveBy(nero, { x = 900 - nero.x, time = (900 - nero.x) * 7 })
+				else
+					transition.moveBy(nero, { x = 1280 - nero.x, time = (1280 - nero.x) * 7 })
+				end					
 			elseif (event.keyName == "left") then
 				nero:setSequence("walkLeft")
 				nero:play()
@@ -53,14 +65,14 @@ function scene:create( event )
 		elseif (event.phase == "up") then
 			transition.cancel(nero) -- 이동 정지
 			nero:pause()
-			if (nero.x <= 0) then
-				Runtime:removeEventListener("key", move)
-				composer.gotoScene("map3_3")
-			end		
+			if (nero.x == 900) then
+				Runtime:removeEventListener("key", move3)
+				composer.gotoScene("map3_5", { effect = "fade", time = 900 })
+			end	
 		end
 	end
 
-	Runtime:addEventListener("key", move)
+	Runtime:addEventListener("key", move3)
 end
 
 function scene:show( event )
@@ -87,6 +99,7 @@ function scene:hide( event )
 		-- INSERT code here to pause the scene
 		-- e.g. stop timers, stop animation, unload sounds, etc.)
 	elseif phase == "did" then
+		composer.removeScene("map3_4")
 		-- Called when the scene is now off screen
 	end
 end

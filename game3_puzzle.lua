@@ -48,23 +48,24 @@ function scene:create( event )
 	for i = 1, 25 do
 		piece[i] = display.newImageRect(pieceGroup, puzzleImg[i], 240, 240)
 		piece[i].x, piece[i].y = bg.x + math.random(-500, 500), bg.y + math.random(-300, 300)
-		piece[i].name = i;
+		piece[i].name = i
 	end
 
 	sceneGroup:insert(pieceGroup)
 
 	-- 다 맞추면 흐려지면서 완성본으로 전환
 	local function complete()
-		-- local options = {
-		-- 			    effect = "fade",
-		-- 			    time = 500
-		-- 			}
-    	-- composer.gotoScene("game1_ending", options)
-		local rose = display.newImageRect("image/image2_1/image.png", 600, 600);
+		local rose = display.newImageRect("image/image2_1/image.png", 600, 600)
 		rose.x, rose.y = centerX, centerY
 		rose.alpha = 0
 		transition.fadeOut(pieceGroup, {time = 700})
 		transition.fadeIn(rose, {time = 800})
+
+		local function nextScene()
+			transition.fadeOut(rose, {time = 700})
+			composer.gotoScene("game3_ending", { effect = "fade", time = 700 })
+		end
+		timer.performWithDelay( 2000 , nextScene)
  	end
 
  	-- bg:addEventListener("tap", nextView) --임의로 설정. 다 맞추면 혹은 탭하면 넘어가게
@@ -87,7 +88,7 @@ function scene:create( event )
 
 	-- 퍼즐 맞추기 --
 	function match( event )
-		local object = event.target;
+		local object = event.target
 		if ( event.phase == "began") then
 			display.getCurrentStage():setFocus( object )
 			object.isFocus = true

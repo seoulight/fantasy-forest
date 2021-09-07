@@ -55,7 +55,7 @@ function scene:create( event )
 		else
 			piece[i].x, piece[i].y = math.random(900, 1250), bg.y + math.random(-300, 300)
 		end
-		piece[i].name = i;
+		piece[i].name = i
 	end
 
 	sceneGroup:insert(pieceGroup)
@@ -71,7 +71,7 @@ function scene:create( event )
 		rose.alpha = 0
 		transition.fadeOut(pieceGroup, {time = 700})
 		transition.fadeIn(rose, {time = 900})
-		timer.performWithDelay( 3000 , nextScene)
+		timer.performWithDelay( 2000 , nextScene)
  	end
 
 	-- 퍼즐 조각이 제대로된 위치인지 확인, 퍼즐이 완성되면 다음 장면으로 넘어가는 함수 포출
@@ -92,7 +92,7 @@ function scene:create( event )
 
 	-- 퍼즐 맞추기 --
 	function match( event )
-		local object = event.target;
+		local object = event.target
 		if ( event.phase == "began") then
 			object:toFront()
 			display.getCurrentStage():setFocus( object )

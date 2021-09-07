@@ -135,7 +135,7 @@ function scene:create( event )
 	text[3] = display.newText("나와 저 이방인 중 누구를 따를 거야?", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
 	text[4] = display.newText("피터 팬!", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
 	text[5] = display.newText("서운했던 마음이 풀렸어. 우리 화해하자.", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
-	text[6] = display.newText("좋아. 앞으로도 사이좋게 지내자!", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
+	text[6] = display.newText("좋아! 앞으로도 사이좋게 지내자.", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
 	text[7] = display.newText("", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
 	
 	text[1]:setFillColor(0)

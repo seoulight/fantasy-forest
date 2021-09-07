@@ -179,17 +179,15 @@ function scene:create( event )
 		transition.fadeIn( brush2, { delay = 2500, effect = "fade", time = 1500 } )
 		transition.to( brush2, { delay = 4000, x = bx, y = by, time = 2500, rotation = 75 } )
 		transition.fadeIn( bg2, { delay = 7000, effect = "fade", time = 1500 } )
+		
+		-- '눈보라'가 치고 0_8로 넘어가는 걸로
+		local function listener( event )
+			Runtime:removeEventListener("key", move)
+			composer.gotoScene("map0_8", { effect = "fade", time = 900 })
+		end
+
+		timer.performWithDelay( 8500, listener, 1)
 	end
-
-	-- 배경 클릭하면 갑자기 눈보라가 치고
-	-- 또 클릭하면 0_8로 넘어가는 걸로
-
-	local function nextScene()
-		Runtime:removeEventListener("key", move)
-		composer.gotoScene("map0_8", { effect = "fade", time = 900 })
-	end
-
-	bg2:addEventListener("tap", nextScene)
 
 	-- 방향키 입력시 움직이는 이벤트리스너
 	function move( event )
@@ -200,12 +198,12 @@ function scene:create( event )
 			if (event.keyName == "right") then
 				nero:setSequence("walkRight")
 				nero:play()
-				transition.to(nero, {x = nero.x + 1000, time = 7000})
+				transition.moveBy(nero, {x = 600 - nero.x, time = (600 - nero.x) * 7})
 				
 			elseif (event.keyName == "left") then
 				nero:setSequence("walkLeft")
 				nero:play()
-				transition.to(nero, {x = nero.x - 1000, time = 7000})
+				transition.moveBy(nero, {x = -nero.x, time = nero.x * 7})
 			end
 		elseif (event.phase == "up") then
 			transition.cancel(nero) -- 이동 정지

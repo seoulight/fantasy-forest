@@ -197,12 +197,12 @@ function scene:create( event )
 			if (event.keyName == "right") then
 				nero:setSequence("walkRight")
 				nero:play()
-				transition.to(nero, {x = nero.x + 1000, time = 7000})
+				transition.moveBy(nero, {x = 600 - nero.x, time = (600 - nero.x) * 7})
 				
 			elseif (event.keyName == "left") then
 				nero:setSequence("walkLeft")
 				nero:play()
-				transition.to(nero, {x = nero.x - 1000, time = 7000})
+				transition.moveBy(nero, {x = -nero.x, time = nero.x * 7})
 			end
 		elseif (event.phase == "up") then
 			transition.cancel(nero) -- 이동 정지
