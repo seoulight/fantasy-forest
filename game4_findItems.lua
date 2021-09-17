@@ -23,7 +23,14 @@ function scene:create( event )
 	item_pos = {{659, 655}, {213, 387}, {515, 534}, {539, 394}, {95, 225}, {1255, 230}, {1004, 562}}
 	title = {}
 	-- 아이템 설명 텍스트
-	item_text = {"설명1", "설명2", "설명3", "설명4", "설명5", "설명6", "설명7"}
+	item_text = {"지니의 램프처럼 반짝인다.  \n깨진 걸 보니 요정 램프는 아니겠군. ▼", 
+				"누구에게 보내려던 걸까.  \n왠지 열어보면 안 될 것 같다. ▼", 
+				"째깍째깍.  \n아직 멈추지 않은 걸 보니 제법 튼튼한가보다. ▼", 
+				"먼지가 쌓여 잘 보이지 않는다.  \n막내는 이 고물을 왜 줍는 걸까. ▼", 
+				"막내가 처음으로 마음에 들어 한 바깥세상의 물건.  \n먼바다에서 흘러온 듯하다. ▼", 
+				"막내의 물건 중 가장 비싸 보이는 물건.  \n잔칫날 쓰곤 했는데.. ▼", 
+				"막내가 가장 좋아하는 장신구.  \n분명 푸른색이었는데...? ▼"}
+
 	text_obj = {}
 	for i = 1, 7 do
 		item[i] = display.newImageRect(item_img[i], 100, 100)
@@ -41,7 +48,7 @@ function scene:create( event )
 			text = item_text[i],
 			x = cx,
 			y = 600,
-			width = 400,
+			width = 800,
 			font = "fonts/SeoulNamsanB.ttf",
 			fontSize = 25,
 			align = "center"  -- Alignment parameter

@@ -180,7 +180,6 @@ function scene:create( event )
 		transition.to( brush2, { delay = 4000, x = bx, y = by, time = 2500, rotation = 75 } )
 		transition.fadeIn( bg2, { delay = 7000, effect = "fade", time = 1500 } )
 		
-		-- '눈보라'가 치고 0_8로 넘어가는 걸로
 		local function listener( event )
 			Runtime:removeEventListener("key", move)
 			composer.gotoScene("map0_8", { effect = "fade", time = 900 })

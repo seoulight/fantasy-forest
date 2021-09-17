@@ -58,7 +58,7 @@ function scene:create( event )
 
 	-- 문 힌트 --
 	local text = { }
-	text[1] = display.newText("힌트: ...", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
+	text[1] = display.newText("가깝고도 먼 곳으로 가.", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
 
 	text[1]:setFillColor(0)
 

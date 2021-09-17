@@ -148,8 +148,8 @@ function scene:create( event )
 	nero2.alpha = 0
 
 	-- 앵무 대화모습 --
-	local bird = display.newImageRect("image/char/bird_default.png", 400, 440)
-	bird.x, bird.y = display.contentWidth * 0.2, display.contentHeight * 0.4
+	local bird = display.newImageRect("image/char/bird_default.png", 556*0.35, 630*0.35)
+	bird.x, bird.y = display.contentWidth * 0.2, display.contentHeight * 0.5
 	sceneGroup:insert(bird)
 	bird.alpha = 0
 

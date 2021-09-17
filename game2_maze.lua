@@ -72,11 +72,11 @@ function scene:create( event )
 
 	local nero1 = display.newSprite(nero_sheet1, sequences_nero)
 	nero1.x, nero1.y = cx, display.contentHeight * 0.06
-	sceneGroup:insert(nero1);
+	sceneGroup:insert(nero1)
 
 	local nero2 = display.newSprite(nero_sheet2, sequences_nero)
 	nero2.alpha = 0
-	sceneGroup:insert(nero2);
+	sceneGroup:insert(nero2)
 
 	local item = display.newImageRect("image/item/orange.png", 75, 75)
 	item.x, item.y = cx - 200, cy * 0.24
@@ -146,7 +146,7 @@ function scene:create( event )
 
 				local options = 
 				{
-					text = "누군가 마시다 만 흔적이 있다..\n몸을 가볍게 해준다 ▼",     
+					text = "누군가 마시다 만 흔적이 있다..\n몸을 가볍게 해준다. ▼",     
 					x = cx,
 					y = cy * 1.6,
 					width = 400,

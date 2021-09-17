@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------------------------
 --
 -- map2_4.lua
--- 요정 나무(요정1 f2)
+-- 요정 나무(요정1 f2_활발한 요정)
 -----------------------------------------------------------------------------------------
 
 local composer = require( "composer" )
@@ -112,17 +112,31 @@ function scene:create( event )
 	sceneGroup:insert(neroName)
 	neroName.alpha = 0
 
+	local choice1 = display.newRect(display.contentWidth * 0.5, display.contentHeight * 0.72, 900, 50)
+	sceneGroup:insert(choice1)
+	choice1:setFillColor(0)
+	choice1.alpha = 0
+
+	local choice2 = display.newRect(display.contentWidth * 0.5, display.contentHeight * 0.82, 900, 50)
+	sceneGroup:insert(choice2)
+	choice2:setFillColor(0)
+	choice2.alpha = 0
+
 	-- 대사 --
 	local text = { }
-	text[1] = display.newText("힌트1", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
-	text[2] = display.newText("네로 답 선택", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
-	text[3] = display.newText("", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
+	text[1] = display.newText("그 아이는 우리랑 노는 것을 좋아해.", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
+	text[2] = display.newText("활발함이라면 나도 뒤지지 않는데, 그 아이도 만만치 않더라. 그래서 우리가 잘 맞나??", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
+	text[3] = display.newText("1. 사이가 좋네요. 네버랜드에선 모두가 친한가 봐요.\n\n2. 뭐든 지나치면 독이 되는 법이죠. 조금 차분해질 필요가 있어요.", text1.x, text1.y + 25, "fonts/SeoulNamsanB.ttf", 28)
+	text[4] = display.newText("그럼. 우리 모두 처음부터 함께 했거든. 다들 가족 같은 사이야.", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
+	text[5] = display.newText("", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
+	text[6] = display.newText("너 정말 무례하구나!", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
+	text[7] = display.newText("", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
 
 	text[1]:setFillColor(0)
 	sceneGroup:insert(text[1])
 	text[1].alpha = 0
 
-	for i = 2, 3 do
+	for i = 2, 7 do
 		text[i].alpha = 0
 		text[i]:setFillColor(0)
 	end
@@ -134,8 +148,7 @@ function scene:create( event )
 			transition.to( text1, { alpha = 0.96, time = 900 } )
 			transition.fadeIn( name2, { time = 900 } )
 			transition.fadeIn( nero2, { time = 900 } )
-			transition.fadeIn( f22, { time = 900 } )
-			
+			transition.fadeIn( f22, { time = 900 } )	
 		end
 	end
 
@@ -143,24 +156,47 @@ function scene:create( event )
 	local j = 2
 	local function nextText()
 		k = 1
-		if j == 2 then
+		if j == 3 then
 			name2.alpha = 0
 			neroName.alpha = 1
 			text1.alpha = 0
 			text2.alpha = 0.8
+			choice1.alpha = 0.25
+			choice2.alpha = 0.25
+
+			text1:removeEventListener("tap", nextText)
+			text2:removeEventListener("tap", nextText)
+
+			-- 실패 --
+			local function fail()
+				j = j + 2
+				text1:addEventListener("tap", nextText)
+				text2:addEventListener("tap", nextText)
+			end
+			choice2:addEventListener("tap", fail)
+
+			-- 성공 --
+			local function success()
+				text1:addEventListener("tap", nextText)
+				text2:addEventListener("tap", nextText)
+			end
+			choice1:addEventListener("tap", success)
 		end
 
-		if j > 1 then
-			text[j - 1].alpha = 0
+		if j == 4 then
+			name2.alpha = 1
+			neroName.alpha = 0
+			text1.alpha = 1
+			text2.alpha = 0
+			text[3].alpha = 0
+			choice1.alpha = 0
+			choice2.alpha = 0
 		end
 
-		if j == 3 then
-			-- 실패하면 대화 다시 --
-			--text1[2].alpha = 0
-			--k = 0
-
-			transition.fadeOut( text2, { time = 900 } )
-			transition.fadeOut( neroName, { time = 900 } )
+		-- 성공 -> 다음 씬으로 --
+		if j == 5  then
+			transition.fadeOut( text1, { time = 900 } )
+			transition.fadeOut( name2, { time = 900 } )
 			transition.fadeOut( nero2, { time = 900 } )
 			transition.fadeOut( f22, { time = 900 } )
 			
@@ -174,7 +210,28 @@ function scene:create( event )
 			timer.performWithDelay( 1000, listener, 1)
 		end
 
-		if j < 3 then
+		if j == 6 then
+			name2.alpha = 1
+			neroName.alpha = 0
+			text1.alpha = 1
+			text2.alpha = 0
+			text[3].alpha = 0
+			choice1.alpha = 0
+			choice2.alpha = 0
+		end
+
+		if j > 1 then
+			text[j - 1].alpha = 0
+		end
+
+		-- 실패 -> 재도전 --
+		if j == 7 then
+			text1:removeEventListener("tap", nextText)
+			text2:removeEventListener("tap", nextText)
+			scene:create()
+		end
+
+		if j < 7 then
 			text[j].alpha = 1
 			j = j + 1
 		end

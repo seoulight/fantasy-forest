@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------------------------
 --
 -- map2_5.lua
--- 요정 나무(요정2 f3)
+-- 요정 나무(요정2 f3_날개가 아름다운 요정)
 -----------------------------------------------------------------------------------------
 
 local composer = require( "composer" )
@@ -112,17 +112,31 @@ function scene:create( event )
 	sceneGroup:insert(neroName)
 	neroName.alpha = 0
 
+	local choice1 = display.newRect(display.contentWidth * 0.5, display.contentHeight * 0.72, 900, 50)
+	sceneGroup:insert(choice1)
+	choice1:setFillColor(0)
+	choice1.alpha = 0
+
+	local choice2 = display.newRect(display.contentWidth * 0.5, display.contentHeight * 0.82, 900, 50)
+	sceneGroup:insert(choice2)
+	choice2:setFillColor(0)
+	choice2.alpha = 0
+
 	-- 대사 --
 	local text = { }
-	text[1] = display.newText("힌트2", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
-	text[2] = display.newText("네로 답 선택", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
-	text[3] = display.newText("", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
+	text[1] = display.newText("그 아이는 나는 것을 좋아해. 이곳에서 누가 빨리 나는지 가끔 시합도 하거든.", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
+	text[2] = display.newText("날개도 없는데도 가볍게 나는 게 정말 신기하단 말이야.", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
+	text[3] = display.newText("1. 날개가 무거우면 떼어드릴까요?\n\n2. 요정님 날개에서는 눈을 뗄 수가 없네요. 어떻게 그렇게 반짝거리는 거죠?", text1.x, text1.y + 25, "fonts/SeoulNamsanB.ttf", 28)
+	text[4] = display.newText("뭐라고?? 넌 나에게 모욕감을 줬어.", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
+	text[5] = display.newText("", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
+	text[6] = display.newText("너, 보는 눈이 있구나? 내 날개는 빛이 나. 요정 중에서 가장 아름답지.", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
+	text[7] = display.newText("", text1.x, text1.y + 20, "fonts/SeoulNamsanB.ttf", 28)
 
 	text[1]:setFillColor(0)
 	sceneGroup:insert(text[1])
 	text[1].alpha = 0
 
-	for i = 2, 3 do
+	for i = 2, 7 do
 		text[i].alpha = 0
 		text[i]:setFillColor(0)
 	end
@@ -143,24 +157,68 @@ function scene:create( event )
 	local j = 2
 	local function nextText()
 		k = 1
-		if j == 2 then
+		if j == 3 then
 			name2.alpha = 0
 			neroName.alpha = 1
 			text1.alpha = 0
 			text2.alpha = 0.8
+			choice1.alpha = 0.25
+			choice2.alpha = 0.25
+
+			text1:removeEventListener("tap", nextText)
+			text2:removeEventListener("tap", nextText)
+
+			-- 성공 --
+			local function success()
+				j = j + 2
+				text1:addEventListener("tap", nextText)
+				text2:addEventListener("tap", nextText)
+			end
+			choice2:addEventListener("tap", success)
+
+			-- 실패 --
+			local function fail()
+				text1:addEventListener("tap", nextText)
+				text2:addEventListener("tap", nextText)
+			end
+			choice1:addEventListener("tap", fail)
+		end
+
+		if j == 4 then
+			name2.alpha = 1
+			neroName.alpha = 0
+			text1.alpha = 1
+			text2.alpha = 0
+			text[3].alpha = 0
+			choice1.alpha = 0
+			choice2.alpha = 0
+		end
+
+		-- 실패 -> 재도전 --
+		if j == 5  then
+			text1:removeEventListener("tap", nextText)
+			text2:removeEventListener("tap", nextText)
+			scene:create()
+		end
+
+		if j == 6 then
+			name2.alpha = 1
+			neroName.alpha = 0
+			text1.alpha = 1
+			text2.alpha = 0
+			text[3].alpha = 0
+			choice1.alpha = 0
+			choice2.alpha = 0
 		end
 
 		if j > 1 then
 			text[j - 1].alpha = 0
 		end
 
-		if j == 3 then
-			-- 실패하면 대화 다시 --
-			--text1[2].alpha = 0
-			--k = 0
-
-			transition.fadeOut( text2, { time = 900 } )
-			transition.fadeOut( neroName, { time = 900 } )
+		-- 성공 -> 다음 씬으로 --
+		if j == 7 then
+			transition.fadeOut( text1, { time = 900 } )
+			transition.fadeOut( name2, { time = 900 } )
 			transition.fadeOut( nero2, { time = 900 } )
 			transition.fadeOut( f33, { time = 900 } )
 			
@@ -174,7 +232,7 @@ function scene:create( event )
 			timer.performWithDelay( 1000, listener, 1)
 		end
 
-		if j < 3 then
+		if j < 7 then
 			text[j].alpha = 1
 			j = j + 1
 		end
