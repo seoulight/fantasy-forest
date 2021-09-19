@@ -233,10 +233,10 @@ function scene:create( event )
 	end
 
 	--transition.fadeIn( nero2, { delay = 3000,time = 1000 } )
-	transition.fadeIn( bird, { delay = 0000,time = 1000 } )
-	transition.fadeIn( name2, { delay = 0000,time = 1000 } )
-	transition.fadeIn( text2, { delay = 0000,effect = "fade", time = 1000 } )
-	transition.fadeIn( text[1], { delay = 0000,time = 1000 } )	
+	transition.fadeIn( bird, { delay = 2000,time = 1000 } )
+	transition.fadeIn( name2, { delay = 2000,time = 1000 } )
+	transition.fadeIn( text2, { delay = 2000,effect = "fade", time = 1000 } )
+	transition.fadeIn( text[1], { delay = 2000,time = 1000 } )	
 	
 	-- 탭 하면 다음 text --
 	local j = 2
