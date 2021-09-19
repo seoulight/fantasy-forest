@@ -43,7 +43,7 @@ function scene:create( event )
 		}
 	}
 	local nero = display.newSprite(nero_sheet, sequences_nero)
-	nero.x, nero.y = 80, display.contentHeight * 0.8
+	nero.x, nero.y = 80, display.contentHeight * 0.75
 	
 	sceneGroup:insert(nero)
 
