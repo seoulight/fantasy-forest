@@ -57,19 +57,23 @@ function scene:create( event )
 	-- 팔레트, 브러쉬 --
 	local palette1 = display.newImageRect("image/color/palette.png", 700, 700)
 	palette1.x, palette1.y = display.contentWidth*0.27, display.contentHeight*0.52
-	
+	sceneGroup:insert(palette1)
+
 	local palette2 = display.newImageRect("image/color/palette_green2.png", 700, 700)
 	palette2.x, palette2.y = display.contentWidth*0.27, display.contentHeight*0.52
+	sceneGroup:insert(palette2)
 	palette2.alpha = 0
 
 	transition.fadeIn( palette2, { delay = 8000, effect = "fade", time = 1500 } )
 
 	local brush1 = display.newImageRect("image/color/brush.png", 450, 550)
 	brush1.x, brush1.y = display.contentWidth*0.65, display.contentHeight*0.78
+	sceneGroup:insert(brush1)
 	brush1.rotation = 60
 
 	local brush2 = display.newImageRect("image/color/brush_green.png", 450, 550)
 	brush2.x, brush2.y = display.contentWidth*0.65, display.contentHeight*0.78
+	sceneGroup:insert(brush2)
 	brush2.rotation = 60
 	brush2.alpha = 0
 
