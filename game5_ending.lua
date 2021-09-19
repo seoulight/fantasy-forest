@@ -22,7 +22,7 @@ function scene:create( event )
 
 	local function nextScene() 
 
-		composer.gotoScene("map_11", { effect = "fade", time = 900 })
+		composer.gotoScene("map2_11", { effect = "fade", time = 900 })
 	end
 	bg:addEventListener("tap", nextScene)
 end 
