@@ -27,7 +27,7 @@ function scene:create( event )
 	p1.x, p1.y = display.contentWidth*0.7, display.contentHeight*0.65
 
 	-- 네로 움직이는 모습 --
-	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 100, height = 166, numFrames = 4})
+	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 738 / 3, height = 648 * 0.5, numFrames = 4})
 	local sequences_nero = {
 		{
 			name = "walkRight",
