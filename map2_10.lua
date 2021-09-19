@@ -45,7 +45,7 @@ function scene:create( event )
 		}
 	}
 	local nero = display.newSprite(nero_sheet, sequences_nero)
-	nero.x, nero.y = 750, display.contentHeight * 0.75
+	nero.x, nero.y = 750, display.contentHeight * 0.7
 
 	sceneGroup:insert(bg)
 	sceneGroup:insert(c1)
@@ -56,7 +56,7 @@ function scene:create( event )
 
 	local function gameScene()
 		--  퍼즐 게임으로 이동 --
-		--composer.gotoScene("game2_puzzle", { effect = "fade", time = 900 })
+		composer.gotoScene("game5_puzzle", { effect = "fade", time = 900 })
 	end
 
 	bg:addEventListener("tap", gameScene)

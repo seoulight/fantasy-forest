@@ -36,18 +36,18 @@ function scene:create( event )
 	transition.to(title, { delay = 2500, effect = "fade", alpha = 0, time = 1000})
 
 	-- 네로 캐릭터
-	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 100, height = 166, numFrames = 4})
+	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 738 / 3, height = 648 * 0.5, numFrames = 6})
 	local sequences_nero = {
 		{
 			name = "walkRight",
-			frames = { 1, 2 },
+			frames = { 1, 2},
 			time = 300,
 			loopCount = 0,
 			loopDirection = "forward"
 		},
 		{
 			name = "walkLeft",
-			frames = { 3, 4 },
+			frames = { 5, 6 },
 			time = 300,
 			loopCount = 0,
 			loopDirection = "forward"
@@ -55,6 +55,7 @@ function scene:create( event )
 	}
 	local nero = display.newSprite(nero_sheet, sequences_nero)
 	nero.x, nero.y = 150, display.contentHeight * 0.6
+	
 	sceneGroup:insert(nero)
 	sceneGroup:insert(sail)
 

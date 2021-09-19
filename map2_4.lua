@@ -41,25 +41,25 @@ function scene:create( event )
 	f4.x, f4.y = display.contentWidth*0.95, display.contentHeight*0.6
 
 	-- 네로 움직이는 모습 --
-	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 100, height = 166, numFrames = 4})
+	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 738 / 3, height = 648 * 0.5, numFrames = 6})
 	local sequences_nero = {
 		{
 			name = "walkRight",
-			frames = { 1, 2 },
+			frames = { 1, 2},
 			time = 300,
 			loopCount = 0,
 			loopDirection = "forward"
 		},
 		{
 			name = "walkLeft",
-			frames = { 3, 4 },
+			frames = { 5, 6 },
 			time = 300,
 			loopCount = 0,
 			loopDirection = "forward"
 		}
 	}
 	local nero = display.newSprite(nero_sheet, sequences_nero)
-	nero.x, nero.y = 360, display.contentHeight * 0.75
+	nero.x, nero.y = 360, display.contentHeight * 0.7
 
 	sceneGroup:insert(bg)
 	sceneGroup:insert(c1)

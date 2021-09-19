@@ -28,7 +28,7 @@ function scene:create( event )
 	sceneGroup:insert(bg2)
 	sceneGroup:insert(bg)
 
-	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 100, height = 166, numFrames = 4})
+	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites45.png", { width = 100, height = 166, numFrames = 4})
 	local sequences_nero = {
 		{
 			name = "walkRight",

@@ -35,25 +35,25 @@ function scene:create( event )
 	c3.x, c3.y = display.contentWidth*0.89, display.contentHeight*0.68
 
 	-- 네로 움직이는 모습 --
-	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 100, height = 166, numFrames = 4})
+	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 738 / 3, height = 648 * 0.5, numFrames = 6})
 	local sequences_nero = {
 		{
 			name = "walkRight",
-			frames = { 1, 2 },
+			frames = { 1, 2},
 			time = 300,
 			loopCount = 0,
 			loopDirection = "forward"
 		},
 		{
 			name = "walkLeft",
-			frames = { 3, 4 },
+			frames = { 5, 6 },
 			time = 300,
 			loopCount = 0,
 			loopDirection = "forward"
 		}
 	}
 	local nero = display.newSprite(nero_sheet, sequences_nero)
-	nero.x, nero.y = display.contentWidth * 0.1, display.contentHeight * 0.75
+	nero.x, nero.y = display.contentWidth * 0.1, display.contentHeight * 0.7
 
 	local nero2 = display.newImageRect("image/char/nero_default2.png", 400, 440)
 	nero2.x, nero2.y = display.contentWidth * 0.2, display.contentHeight * 0.255
@@ -118,7 +118,7 @@ function scene:create( event )
 		text1:removeEventListener("tap", remove)
 
 		-- 돌 피하기 게임으로 넘어감 -- 
-		--composer.gotoScene("game4_stone")
+		composer.gotoScene("game4_rock")
 	end
 
 	text1:addEventListener("tap", remove)

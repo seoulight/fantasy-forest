@@ -50,18 +50,18 @@ function scene:create( event )
 	roseGroup2.y = roseGroup2.y + 243
 
 	-- 네로 움직이는 모습 --
-	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites3.png", { width = 300, height = 500, numFrames = 4})
+	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 738 / 3, height = 648 * 0.5, numFrames = 6})
 	local sequences_nero = {
 		{
 			name = "walkRight",
-			frames = { 1, 2 },
+			frames = { 1, 2},
 			time = 300,
 			loopCount = 0,
 			loopDirection = "forward"
 		},
 		{
 			name = "walkLeft",
-			frames = { 3, 4 },
+			frames = { 5, 6 },
 			time = 300,
 			loopCount = 0,
 			loopDirection = "forward"
@@ -69,7 +69,7 @@ function scene:create( event )
 	}
 
 	local nero = display.newSprite(nero_sheet, sequences_nero)
-	nero.x, nero.y = display.contentWidth * 0.35, display.contentHeight * 0.79
+	nero.x, nero.y = display.contentWidth * 0.35, display.contentHeight * 0.72
 
 	transition.scaleTo(nero, {xScale = 0.4, yScale = 0.4, time = 0})
 

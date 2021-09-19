@@ -15,38 +15,6 @@ function scene:create( event )
 	sceneGroup:insert(bg)
 
 
-	-- 네로 캐릭터
-	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 100, height = 166, numFrames = 4})
-	local sequences_nero = {
-		{
-			name = "walkRight",
-			frames = { 1, 2 },
-			time = 300,
-			loopCount = 0,
-			loopDirection = "forward"
-		},
-		{
-			name = "walkLeft",
-			frames = { 3, 4 },
-			time = 300,
-			loopCount = 0,
-			loopDirection = "forward"
-		}
-	}
-	local nero = display.newSprite(nero_sheet, sequences_nero)
-	nero.x, nero.y = 20, display.contentHeight * 0.66
-	sceneGroup:insert(nero);
-
-	-- 타이틀 등장 후 사라지게 --
-	local title = display.newImageRect("image/image1/map1_title.png", 677 * 0.7, 265 * 0.7)
-	title.x, title.y = display.contentWidth*0.5, display.contentHeight*0.35
-	title.alpha = 0
-	sceneGroup:insert(title)
-	transition.to(title, { effect = "fade", alpha = 1, time = 1000 })
-	transition.to(title, { delay = 2500, effect = "fade", alpha = 0, time = 1000})
-	
-
-
 	local block_img = {"image/image1/1.png", "image/image1/2.png", "image/image1/3.png", "image/image1/1.png"}
 	local block = {}
 
@@ -60,6 +28,41 @@ function scene:create( event )
 		end
 		sceneGroup:insert(block[i])
 	end
+	
+	-- 네로 캐릭터
+	local nero_sheet = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 738 / 3, height = 648 * 0.5, numFrames = 6})
+	local sequences_nero = {
+		{
+			name = "walkRight",
+			frames = { 1, 2},
+			time = 300,
+			loopCount = 0,
+			loopDirection = "forward"
+		},
+		{
+			name = "walkLeft",
+			frames = { 5, 6 },
+			time = 300,
+			loopCount = 0,
+			loopDirection = "forward"
+		}
+	}
+	local nero = display.newSprite(nero_sheet, sequences_nero)
+	nero.x, nero.y = 20, display.contentHeight * 0.58
+	
+	sceneGroup:insert(nero);
+
+	-- 타이틀 등장 후 사라지게 --
+	local title = display.newImageRect("image/image1/map1_title.png", 677 * 0.7, 265 * 0.7)
+	title.x, title.y = display.contentWidth*0.5, display.contentHeight*0.35
+	title.alpha = 0
+	sceneGroup:insert(title)
+	transition.to(title, { effect = "fade", alpha = 1, time = 1000 })
+	transition.to(title, { delay = 2500, effect = "fade", alpha = 0, time = 1000})
+	
+
+
+	
 	
 	-- 방향키 입력시 움직이는 이벤트리스너
 	local function move( event )

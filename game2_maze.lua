@@ -51,7 +51,7 @@ function scene:create( event )
 	sceneGroup:insert(maze4)
 
 	-- 네로 캐릭터
-	local nero_sheet1 = graphics.newImageSheet("image/char/nero_sprites4.png", { width = 100, height = 166, numFrames = 4})
+	local nero_sheet1 = graphics.newImageSheet("image/char/nero_sprites45.png", { width = 100, height = 166, numFrames = 4})
 	local nero_sheet2 = graphics.newImageSheet("image/char/nero_sprites_mini.png", { width = 21, height = 34, numFrames = 4})
 	local sequences_nero = {
 		{
