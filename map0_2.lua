@@ -195,7 +195,7 @@ function scene:create( event )
 	local text = { }
 		text[1] = display.newText("살려줘! 어푸.....살려!", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
 		text[2] = display.newText("앗! 새가 호수에 빠져서 나오지 못하고 있나봐! 내가 구해줄 방법이 없을까?", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
-		text[3] = display.newText("나뭇가지를 새에게 던져서 붙잡게 하고 내가 당겨주면 되겠다!", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
+		text[3] = display.newText("밧줄을 새에게 던져서 붙잡게 하고 내가 당겨주면 되겠다!", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
 		text[4] = display.newText("살아 있나..?", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
 		text[5] = display.newText(".......푸하!", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
 		text[6] = display.newText("우왓! 다행이다. 깨어났어! 작은 새야, 정신이 좀 드니?", text1.x, text1.y + 30, "fonts/SeoulNamsanB.ttf", 28)
